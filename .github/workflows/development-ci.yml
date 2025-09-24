@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'frontend/**'
+    branches-ignore:
+      - 'main'
   pull_request:
     paths:
       - 'frontend/**'
