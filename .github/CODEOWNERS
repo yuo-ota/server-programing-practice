@@ -1,0 +1,10 @@
+# CODEOWNERS
+
+# default
+* @yuo-ota
+
+# Frontend
+/frontend/ @yuo-ota @hyt-88
+
+# backend
+/backend/ @Jmizu0619 @toriatukai
