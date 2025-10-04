@@ -1,0 +1,5 @@
+# 改行コードを LF に統一
+* text eol=lf
+
+# Windows環境の人がcloneしてもLFを維持
+*.bat text eol=crlf
