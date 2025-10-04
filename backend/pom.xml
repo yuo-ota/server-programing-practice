@@ -28,6 +28,11 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<plugin.checkstyle.version>3.1.2</plugin.checkstyle.version>
+
+    <checkstyle.config.location>checkstyle_rules.xml</checkstyle.config.location>
+    <checkstyle.consoleOutput>true</checkstyle.consoleOutput>
+    <checkstyle.violationSeverity>warning</checkstyle.violationSeverity>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -56,7 +61,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			
-			<!-- Spotless Maven Plugin - 設定は外部ファイルで管理 -->
+			<!-- Spotless Maven Plugin -->
 			<plugin>
 				<groupId>com.diffplug.spotless</groupId>
 				<artifactId>spotless-maven-plugin</artifactId>
@@ -71,7 +76,32 @@
 						</java>
 				</configuration>
 			</plugin>
+
+			<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${plugin.checkstyle.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>10.0</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+					<consoleOutput>true</consoleOutput>
+          <failsOnError>true</failsOnError>
+        </configuration>
+        <executions>
+          <execution>
+            <id>validate</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 		</plugins>
 	</build>
-
 </project>
