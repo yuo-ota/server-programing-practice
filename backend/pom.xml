@@ -74,6 +74,7 @@
 										<formatJavadoc>true</formatJavadoc>
 								</googleJavaFormat>
 						</java>
+						<lineEndings>PLATFORM_NATIVE</lineEndings>
 				</configuration>
 			</plugin>
 
