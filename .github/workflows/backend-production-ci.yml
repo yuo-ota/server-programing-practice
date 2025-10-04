@@ -1,0 +1,49 @@
+name: Spring Boot Backend Production CI
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+
+jobs:
+  backend-build-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        java-version: [21]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+        cache: maven
+    
+    - name: Cache Maven dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('backend/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    
+    - name: Run Checkstyle code quality check
+      working-directory: ./backend
+      run: mvn checkstyle:check
+    
+    - name: Run Spotless format check
+      working-directory: ./backend
+      run: mvn spotless:check
+    
+    - name: Run unit tests
+      working-directory: ./backend
+      run: mvn test
+            
+    - name: Compile Java sources
+      working-directory: ./backend
+      run: mvn clean compile
