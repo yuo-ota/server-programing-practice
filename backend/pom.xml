@@ -73,8 +73,11 @@
 										<reorderImports>true</reorderImports>
 										<formatJavadoc>true</formatJavadoc>
 								</googleJavaFormat>
+								<!-- 改行コードを統一しない（LF/CRLF両方許可） -->
+								<endWithNewlineFormat>skip</endWithNewlineFormat>
 						</java>
-						<lineEndings>PLATFORM_NATIVE</lineEndings>
+						<!-- グローバル設定：改行コードを変更しない -->
+						<lineEndings>GIT_ATTRIBUTES_FAST_ALLSAME</lineEndings>
 				</configuration>
 			</plugin>
 
