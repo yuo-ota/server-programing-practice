@@ -1,0 +1,17 @@
+services:
+  app:
+    build: ./backend
+    image: spp-backend
+    volumes:
+      - ./backend:/app
+      - maven-repo:/root/.m2
+    working_dir: /app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DEVTOOLS_REMOTE_DEBUG_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_LIVERELOAD_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_ADDITIONAL_PATHS: "/app/src"
+volumes:
+  maven-repo:
