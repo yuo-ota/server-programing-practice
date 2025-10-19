@@ -455,7 +455,7 @@ paths:
                               type: string
                             type:
                               type: string
-                            enddate:
+                            end_date:
                               type: string
                         - type: object
                           properties:
@@ -514,7 +514,12 @@ paths:
                   images:
                     type: array
                     items:
-                      type: string
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        alt:
+                          type: string
         "401":
           description: ユーザーIDが不正の場合
           content:
@@ -559,7 +564,14 @@ paths:
                 images:
                   type: array
                   items:
-                    type: string
+                    type: object
+                    items:
+                      type: object
+                      properties:
+                        image:
+                          type: string
+                        alt:
+                          type: string
       responses:
         "201":
           description: 投稿できた場合
@@ -871,6 +883,47 @@ paths:
       responses:
         "200":
           description: 取得できた場合
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+  /api/users/check-id:
+    get:
+      summary: ユーザーIDの利用可否を確認
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 利用できた場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  available:
+                    type: boolean
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
         "500":
           description: SQLエラー等の全般的なエラーの発生
           content:
