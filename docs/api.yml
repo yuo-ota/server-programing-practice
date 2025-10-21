@@ -1009,13 +1009,6 @@ paths:
       responses:
         "200":
           description: 認証できた場合
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
         "401":
           description: ユーザーIDが不正の場合
           content:
