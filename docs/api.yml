@@ -1,0 +1,1166 @@
+openapi: 3.0.0
+info:
+  title: server programming project API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+paths:
+  /api/login:
+    post:
+      summary: ログイン
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email_address:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: ログインできた場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+  /api/password-reset:
+    post:
+      summary: パスワードリセット用のメールアドレスの登録
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email_address:
+                  type: string
+      responses:
+        "204":
+          description: 登録できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+    patch:
+      summary: 新規パスワードの登録
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "201":
+          description: 登録できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+  /api/register:
+    post:
+      summary: 新規登録
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email_address:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "201":
+          description: 登録できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+  /api/user:
+    post:
+      summary: ユーザー登録
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                name:
+                  type: string
+                user_id:
+                  type: string
+                birthday:
+                  type: string
+                show_adult_contents:
+                  type: boolean
+                social_accounts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      platform_id:
+                        type: integer
+                      identifier:
+                        type: string
+      responses:
+        "201":
+          description: 登録できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+  /api/user/{userId}:
+    get:
+      summary: アカウント詳細情報取得
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      responses:
+        "200":
+          description: 認証できた場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  icon_path:
+                    type: string
+                  header_path:
+                    type: string
+                  social_accounts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        platform_id:
+                          type: integer
+                        identifier:
+                          type: string
+                  posts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        post_id:
+                          type: string
+                        icon_path:
+                          type: string
+                        like_count:
+                          type: integer
+                        content:
+                          type: object
+                          properties:
+                            description:
+                              type: string
+                            path:
+                              type: string
+                            alt:
+                              type: string
+                  liked_posts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user_id:
+                          type: string
+                        name:
+                          type: string
+                        post_id:
+                          type: string
+                        icon_path:
+                          type: string
+                        like_count:
+                          type: integer
+                        content:
+                          type: object
+                          properties:
+                            description:
+                              type: string
+                            path:
+                              type: string
+                            alt:
+                              type: string
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+    delete:
+      summary: アカウント削除
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      responses:
+        "200":
+          description: 削除できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+    patch:
+      summary: アカウント編集, ユーザー設定
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                name:
+                  type: string
+                icon:
+                  type: string
+                header:
+                  type: string
+                social_accounts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      platform_id:
+                        type: integer
+                      identifier:
+                        type: string
+                introduction:
+                  type: string
+                birthday:
+                  type: string
+                show_adult_contents:
+                  type: boolean
+      responses:
+        "200":
+          description: 編集登録できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+  /api/notification:
+    get:
+      summary: 通知取得
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      responses:
+        "200":
+          description: 取得できた場合
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    notificate_id:
+                      type: string
+                    notificate_type:
+                      type: string
+                    date:
+                      type: string
+                    content:
+                      oneOf:
+                        - type: object
+                          properties:
+                            category:
+                              type: string
+                            detail:
+                              type: string
+                            duration:
+                              type: string
+                            type:
+                              type: string
+                            end_date:
+                              type: string
+                        - type: object
+                          properties:
+                            liked_post_id:
+                              type: string
+                            liked_by_user_id:
+                              type: string
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+  /api/post:
+    get:
+      summary: 投稿取得
+      parameters:
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      responses:
+        "200":
+          description: 取得できた場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+                  images:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        alt:
+                          type: string
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+    post:
+      summary: 投稿
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                images:
+                  type: array
+                  items:
+                    type: object
+                    items:
+                      type: object
+                      properties:
+                        image:
+                          type: string
+                        alt:
+                          type: string
+      responses:
+        "201":
+          description: 投稿できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+  /api/post/{postId}:
+    delete:
+      summary: 投稿削除
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      responses:
+        "200":
+          description: 削除できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+  /api/report:
+    post:
+      summary: レポート登録
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                report_user:
+                  type: string
+                reportee_user:
+                  type: string
+                reportee_post:
+                  type: string
+                report_type:
+                  type: string
+                detail:
+                  type: string
+      responses:
+        "200":
+          description: 投稿できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+  /api/like/{postId}:
+    post:
+      summary: いいね登録
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "201":
+          description: 登録できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+    delete:
+      summary: いいね削除
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 削除できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+  /api/admin/login:
+    post:
+      summary: 管理者ログイン
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email_address:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: ログインできた場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+  /api/admin/auth:
+    post:
+      summary: アドミン認証
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      responses:
+        "200":
+          description: 認証できた場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+  /api/images/{path}:
+    get:
+      summary: 画像取得
+      parameters:
+        - name: path
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 取得できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+  /api/users/check-id:
+    get:
+      summary: ユーザーIDの利用可否を確認
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 利用できた場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  available:
+                    type: boolean
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+  /api/auth:
+    post:
+      summary: トークン認証
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                path_type:
+                  type: string
+      responses:
+        "200":
+          description: 利用できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: トークンが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
