@@ -835,7 +835,7 @@ paths:
                   message:
                     type: string
 
-  /api/like:
+  /api/like/{postId}:
     post:
       summary: いいね登録
       parameters:
@@ -845,15 +845,11 @@ paths:
           schema:
             type: string
           description: "Bearer トークンを入れる（例: Bearer <JWT>）"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                post_id:
-                  type: string
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "201":
           description: 登録できた場合
@@ -900,15 +896,11 @@ paths:
           schema:
             type: string
           description: "Bearer トークンを入れる（例: Bearer <JWT>）"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                post_id:
-                  type: string
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: 削除できた場合
