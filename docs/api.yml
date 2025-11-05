@@ -328,8 +328,6 @@ paths:
                           type: string
                         icon_path:
                           type: string
-                        like_count:
-                          type: integer
                         content:
                           type: object
                           properties:
