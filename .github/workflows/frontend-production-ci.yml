@@ -1,8 +1,17 @@
 name: React Frontend Production CI
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
   pull_request:
-    branches: [ main ]
+    types:
+      - opened
+      - synchronize
+    branches:
+      - main
     paths:
       - 'frontend/**'
 
