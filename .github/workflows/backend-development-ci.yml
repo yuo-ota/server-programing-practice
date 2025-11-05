@@ -1,11 +1,14 @@
 name: Spring Boot Backend Development CI
 
 on:
-  push:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches-ignore:
+      - main
     paths:
       - 'backend/**'
-    branches-ignore:
-      - 'main'
 
 jobs:
   backend-build-and-test:

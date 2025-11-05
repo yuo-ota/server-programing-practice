@@ -1,8 +1,17 @@
 name: Spring Boot Backend Production CI
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
   pull_request:
-    branches: [ main ]
+    types:
+      - opened
+      - synchronize
+    branches:
+      - main
     paths:
       - 'backend/**'
 

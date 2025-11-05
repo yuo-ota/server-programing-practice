@@ -1,11 +1,14 @@
 name: React Frontend Development CI
 
 on:
-  push:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches-ignore:
+      - main
     paths:
       - 'frontend/**'
-    branches-ignore:
-      - 'main'
 
 jobs:
   frontend-check:
