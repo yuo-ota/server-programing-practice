@@ -1,7 +1,8 @@
 # ====================
 # Project-wide Common
 # ====================
-*.env
+*.env*
+!*.env*.sample
 
 # ====================
 # Frontend (React/Vite)
