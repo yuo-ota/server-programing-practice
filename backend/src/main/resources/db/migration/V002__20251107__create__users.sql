@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS users (
 
 -- インデックス
 CREATE INDEX idx_users_email_address ON users(email_address);
-CREATE INDEX idx_users_user_id ON users(user_id);
 
 -- 更新日時の自動更新トリガー
 CREATE OR REPLACE FUNCTION update_updated_at_column()
