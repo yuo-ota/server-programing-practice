@@ -11,7 +11,6 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- インデックス
-CREATE INDEX idx_users_email_address ON users(email_address);
 
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
