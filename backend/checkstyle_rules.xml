@@ -40,15 +40,6 @@
     
     <!-- 未使用インポート -->
     <module name="UnusedImports"/>
-    
-    <!-- インポート順序（緩い） -->
-    <module name="ImportOrder">
-      <property name="groups" value="/^java\./,javax,org,com"/>
-      <property name="ordered" value="true"/>
-      <property name="separated" value="true"/>
-      <property name="option" value="top"/>
-      <property name="sortStaticImportsAlphabetically" value="true"/>
-    </module>
 
     <!-- 命名規約（基本的なもののみ） -->
     <module name="TypeName"/>
