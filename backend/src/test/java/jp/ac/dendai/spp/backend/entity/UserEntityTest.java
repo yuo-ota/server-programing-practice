@@ -4,16 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringBootTest
 @Testcontainers
@@ -21,8 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserEntityTest {
 
   @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
-      "postgres:16");
+  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
 
   @BeforeAll
   static void beforeAll() {
