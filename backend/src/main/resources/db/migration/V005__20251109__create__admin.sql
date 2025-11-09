@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS admin_users (
     FOREIGN KEY (user_id)
     REFERENCES users(user_id)
     ON DELETE RESTRICT
-);  
+);
