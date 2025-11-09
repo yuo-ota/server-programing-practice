@@ -3,6 +3,7 @@ package jp.ac.dendai.spp.backend.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
+import jp.ac.dendai.spp.backend.repository.AdminRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,7 +18,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("test")
-public class AdminUserEntityTest {
+public class UserEntityTest {
 
   @ServiceConnection
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
@@ -33,27 +34,26 @@ public class AdminUserEntityTest {
   }
 
   @Autowired private UserRepository userRepository;
+  @Autowired private AdminRepository adminRepository;
 
   @Test
   void testPersistAndRetrieveUser() {
     // 保存前にUUIDはnull
-    User user = new User("test4@example.com", "password4");
-    assertThat(user.getUserId()).isNull();
-
-    // 永続化
+    User user = new User("test5@example.com", "password5");
     User savedUser = userRepository.save(user);
 
+    AdminUser adminUser = new AdminUser(savedUser.getUserId());
+    AdminUser savedAdminUser = adminRepository.save(adminUser);
+
     // UUIDが自動生成されていることを確認
-    assertThat(savedUser.getUserId()).isNotNull();
+    assertThat(savedAdminUser.getUserId()).isNotNull();
 
     // データベースから取得
-    Optional<User> retrievedUserOpt = userRepository.findById(savedUser.getUserId());
-    assertThat(retrievedUserOpt).isPresent();
+    Optional<AdminUser> retrievedAdminUserOpt = adminRepository.findById(savedAdminUser.getId());
+    assertThat(retrievedAdminUserOpt).isPresent();
 
-    User retrievedUser = retrievedUserOpt.get();
-    assertThat(retrievedUser.getEmailAddress()).isEqualTo("test4@example.com");
-    assertThat(retrievedUser.getPassword()).isEqualTo("password4");
-    assertThat(retrievedUser.getCreatedAt()).isNotNull();
-    assertThat(retrievedUser.getUpdatedAt()).isNotNull();
+    AdminUser retrievedAdminUser = retrievedAdminUserOpt.get();
+    assertThat(retrievedAdminUser.getUserId()).isEqualTo(user.getUserId());
+    assertThat(retrievedAdminUser.getCreatedAt()).isNotNull();
   }
 }
