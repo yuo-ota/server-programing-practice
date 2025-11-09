@@ -256,6 +256,51 @@ paths:
                     type: string
                   message:
                     type: string
+    delete:
+      summary: アカウント削除
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      responses:
+        "200":
+          description: 削除できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
 
   /api/user/{userId}:
     get:
@@ -337,57 +382,6 @@ paths:
                               type: string
                             alt:
                               type: string
-        "400":
-          description: パラメーターが不正の場合
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
-        "401":
-          description: ユーザーIDが不正の場合
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
-        "500":
-          description: SQLエラー等の全般的なエラーの発生
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
-
-    delete:
-      summary: アカウント削除
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          required: true
-          schema:
-            type: string
-          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
-      responses:
-        "200":
-          description: 削除できた場合
         "400":
           description: パラメーターが不正の場合
           content:
