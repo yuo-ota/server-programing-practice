@@ -11,7 +11,11 @@
   --color-placeholder: #b9b9b9;
   --color-error: #ff5858;
   --color-hover: #f0f0f0;
-  --my-alpha-value: 20;
+  --text-title: 20px;
+  --text-subtitle: 15px;
+  --text-paragraph: 14px;
+  --text-subparagraph: 12px;
+  --text-annotation: 10px;
 }
 
 :root {
