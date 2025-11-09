@@ -1,47 +1,54 @@
-import CloseIcon from '../assets/close.svg?react' ;
+import CloseIcon from '../assets/close.svg?react';
 
 interface BannerButtonProps {
-  displayStatus: "solid"| "cancel"| "attention";
+  displayStatus: 'solid' | 'cancel' | 'attention';
   label: string;
   onClick: () => void;
   className?: string;
 }
 
-const BannerButton = ({displayStatus ,label ,onClick, className = '' }: BannerButtonProps) => {
+const BannerButton = ({
+  displayStatus,
+  label,
+  onClick,
+  className = '',
+}: BannerButtonProps) => {
   return (
     <>
-      <button
-        onClick={onClick}
-        className={`${className} rounded-full flex justify-center items-center `}
-        style={{
-          backgroundColor:
-            displayStatus === "solid"
-            ? "var(--color-theme)"
-            : "var(--color-background)",
-          borderColor:
-            displayStatus === "attention"
-            ? "var(--color-error)"
-            : "var(--color-background)",
-          borderWidth:
-            displayStatus === "attention" ? 1 : 0,
-        }}
-        type='button'
-      >
-        {displayStatus === "solid"?(
-          <p className="text-center mx-2.5 my-1">
+      {displayStatus === 'solid' ? (
+        <button
+          onClick={onClick}
+          className={`${className} bg-theme transition-brightness flex min-w-24 items-center justify-center rounded-full shadow-md duration-150 hover:brightness-(--hover-nega-brightness) active:brightness-(--active-nega-brightness)`}
+          type="button"
+        >
+          <p className="mx-4 my-1 text-center">
             <span className="text-background">{label}</span>
           </p>
-        ) : displayStatus === "cancel"?(
-          <p className="mx-2.5 my-1 flex justify-center items-center gap-0.5">
-            <CloseIcon/>
-            <span className="text-foreground inline-block">{label}</span>
+        </button>
+      ) : displayStatus === 'cancel' ? (
+        <button
+          onClick={onClick}
+          className={`${className} bg-background transition-brightness flex min-w-24 items-center justify-center rounded-full duration-150 hover:brightness-(--hover-nega-brightness) active:brightness-(--active-nega-brightness)`}
+          type="button"
+        >
+          <p className="mx-4 my-1 flex items-center justify-center gap-1">
+            <CloseIcon className="inline-block" />
+            <span className="text-foreground relative -top-[1px]">{label}</span>
           </p>
-        ) : displayStatus === "attention"&&(
-          <p className="text-center mx-2.5 my-1">
-            <span className="text-error">{label}</span>
-          </p>
-        )}
-      </button>
+        </button>
+      ) : (
+        displayStatus === 'attention' && (
+          <button
+            onClick={onClick}
+            className={`${className} bg-background border-error hover:bg-error/(--hover-opacity) active:bg-error/(--active-opacity) flex min-w-24 items-center justify-center rounded-full border shadow-md transition-colors duration-150`}
+            type="button"
+          >
+            <p className="mx-4 my-1 text-center">
+              <span className="text-error">{label}</span>
+            </p>
+          </button>
+        )
+      )}
     </>
   );
 };
