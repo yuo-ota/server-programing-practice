@@ -36,8 +36,7 @@ const BannerButton = ({
             <span className="text-foreground relative -top-[1px]">{label}</span>
           </p>
         </button>
-      ) : (
-        displayStatus === 'attention' && (
+      ) : displayStatus === 'attention' && (
           <button
             onClick={onClick}
             className={`${className} bg-background border-error hover:bg-error/(--hover-opacity) active:bg-error/(--active-opacity) flex min-w-24 items-center justify-center rounded-full border shadow-md transition-colors duration-150`}
@@ -48,7 +47,7 @@ const BannerButton = ({
             </p>
           </button>
         )
-      )}
+      }
     </>
   );
 };
