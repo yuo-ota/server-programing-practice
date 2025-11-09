@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS users (
 	CONSTRAINT email_format CHECK (email_address ~* '^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$')
 );
 
--- インデックス
-
+-- トリガー関数の作成
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
