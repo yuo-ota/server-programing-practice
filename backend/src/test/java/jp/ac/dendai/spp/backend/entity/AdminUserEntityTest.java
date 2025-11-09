@@ -53,7 +53,7 @@ public class AdminUserEntityTest {
     assertThat(retrievedAdminUserOpt).isPresent();
 
     AdminUser retrievedAdminUser = retrievedAdminUserOpt.get();
-    assertThat(retrievedAdminUser.getUserId()).isEqualTo(user.getUserId());
+    assertThat(retrievedAdminUser.getUserId()).isEqualTo(savedUser.getUserId());
     assertThat(retrievedAdminUser.getCreatedAt()).isNotNull();
   }
 }
