@@ -12,13 +12,13 @@ const LikeButton = ({ isLiked, onClick, className = '' }: LikeButtonProps) => {
     <>
       <button
         onClick={onClick}
-        className={`${className} hover:bg-theme-color/(--hover-opacity) active:bg-theme-color/(--active-opacity) flex items-center justify-center rounded-full transition-colors duration-150`}
+        className={`${className} hover:bg-theme/(--hover-opacity) active:bg-theme/(--active-opacity) flex items-center justify-center rounded-full transition-colors duration-150`}
         type="button"
       >
         {isLiked ? (
-          <ActiveHeartIcon className="fill-theme-color aspect-square w-3/4" />
+          <ActiveHeartIcon className="fill-theme aspect-square w-3/4" />
         ) : (
-          <InactiveHeartIcon className="fill-theme-color aspect-square w-3/4" />
+          <InactiveHeartIcon className="fill-theme aspect-square w-3/4" />
         )}
       </button>
     </>

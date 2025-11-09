@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-theme-color: #fdc022;
+  --color-theme: #fdc022;
   --color-background: #ffffff;
   --color-foreground: #000000;
   --color-inactive: #4d4d4d;
@@ -15,6 +15,11 @@
 }
 
 :root {
-  --hover-opacity: 15%;
-  --active-opacity: 30%;
+  --hover-brightness: 105%;
+  --hover-nega-brightness: 95%;
+  --active-brightness: 110%;
+  --active-nega-brightness: 90%;
+  --hover-opacity: 5%;
+  --active-opacity: 20%;
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
 }
