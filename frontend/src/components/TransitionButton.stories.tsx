@@ -14,8 +14,4 @@ export default {
 } satisfies Meta<T>;
 
 export const Default: StoryObj<T> = {
-  args: {
-    displayStatus: 'attention',
-    className: '',
-  },
 };
