@@ -715,6 +715,39 @@ paths:
                     type: string
 
   /api/post/{postId}:
+    get:
+      summary: 投稿詳細取得
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      responses:
+        "200":
+          description: 取得できた場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+                  images:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        alt:
+                          type: string
     delete:
       summary: 投稿削除
       parameters:
@@ -784,16 +817,31 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    reporter:
-                      type: string
-                    summary:
-                      type: string
-                    details:
-                      type: string
+                  oneOf:
+                    - type: object
+                      properties:
+                        id:
+                          type: string
+                        reporter:
+                          type: string
+                        summary:
+                          type: string
+                        details:
+                          type: string
+                        reported_user:
+                          type: string
+                    - type: object
+                      properties:
+                        id:
+                          type: string
+                        reporter:
+                          type: string
+                        summary:
+                          type: string
+                        details:
+                          type: string
+                        reported_post:
+                          type: string
         "401":
           description: ユーザーIDが不正の場合
           content:
@@ -879,7 +927,7 @@ paths:
                   message:
                     type: string
 
-  /api/penalties:
+  /api/penalty:
     get:
       summary: ペナルティ一覧取得
       parameters:
@@ -900,8 +948,6 @@ paths:
                   type: object
                   properties:
                     category:
-                      type: string
-                    detail:
                       type: string
                     duration:
                       type: string
