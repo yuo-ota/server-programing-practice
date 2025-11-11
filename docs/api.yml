@@ -216,13 +216,58 @@ paths:
                   items:
                     type: object
                     properties:
-                      platform_id:
-                        type: integer
+                      name:
+                        type: string
                       identifier:
                         type: string
       responses:
         "201":
           description: 登録できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+    delete:
+      summary: アカウント削除
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      responses:
+        "200":
+          description: 削除できた場合
         "400":
           description: パラメーターが不正の場合
           content:
@@ -371,57 +416,6 @@ paths:
                   message:
                     type: string
 
-    delete:
-      summary: アカウント削除
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          required: true
-          schema:
-            type: string
-          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
-      responses:
-        "200":
-          description: 削除できた場合
-        "400":
-          description: パラメーターが不正の場合
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
-        "401":
-          description: ユーザーIDが不正の場合
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
-        "500":
-          description: SQLエラー等の全般的なエラーの発生
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
-
     patch:
       summary: アカウント編集, ユーザー設定
       parameters:
@@ -439,7 +433,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
@@ -449,8 +443,10 @@ paths:
                   type: string
                 icon:
                   type: string
+                  format: binary
                 header:
                   type: string
+                  format: binary
                 social_accounts:
                   type: array
                   items:
@@ -663,7 +659,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data::
             schema:
               type: object
               properties:
@@ -678,6 +674,7 @@ paths:
                       properties:
                         image:
                           type: string
+                          format: binary
                         alt:
                           type: string
       responses:
@@ -718,6 +715,39 @@ paths:
                     type: string
 
   /api/post/{postId}:
+    get:
+      summary: 投稿詳細取得
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      responses:
+        "200":
+          description: 取得できた場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+                  images:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        alt:
+                          type: string
     delete:
       summary: 投稿削除
       parameters:
@@ -770,6 +800,70 @@ paths:
                     type: string
 
   /api/report:
+    get:
+      summary: レポート一覧取得
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      responses:
+        "200":
+          description: 取得できた場合
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - type: object
+                      properties:
+                        id:
+                          type: string
+                        reporter:
+                          type: string
+                        summary:
+                          type: string
+                        details:
+                          type: string
+                        reported_user:
+                          type: string
+                    - type: object
+                      properties:
+                        id:
+                          type: string
+                        reporter:
+                          type: string
+                        summary:
+                          type: string
+                        details:
+                          type: string
+                        reported_post:
+                          type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
     post:
       summary: レポート登録
       parameters:
@@ -812,6 +906,106 @@ paths:
                     type: string
         "401":
           description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+  /api/penalty:
+    get:
+      summary: ペナルティ一覧取得
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      responses:
+        "200":
+          description: 取得できた場合
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    category:
+                      type: string
+                    duration:
+                      type: string
+                    type:
+                      type: string
+                    end_date:
+                      type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+    post:
+      summary: ペナルティ登録
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: string
+                detail:
+                  type: string
+                duration:
+                  type: string
+                type:
+                  type: string
+      responses:
+        "201":
+          description: 登録できた場合
+        "400":
+          description: パラメーターが不正の場合
           content:
             application/json:
               schema:
