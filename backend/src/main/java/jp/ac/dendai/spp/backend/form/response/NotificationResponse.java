@@ -2,7 +2,6 @@ package jp.ac.dendai.spp.backend.form.response;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
-
 import jp.ac.dendai.spp.backend.dto.NotificateContent;
 
 public class NotificationResponse {

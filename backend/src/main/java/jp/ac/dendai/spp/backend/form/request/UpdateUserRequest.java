@@ -2,10 +2,8 @@ package jp.ac.dendai.spp.backend.form.request;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import jp.ac.dendai.spp.backend.dto.SocialAccount;
+import org.springframework.web.multipart.MultipartFile;
 
 public class UpdateUserRequest {
   private String userId;
