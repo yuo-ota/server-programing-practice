@@ -1,26 +1,27 @@
 package jp.ac.dendai.spp.backend.form.request;
 
-public class CreateReportRequest {
-  private String reportUser;
+import java.util.UUID;
 
-  private String reporteePost;
+public class CreateReportRequest {
+  private String reporteeUser;
+  private UUID reporteePost;
   private String reportType;
   private String detail;
 
   // Getters and Setters
-  public String getReportUser() {
-    return reportUser;
+  public String getReporteeUser() {
+    return reporteeUser;
   }
 
-  public void setReportUser(String reportUser) {
-    this.reportUser = reportUser;
+  public void setReporteeUser(String reporteeUser) {
+    this.reporteeUser = reporteeUser;
   }
 
-  public String getReporteePost() {
+  public UUID getReporteePost() {
     return reporteePost;
   }
 
-  public void setReporteePost(String reporteePost) {
+  public void setReporteePost(UUID reporteePost) {
     this.reporteePost = reporteePost;
   }
 
