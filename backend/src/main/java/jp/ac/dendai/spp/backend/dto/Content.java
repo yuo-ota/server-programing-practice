@@ -5,6 +5,15 @@ public class Content {
   private String path;
   private String alt;
 
+  public Content() {
+  }
+
+  public Content(String description, String path, String alt) {
+    this.description = description;
+    this.path = path;
+    this.alt = alt;
+  }
+
   // Getters and Setters
   public String getDescription() {
     return description;

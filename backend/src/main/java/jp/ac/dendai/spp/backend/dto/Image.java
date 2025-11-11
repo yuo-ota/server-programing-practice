@@ -4,6 +4,14 @@ public class Image {
   private String path;
   private String alt;
 
+  public Image() {
+  }
+
+  public Image(String path, String alt) {
+    this.path = path;
+    this.alt = alt;
+  }
+
   // Getters and Setters
   public String getPath() {
     return path;
