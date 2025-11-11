@@ -6,8 +6,7 @@ public class LikeNotificateContent extends NotificateContent {
   private UUID likedPostId;
   private String likedByUserId;
 
-  public LikeNotificateContent() {
-  }
+  public LikeNotificateContent() {}
 
   public LikeNotificateContent(UUID likedPostId, String likedByUserId) {
     this.likedPostId = likedPostId;

@@ -8,8 +8,7 @@ public class Report {
   private String summary;
   private String details;
 
-  public Report() {
-  }
+  public Report() {}
 
   public Report(UUID id, String reporter, String summary, String details) {
     this.id = id;

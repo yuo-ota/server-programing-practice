@@ -9,10 +9,10 @@ public class PenaltyNotificateContent extends NotificateContent {
   private String type;
   private LocalDate endDate;
 
-  public PenaltyNotificateContent() {
-  }
+  public PenaltyNotificateContent() {}
 
-  public PenaltyNotificateContent(String category, String detail, String duration, String type, LocalDate endDate) {
+  public PenaltyNotificateContent(
+      String category, String detail, String duration, String type, LocalDate endDate) {
     this.category = category;
     this.detail = detail;
     this.duration = duration;

@@ -7,8 +7,7 @@ public class BasePost {
   private String iconPath;
   private Content content;
 
-  public BasePost() {
-  }
+  public BasePost() {}
 
   public BasePost(UUID postId, String iconPath, Content content) {
     this.postId = postId;

@@ -3,8 +3,7 @@ package jp.ac.dendai.spp.backend.dto;
 public class OwnPost extends BasePost {
   private int likeCount;
 
-  public OwnPost() {
-  }
+  public OwnPost() {}
 
   public OwnPost(java.util.UUID postId, String iconPath, Content content, int likeCount) {
     super(postId, iconPath, content);

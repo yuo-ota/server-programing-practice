@@ -5,8 +5,7 @@ public class Content {
   private String path;
   private String alt;
 
-  public Content() {
-  }
+  public Content() {}
 
   public Content(String description, String path, String alt) {
     this.description = description;
