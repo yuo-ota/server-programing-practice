@@ -3,6 +3,7 @@ package jp.ac.dendai.spp.backend.form.response;
 import java.util.List;
 import jp.ac.dendai.spp.backend.dto.LikedPost;
 import jp.ac.dendai.spp.backend.dto.OwnPost;
+import jp.ac.dendai.spp.backend.dto.SocialAccount;
 
 public class UserDataResponse {
   private String name;
@@ -10,6 +11,7 @@ public class UserDataResponse {
   private String headerPath;
   private List<OwnPost> posts;
   private List<LikedPost> likedPosts;
+  private List<SocialAccount> socialAccounts;
 
   // Getters and Setters
   public String getName() {
@@ -50,5 +52,13 @@ public class UserDataResponse {
 
   public void setLikedPosts(List<LikedPost> likedPosts) {
     this.likedPosts = likedPosts;
+  }
+
+  public List<SocialAccount> getSocialAccounts() {
+    return socialAccounts;
+  }
+
+  public void setSocialAccounts(List<SocialAccount> socialAccounts) {
+    this.socialAccounts = socialAccounts;
   }
 }

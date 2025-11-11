@@ -1,6 +1,8 @@
 package jp.ac.dendai.spp.backend.form.request;
 
 import java.time.LocalDate;
+import java.util.List;
+import jp.ac.dendai.spp.backend.dto.SocialAccount;
 
 public class CreateUserRequest {
   private String token;
@@ -8,6 +10,7 @@ public class CreateUserRequest {
   private String userId;
   private LocalDate birthday;
   private boolean showAdultContents;
+  private List<SocialAccount> socialAccounts;
 
   // Getters and Setters
   public String getToken() {
@@ -48,5 +51,13 @@ public class CreateUserRequest {
 
   public void setShowAdultContents(boolean showAdultContents) {
     this.showAdultContents = showAdultContents;
+  }
+
+  public List<SocialAccount> getSocialAccounts() {
+    return socialAccounts;
+  }
+
+  public void setSocialAccounts(List<SocialAccount> socialAccounts) {
+    this.socialAccounts = socialAccounts;
   }
 }
