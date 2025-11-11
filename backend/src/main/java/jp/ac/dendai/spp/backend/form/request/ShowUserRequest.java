@@ -1,6 +1,6 @@
 package jp.ac.dendai.spp.backend.form.request;
 
-public class ShowUserIdRequest {
+public class ShowUserRequest {
   private String userId;
 
   // Getters and Setters

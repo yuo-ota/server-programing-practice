@@ -2,7 +2,7 @@ package jp.ac.dendai.spp.backend.form.request;
 
 public class CreateReportRequest {
   private String reportUser;
-  private String reporteeUser;
+
   private String reporteePost;
   private String reportType;
   private String detail;
@@ -14,14 +14,6 @@ public class CreateReportRequest {
 
   public void setReportUser(String reportUser) {
     this.reportUser = reportUser;
-  }
-
-  public String getReporteeUser() {
-    return reporteeUser;
-  }
-
-  public void setReporteeUser(String reporteeUser) {
-    this.reporteeUser = reporteeUser;
   }
 
   public String getReporteePost() {

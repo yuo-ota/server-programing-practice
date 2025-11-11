@@ -1,10 +1,12 @@
 package jp.ac.dendai.spp.backend.form.request;
 
+import java.time.LocalDate;
+
 public class CreateUserRequest {
   private String token;
   private String name;
   private String userId;
-  private String birthday;
+  private LocalDate birthday;
   private boolean showAdultContents;
 
   // Getters and Setters
@@ -32,11 +34,11 @@ public class CreateUserRequest {
     this.userId = userId;
   }
 
-  public String getBirthday() {
+  public LocalDate getBirthday() {
     return birthday;
   }
 
-  public void setBirthday(String birthday) {
+  public void setBirthday(LocalDate birthday) {
     this.birthday = birthday;
   }
 

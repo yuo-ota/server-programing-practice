@@ -1,19 +1,22 @@
 package jp.ac.dendai.spp.backend.form.response;
 
+import java.time.ZonedDateTime;
+import java.util.UUID;
+
 import jp.ac.dendai.spp.backend.dto.NotificateContent;
 
 public class NotificationResponse {
-  private String notificateId;
+  private UUID notificateId;
   private String notificateType;
-  private String date;
+  private ZonedDateTime date;
   private NotificateContent content;
 
   // Getters and Setters
-  public String getNotificateId() {
+  public UUID getNotificateId() {
     return notificateId;
   }
 
-  public void setNotificateId(String notificateId) {
+  public void setNotificateId(UUID notificateId) {
     this.notificateId = notificateId;
   }
 
@@ -25,11 +28,11 @@ public class NotificationResponse {
     this.notificateType = notificateType;
   }
 
-  public String getDate() {
+  public ZonedDateTime getDate() {
     return date;
   }
 
-  public void setDate(String date) {
+  public void setDate(ZonedDateTime date) {
     this.date = date;
   }
 

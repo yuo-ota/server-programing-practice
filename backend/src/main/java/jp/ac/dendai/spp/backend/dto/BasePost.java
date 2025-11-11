@@ -1,16 +1,18 @@
 package jp.ac.dendai.spp.backend.dto;
 
+import java.util.UUID;
+
 public class BasePost {
-  private String postId;
+  private UUID postId;
   private String iconPath;
   private Content content;
 
   // Getters and Setters
-  public String getPostId() {
+  public UUID getPostId() {
     return postId;
   }
 
-  public void setPostId(String postId) {
+  public void setPostId(UUID postId) {
     this.postId = postId;
   }
 

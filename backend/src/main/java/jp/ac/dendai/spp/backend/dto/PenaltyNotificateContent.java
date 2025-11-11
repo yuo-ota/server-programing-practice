@@ -1,11 +1,13 @@
 package jp.ac.dendai.spp.backend.dto;
 
+import java.time.LocalDate;
+
 public class PenaltyNotificateContent extends NotificateContent {
   private String category;
   private String detail;
   private String duration;
   private String type;
-  private String endDate;
+  private LocalDate endDate;
 
   // Getters and Setters
   public String getCategory() {
@@ -40,11 +42,11 @@ public class PenaltyNotificateContent extends NotificateContent {
     this.type = type;
   }
 
-  public String getEndDate() {
+  public LocalDate getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(String endDate) {
+  public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }
 }

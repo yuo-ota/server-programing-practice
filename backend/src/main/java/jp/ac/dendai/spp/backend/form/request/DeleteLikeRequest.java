@@ -1,14 +1,16 @@
 package jp.ac.dendai.spp.backend.form.request;
 
+import java.util.UUID;
+
 public class DeleteLikeRequest {
-  private String postId;
+  private UUID postId;
 
   // Getters and Setters
-  public String getPostId() {
+  public UUID getPostId() {
     return postId;
   }
 
-  public void setPostId(String postId) {
+  public void setPostId(UUID postId) {
     this.postId = postId;
   }
 }
