@@ -11,14 +11,12 @@ public class ReportCategoriesConstant {
           3, "暴力的な発言",
           4, "プライバシーの侵害",
           5, "スパムやなりすまし",
-          6, "その他"
-      );
+          6, "その他");
 
   public static final Map<Integer, String> REPORT_USER_CATEGORIES_MAP =
       Map.of(
           0, "不適切な名前やプロフィール",
           1, "スパムやなりすまし",
           2, "犯罪行為の助長",
-          3, "その他"
-      );
+          3, "その他");
 }
