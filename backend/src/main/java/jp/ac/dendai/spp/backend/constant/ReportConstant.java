@@ -2,7 +2,7 @@ package jp.ac.dendai.spp.backend.constant;
 
 import java.util.Map;
 
-public class ReportCategoriesConstant {
+public class ReportConstant {
   public static final Map<Integer, String> REPORT_POST_CATEGORIES_MAP =
       Map.of(
           0, "不適切な公開制限",
