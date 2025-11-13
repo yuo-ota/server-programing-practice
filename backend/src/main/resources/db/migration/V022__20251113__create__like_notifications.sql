@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS like_notifications (
   CONSTRAINT fk_like_notifications_like_id
     FOREIGN KEY (like_id)
     REFERENCES likes(id)
-    ON DELETE RESTRICT
+    ON DELETE CASCADE
 );
 
 -- インデックスの作成

@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS admin_users (
 	CONSTRAINT fk_admin_users_user_id
 		FOREIGN KEY (user_id)
 		REFERENCES users(user_id)
-		ON DELETE RESTRICT
+		ON DELETE CASCADE
 );

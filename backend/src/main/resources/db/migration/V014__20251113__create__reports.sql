@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS reports (
   CONSTRAINT fk_reports_reportee
     FOREIGN KEY (reportee)
     REFERENCES users(user_id)
-    ON DELETE RESTRICT,
+    ON DELETE CASCADE,
 
   CONSTRAINT fk_reports_reported_post
     FOREIGN KEY (reported_post_id)

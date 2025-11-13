@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS penalties (
   CONSTRAINT fk_penalties_penalized_user_id
     FOREIGN KEY (penalized_user_id)
     REFERENCES users(user_id)
-    ON DELETE RESTRICT,
+    ON DELETE CASCADE,
 
   CONSTRAINT fk_penalties_admin_user_id
     FOREIGN KEY (admin_user_id)

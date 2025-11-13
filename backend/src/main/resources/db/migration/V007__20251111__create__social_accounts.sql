@@ -9,5 +9,5 @@ CREATE TABLE IF NOT EXISTS social_accounts (
 	CONSTRAINT fk_social_accounts_user_id
 		FOREIGN KEY (user_id)
 		REFERENCES users(user_id)
-		ON DELETE RESTRICT
+		ON DELETE CASCADE
 );
