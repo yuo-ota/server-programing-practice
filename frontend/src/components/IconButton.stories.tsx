@@ -12,5 +12,4 @@ export default {
   },
 } satisfies Meta<T>;
 
-export const Default: StoryObj<T> = {
-};
+export const Default: StoryObj<T> = {};
