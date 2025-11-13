@@ -9,7 +9,7 @@ export default {
     label: 'テキスト',
     error: 'テキスト',
     placeholder: 'テキスト',
-    className: 'w-64',
+    className: '',
   },
 } satisfies Meta<T>;
 
