@@ -2,7 +2,7 @@ package jp.ac.dendai.spp.backend.constant;
 
 import java.util.Map;
 
-public class PlatformCostant {
+public class PlatformConstant {
   public static final Map<Integer, String> PLATFORM_MAP =
       Map.of(
           0, "X",
