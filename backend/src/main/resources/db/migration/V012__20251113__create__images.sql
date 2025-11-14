@@ -7,6 +7,9 @@ CREATE TABLE IF NOT EXISTS images (
   alt TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
+  -- ユニーク制約
+  CONSTRAINT unique_images_post_index UNIQUE (post_id, index),
+
   -- 外部キー制約
 	CONSTRAINT fk_images_post_id
 		FOREIGN KEY (post_id)
