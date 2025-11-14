@@ -7,6 +7,10 @@ CREATE TABLE IF NOT EXISTS elected_posts (
   delivered_at TIMESTAMP WITH TIME ZONE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
+  -- ユニーク制約
+  CONSTRAINT unique_elected_posts UNIQUE (user_id, post_id, delivered_at),
+  CONSTRAINT unique_elected_posts_index UNIQUE (user_id, index, delivered_at),
+
   -- 外部キー制約
   CONSTRAINT fk_elected_posts_user_id
     FOREIGN KEY (user_id)
