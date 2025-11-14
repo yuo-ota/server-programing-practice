@@ -26,7 +26,7 @@ LIMIT 5;
 INSERT INTO penalty_notifications (notification_id, penalty_id)
 SELECT
   notifications.id,
-  penalties.id
+  p.id
 FROM notifications
 JOIN LATERAL (
   SELECT id FROM penalties
