@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS like_notifications (
   -- 属性
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   notification_id UUID NOT NULL,
-  like_id UUID NOT NULL,
+  like_id UUID NOT NULL UNIQUE,
 
   -- 外部キー制約
   CONSTRAINT fk_like_notifications_notification_id
