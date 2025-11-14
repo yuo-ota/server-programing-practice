@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS images (
 	CONSTRAINT fk_images_post_id
 		FOREIGN KEY (post_id)
 		REFERENCES posts(id)
-		ON DELETE RESTRICT
+		ON DELETE CASCADE
 );
 
 -- インデックスの作成
