@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS reports (
   -- 属性
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  reporter UUID NOT NULL,
+  reporter UUID,
   is_report_user BOOLEAN NOT NULL,
   reportee UUID,
   reported_post_id UUID,
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS reports (
   CONSTRAINT fk_reports_reporter
     FOREIGN KEY (reporter)
     REFERENCES users(user_id)
-    ON DELETE RESTRICT,
+    ON DELETE SET NULL,
 
   CONSTRAINT fk_reports_reportee
     FOREIGN KEY (reportee)
