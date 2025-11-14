@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS penalties (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   penalty_status_id INT NOT NULL,
   penalized_user_id UUID NOT NULL,
-  admin_user_id UUID NOT NULL,
+  admin_user_id UUID,
   duration_value INT,
   duration_unit TEXT NOT NULL,
   reason TEXT NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS penalties (
   CONSTRAINT fk_penalties_admin_user_id
     FOREIGN KEY (admin_user_id)
     REFERENCES admin_users(user_id)
-    ON DELETE RESTRICT
+    ON DELETE SET NULL
 );
 
 -- インデックスの作成
