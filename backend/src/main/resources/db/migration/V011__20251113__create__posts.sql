@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS posts (
 	-- 属性
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  creator_id UUID NOT NULL,
+  creator_id UUID,
   description TEXT,
   is_sensitive BOOLEAN NOT NULL DEFAULT FALSE,
   is_published BOOLEAN NOT NULL DEFAULT FALSE,
@@ -12,5 +12,5 @@ CREATE TABLE IF NOT EXISTS posts (
 	CONSTRAINT fk_posts_creator_id
 		FOREIGN KEY (creator_id)
 		REFERENCES users(user_id)
-		ON DELETE RESTRICT
+		ON DELETE SET NULL
 );
