@@ -11,3 +11,6 @@ CREATE TABLE IF NOT EXISTS social_accounts (
 		REFERENCES users(user_id)
 		ON DELETE CASCADE
 );
+
+-- インデックスの作成
+CREATE INDEX idx_social_accounts_user_id ON social_accounts(user_id);
