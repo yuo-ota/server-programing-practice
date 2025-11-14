@@ -7,8 +7,9 @@ export default {
   component: TextInput,
   args: {
     label: 'テキスト',
-    error: 'テキスト',
     placeholder: 'テキスト',
+    error: 'テキスト',
+    id: 'テキスト',
     className: '',
   },
 } satisfies Meta<T>;
