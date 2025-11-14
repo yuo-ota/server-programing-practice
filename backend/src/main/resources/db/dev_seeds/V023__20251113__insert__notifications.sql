@@ -10,9 +10,10 @@ SELECT
   notifications.id AS notification_id,
   likes.id AS like_id
 FROM notifications
-CROSS JOIN likes
+JOIN likes ON TRUE
+JOIN posts ON likes.post_id = posts.id
 WHERE notifications.category_status_id = 0
-  AND notifications.user_id = likes.user_id
+  AND notifications.user_id = posts.creator_id
 LIMIT 5;
 
 INSERT INTO notifications (category_status_id, user_id)
