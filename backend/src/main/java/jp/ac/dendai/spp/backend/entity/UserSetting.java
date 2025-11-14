@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -61,7 +60,8 @@ public class UserSetting {
   // コンストラクタ
   public UserSetting() {}
 
-  public UserSetting(UUID userId, String name, String displayId, LocalDate birthday, boolean showAdultContent) {
+  public UserSetting(
+      UUID userId, String name, String displayId, LocalDate birthday, boolean showAdultContent) {
     this.userId = userId;
     this.name = name;
     this.displayId = displayId;

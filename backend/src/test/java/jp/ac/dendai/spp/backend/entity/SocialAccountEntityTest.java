@@ -3,7 +3,6 @@ package jp.ac.dendai.spp.backend.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
-
 import jp.ac.dendai.spp.backend.repository.SocialAccountRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
 import org.junit.jupiter.api.AfterAll;
@@ -50,7 +49,8 @@ public class SocialAccountEntityTest {
     assertThat(savedSocialAccount.getUserId()).isNotNull();
 
     // データベースから取得
-    Optional<SocialAccount> retrievedSocialAccountOpt = socialAccountRepository.findById(savedSocialAccount.getId());
+    Optional<SocialAccount> retrievedSocialAccountOpt =
+        socialAccountRepository.findById(savedSocialAccount.getId());
     assertThat(retrievedSocialAccountOpt).isPresent();
 
     SocialAccount retrievedSocialAccount = retrievedSocialAccountOpt.get();

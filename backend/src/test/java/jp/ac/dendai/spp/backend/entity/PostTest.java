@@ -2,10 +2,9 @@ package jp.ac.dendai.spp.backend.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDate;
 import java.util.Optional;
+import jp.ac.dendai.spp.backend.repository.PostRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
-import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("test")
-public class UserSettingEntityTest {
+public class PostTest {
 
   @ServiceConnection
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
@@ -35,7 +34,7 @@ public class UserSettingEntityTest {
   }
 
   @Autowired private UserRepository userRepository;
-  @Autowired private UserSettingRepository userSettingRepository;
+  @Autowired private PostRepository postRepository;
 
   @Test
   void testPersistAndRetrieveUser() {
@@ -43,20 +42,17 @@ public class UserSettingEntityTest {
     User user = new User("test5@example.com", "password5");
     User savedUser = userRepository.save(user);
 
-    UserSetting userSetting =
-        new UserSetting(
-            savedUser.getUserId(), "Test User", "testuser", LocalDate.parse("2000-01-01"), false);
-    UserSetting savedUserSetting = userSettingRepository.save(userSetting);
+    Post post = new Post(savedUser.getUserId(), "Test Post", false, true);
+    Post savedPost = postRepository.save(post);
 
     // UUIDが自動生成されていることを確認
-    assertThat(savedUserSetting.getUserId()).isNotNull();
+    assertThat(savedPost.getId()).isNotNull();
     // データベースから取得
-    Optional<UserSetting> retrievedUserSettingOpt =
-        userSettingRepository.findById(savedUserSetting.getId());
-    assertThat(retrievedUserSettingOpt).isPresent();
+    Optional<Post> retrievedPostOpt = postRepository.findById(savedPost.getId());
+    assertThat(retrievedPostOpt).isPresent();
 
-    UserSetting retrievedUserSetting = retrievedUserSettingOpt.get();
-    assertThat(retrievedUserSetting.getUserId()).isEqualTo(savedUser.getUserId());
-    assertThat(retrievedUserSetting.getCreatedAt()).isNotNull();
+    Post retrievedPost = retrievedPostOpt.get();
+    assertThat(retrievedPost.getCreatorId()).isEqualTo(savedUser.getUserId());
+    assertThat(retrievedPost.getCreatedAt()).isNotNull();
   }
 }
