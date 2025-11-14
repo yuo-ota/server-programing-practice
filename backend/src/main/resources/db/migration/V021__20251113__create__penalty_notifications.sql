@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS penalty_notifications (
   -- 属性
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  notification_id UUID NOT NULL,
-  penalty_id UUID NOT NULL,
+  notification_id UUID NOT NULL UNIQUE,
+  penalty_id UUID NOT NULL UNIQUE,
 
   -- 外部キー制約
   CONSTRAINT fk_penalty_notifications_notification_id
