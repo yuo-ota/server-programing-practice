@@ -9,6 +9,9 @@ CREATE TABLE IF NOT EXISTS penalties (
   reason TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
+	-- バリデーション制約
+	CONSTRAINT duration_unit_format CHECK (duration_unit ~* '^(days|weeks|months|years|unlimited)$')
+
   -- 外部キー制約
   CONSTRAINT fk_penalties_penalized_user_id
     FOREIGN KEY (penalized_user_id)
