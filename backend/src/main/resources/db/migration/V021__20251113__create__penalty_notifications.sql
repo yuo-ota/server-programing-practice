@@ -8,12 +8,12 @@ CREATE TABLE IF NOT EXISTS penalty_notifications (
   CONSTRAINT fk_penalty_notifications_notification_id
     FOREIGN KEY (notification_id)
     REFERENCES notifications(id)
-    ON DELETE RESTRICT,
+    ON DELETE CASCADE,
 
   CONSTRAINT fk_penalty_notifications_penalty_id
     FOREIGN KEY (penalty_id)
     REFERENCES penalties(id)
-    ON DELETE RESTRICT
+    ON DELETE CASCADE
 );
 
 -- インデックスの作成
