@@ -17,7 +17,7 @@ SELECT
   FALSE AS is_report_user,
   NULL AS reportee,
   posts.id AS reported_post_id,
-  FLOOR(RANDOM() * 7) AS category_status_id,
+  FLOOR(RANDOM() * 4) AS category_status_id,
   CONCAT('Report details for post ', posts.id) AS details
 FROM users
 CROSS JOIN posts
