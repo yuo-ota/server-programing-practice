@@ -25,10 +25,14 @@ LIMIT 5;
 
 INSERT INTO penalty_notifications (notification_id, penalty_id)
 SELECT
-  notifications.id AS notification_id,
-  penalties.id AS penalty_id
+  notifications.id,
+  penalties.id
 FROM notifications
-CROSS JOIN penalties
+JOIN LATERAL (
+  SELECT id FROM penalties
+  WHERE penalties.penalized_user_id = notifications.user_id
+  ORDER BY penalties.created_at
+  LIMIT 1
+) p ON true
 WHERE notifications.category_status_id = 1
-  AND notifications.user_id = penalties.penalized_user_id
 LIMIT 5;
