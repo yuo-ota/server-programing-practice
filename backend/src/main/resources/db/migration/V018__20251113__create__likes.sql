@@ -5,6 +5,9 @@ CREATE TABLE IF NOT EXISTS likes (
   post_id UUID,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
+  -- ユニーク制約
+  CONSTRAINT unique_likes_user_post UNIQUE (user_id, post_id),
+
   -- 外部キー制約
   CONSTRAINT fk_likes_user_id
     FOREIGN KEY (user_id)
