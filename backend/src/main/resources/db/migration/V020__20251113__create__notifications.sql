@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS notifications (
   CONSTRAINT fk_notifications_user_id
     FOREIGN KEY (user_id)
     REFERENCES users(user_id)
-    ON DELETE RESTRICT
+    ON DELETE CASCADE
 );
 
 -- インデックスの作成
