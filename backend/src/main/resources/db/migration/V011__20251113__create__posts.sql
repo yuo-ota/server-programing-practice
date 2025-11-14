@@ -14,3 +14,6 @@ CREATE TABLE IF NOT EXISTS posts (
 		REFERENCES users(user_id)
 		ON DELETE SET NULL
 );
+
+-- インデックスの作成
+CREATE INDEX idx_posts_creator_id ON posts(creator_id);
