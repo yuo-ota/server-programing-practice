@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import SettingIcon from '../assets/home.svg?react';
 import IconButton from './IconButton';
 
 type T = typeof IconButton;
@@ -6,9 +7,9 @@ type T = typeof IconButton;
 export default {
   component: IconButton,
   args: {
-    displayStatus: 'home',
     onClick: () => {},
-    className: '',
+    ButtonIcon: <SettingIcon className={`h-10 w-10`} />,
+    className: 'w-12 h-12',
   },
 } satisfies Meta<T>;
 
