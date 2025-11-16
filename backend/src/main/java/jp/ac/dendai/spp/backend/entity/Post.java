@@ -87,7 +87,7 @@ public class Post {
         + ", creatorId="
         + creatorId
         + ", description='"
-        + description
+        + description + '\''
         + ", isSensitive="
         + isSensitive
         + ", isPublished="
