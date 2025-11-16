@@ -83,10 +83,8 @@ public class Image {
         + index
         + ", path='"
         + path
-        + '\''
         + ", alt='"
         + alt
-        + '\''
         + ", createdAt="
         + createdAt
         + '}';

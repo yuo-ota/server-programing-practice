@@ -102,15 +102,12 @@ public class Report {
         + isReportUser
         + ", reportee="
         + reportee
-        + '\''
         + ", reportedPostId="
         + reportedPostId
         + ", categoryStatusId="
         + categoryStatusId
-        + '\''
         + ", details="
         + details
-        + '\''
         + ", createdAt="
         + createdAt
         + '}';

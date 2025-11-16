@@ -55,7 +55,6 @@ public class AdminUser {
         + id
         + ", userId='"
         + userId
-        + '\''
         + ", createdAt="
         + createdAt
         + '}';

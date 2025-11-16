@@ -63,7 +63,6 @@ public class SocialAccount {
         + id
         + ", userId="
         + userId
-        + '\''
         + ", platformId="
         + platformId
         + ", createdAt="

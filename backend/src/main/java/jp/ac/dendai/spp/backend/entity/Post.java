@@ -88,12 +88,10 @@ public class Post {
         + creatorId
         + ", description='"
         + description
-        + '\''
         + ", isSensitive="
         + isSensitive
         + ", isPublished="
         + isPublished
-        + '\''
         + ", createdAt="
         + createdAt
         + ", deletedAt="

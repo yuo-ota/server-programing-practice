@@ -153,10 +153,8 @@ public class UserSetting {
         + displayId
         + ", name='"
         + name
-        + '\''
         + ", introduction='"
         + introduction
-        + '\''
         + ", birthday='"
         + birthday
         + ", createdAt="

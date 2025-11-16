@@ -78,7 +78,6 @@ public class User {
         + userId
         + ", emailAddress='"
         + emailAddress
-        + '\''
         + ", createdAt="
         + createdAt
         + ", updatedAt="
