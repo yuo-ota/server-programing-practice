@@ -108,9 +108,9 @@ public class Penalty {
         + ", durationValue="
         + durationValue
         + ", durationUnit='"
-        + durationUnit
+        + durationUnit + '\''
         + ", reason='"
-        + reason
+        + reason + '\''
         + ", createdAt="
         + createdAt
         + '}';
