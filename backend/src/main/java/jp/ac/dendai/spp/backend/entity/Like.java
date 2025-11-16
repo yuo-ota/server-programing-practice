@@ -61,9 +61,9 @@ public class Like {
     return "Like{"
         + "id="
         + id
-        + ", user_id="
+        + ", userId="
         + userId
-        + ", post_id="
+        + ", postId="
         + postId
         + ", createdAt="
         + createdAt
