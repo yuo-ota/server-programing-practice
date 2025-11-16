@@ -9,25 +9,25 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "images")
-public class Image {
+@Table(name = "elected_posts")
+public class ElectedPost {
 
   @Id
   @GeneratedValue
   @Column(name = "id", insertable = false, updatable = false)
   private UUID id;
 
-  @Column(name = "post_id", nullable = false)
+  @Column(name = "user_id")
+  private UUID userId;
+
+  @Column(name = "post_id")
   private UUID postId;
 
-  @Column(name = "index", nullable = false)
+  @Column(name = "index")
   private int index;
 
-  @Column(name = "path", nullable = false)
-  private String path;
-
-  @Column(name = "alt")
-  private String alt;
+  @Column(name = "delivered_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+  private ZonedDateTime deliveredAt;
 
   @Column(
       name = "created_at",
@@ -38,18 +38,22 @@ public class Image {
   private ZonedDateTime createdAt;
 
   // コンストラクタ
-  public Image() {}
+  public ElectedPost() {}
 
-  public Image(UUID postId, int index, String path, String alt) {
+  public ElectedPost(UUID userId, UUID postId, int index, ZonedDateTime deliveredAt) {
+    this.userId = userId;
     this.postId = postId;
     this.index = index;
-    this.path = path;
-    this.alt = alt;
+    this.deliveredAt = deliveredAt;
   }
 
   // Getter, Setter
   public UUID getId() {
     return id;
+  }
+
+  public UUID getUserId() {
+    return userId;
   }
 
   public UUID getPostId() {
@@ -60,12 +64,8 @@ public class Image {
     return index;
   }
 
-  public String getPath() {
-    return path;
-  }
-
-  public String getAlt() {
-    return alt;
+  public ZonedDateTime getDeliveredAt() {
+    return deliveredAt;
   }
 
   public ZonedDateTime getCreatedAt() {
@@ -74,17 +74,17 @@ public class Image {
 
   @Override
   public String toString() {
-    return "Image{"
+    return "ElectedPost{"
         + "id="
         + id
+        + ", userId="
+        + userId
         + ", postId="
         + postId
         + ", index="
         + index
-        + ", path='"
-        + path
-        + ", alt='"
-        + alt
+        + ", deliveredAt="
+        + deliveredAt
         + ", createdAt="
         + createdAt
         + '}';

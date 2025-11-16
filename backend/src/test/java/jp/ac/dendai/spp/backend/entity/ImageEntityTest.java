@@ -3,7 +3,6 @@ package jp.ac.dendai.spp.backend.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
-
 import jp.ac.dendai.spp.backend.repository.ImageRepository;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;

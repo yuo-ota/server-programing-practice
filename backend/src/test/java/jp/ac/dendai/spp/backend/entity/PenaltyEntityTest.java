@@ -47,7 +47,9 @@ public class PenaltyEntityTest {
     AdminUser adminUser = new AdminUser(savedUser.getUserId());
     AdminUser savedAdminUser = adminRepository.save(adminUser);
 
-    Penalty penalty = new Penalty(1, savedUser.getUserId(), savedAdminUser.getUserId(), 7, "days", "Violation of rules");
+    Penalty penalty =
+        new Penalty(
+            1, savedUser.getUserId(), savedAdminUser.getUserId(), 7, "days", "Violation of rules");
     Penalty savedPenalty = penaltyRepository.save(penalty);
 
     // UUIDが自動生成されていることを確認

@@ -46,7 +46,13 @@ public class Penalty {
   // コンストラクタ
   public Penalty() {}
 
-  public Penalty(int penaltyStatusId, UUID penalizedUserId, UUID adminUserId, int durationValue, String durationUnit, String reason) {
+  public Penalty(
+      int penaltyStatusId,
+      UUID penalizedUserId,
+      UUID adminUserId,
+      int durationValue,
+      String durationUnit,
+      String reason) {
     this.penaltyStatusId = penaltyStatusId;
     this.penalizedUserId = penalizedUserId;
     this.adminUserId = adminUserId;

@@ -49,7 +49,13 @@ public class Report {
   // コンストラクタ
   public Report() {}
 
-  public Report(UUID reporter, boolean isReportUser, UUID reportee, UUID reportedPostId, int categoryStatusId, String details) {
+  public Report(
+      UUID reporter,
+      boolean isReportUser,
+      UUID reportee,
+      UUID reportedPostId,
+      int categoryStatusId,
+      String details) {
     this.reporter = reporter;
     this.isReportUser = isReportUser;
     this.reportee = reportee;

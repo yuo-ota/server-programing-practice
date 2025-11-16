@@ -50,13 +50,6 @@ public class AdminUser {
 
   @Override
   public String toString() {
-    return "AdminUser{"
-        + "id="
-        + id
-        + ", userId='"
-        + userId
-        + ", createdAt="
-        + createdAt
-        + '}';
+    return "AdminUser{" + "id=" + id + ", userId='" + userId + ", createdAt=" + createdAt + '}';
   }
 }

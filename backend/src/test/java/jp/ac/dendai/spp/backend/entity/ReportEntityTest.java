@@ -47,7 +47,14 @@ public class ReportEntityTest {
     User reportee = new User("test6@example.com", "password6");
     User savedReportee = userRepository.save(reportee);
 
-    Report report = new Report(savedReporter.getUserId(), true, savedReportee.getUserId(), null, 1, "Inappropriate content");
+    Report report =
+        new Report(
+            savedReporter.getUserId(),
+            true,
+            savedReportee.getUserId(),
+            null,
+            1,
+            "Inappropriate content");
     Report savedReport = reportRepository.save(report);
 
     // UUIDが自動生成されていることを確認
@@ -70,7 +77,9 @@ public class ReportEntityTest {
     Post post = new Post(savedReporter.getUserId(), "Test Post", false, true);
     Post savedPost = postRepository.save(post);
 
-    Report report = new Report(savedReporter.getUserId(), true, null, savedPost.getId(), 1, "Inappropriate content");
+    Report report =
+        new Report(
+            savedReporter.getUserId(), true, null, savedPost.getId(), 1, "Inappropriate content");
     Report savedReport = reportRepository.save(report);
 
     // UUIDが自動生成されていることを確認

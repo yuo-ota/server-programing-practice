@@ -3,7 +3,6 @@ package jp.ac.dendai.spp.backend.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
-
 import jp.ac.dendai.spp.backend.repository.AdminRepository;
 import jp.ac.dendai.spp.backend.repository.LikeNotificationRepository;
 import jp.ac.dendai.spp.backend.repository.LikeRepository;
@@ -12,7 +11,6 @@ import jp.ac.dendai.spp.backend.repository.PenaltyNotificationRepository;
 import jp.ac.dendai.spp.backend.repository.PenaltyRepository;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -56,7 +54,7 @@ public class NotificationEntityTest {
     User user = new User("test5@example.com", "password5");
     User savedUser = userRepository.save(user);
 
-    Notification notification = new Notification(0,savedUser.getUserId());
+    Notification notification = new Notification(0, savedUser.getUserId());
     Notification savedNotification = notificationRepository.save(notification);
 
     User likedUser = new User("test6@example.com", "password6");
@@ -68,16 +66,19 @@ public class NotificationEntityTest {
     Like like = new Like(savedLikeUser.getUserId(), savedPost.getId());
     Like savedLike = likeRepository.save(like);
 
-    LikeNotification likeNotification = new LikeNotification(savedNotification.getId(), savedLike.getId());
+    LikeNotification likeNotification =
+        new LikeNotification(savedNotification.getId(), savedLike.getId());
     LikeNotification savedLikeNotification = likeNotificationRepository.save(likeNotification);
 
     // UUIDが自動生成されていることを確認
     assertThat(notification.getId()).isNotNull();
     assertThat(likeNotification.getId()).isNotNull();
     // データベースから取得
-    Optional<Notification> retrievedNotificationOpt = notificationRepository.findById(savedNotification.getId());
+    Optional<Notification> retrievedNotificationOpt =
+        notificationRepository.findById(savedNotification.getId());
     assertThat(retrievedNotificationOpt).isPresent();
-    Optional<LikeNotification> retrievedLikeNotificationOpt = likeNotificationRepository.findById(savedLikeNotification.getId());
+    Optional<LikeNotification> retrievedLikeNotificationOpt =
+        likeNotificationRepository.findById(savedLikeNotification.getId());
     assertThat(retrievedLikeNotificationOpt).isPresent();
 
     Notification retrievedNotification = retrievedNotificationOpt.get();
@@ -98,7 +99,7 @@ public class NotificationEntityTest {
     User user = new User("test7@example.com", "password7");
     User savedUser = userRepository.save(user);
 
-    Notification notification = new Notification(0,savedUser.getUserId());
+    Notification notification = new Notification(0, savedUser.getUserId());
     Notification savedNotification = notificationRepository.save(notification);
 
     User userForAdmin = new User("test8@example.com", "password8");
@@ -107,19 +108,25 @@ public class NotificationEntityTest {
     AdminUser adminUser = new AdminUser(savedUserForAdmin.getUserId());
     AdminUser savedAdminUser = adminRepository.save(adminUser);
 
-    Penalty penalty = new Penalty(1, savedUser.getUserId(), savedAdminUser.getUserId(), 7, "days", "Violation of rules");
+    Penalty penalty =
+        new Penalty(
+            1, savedUser.getUserId(), savedAdminUser.getUserId(), 7, "days", "Violation of rules");
     Penalty savedPenalty = penaltyRepository.save(penalty);
 
-    PenaltyNotification penaltyNotification = new PenaltyNotification(savedNotification.getId(), savedPenalty.getId());
-    PenaltyNotification savedPenaltyNotification = penaltyNotificationRepository.save(penaltyNotification);
+    PenaltyNotification penaltyNotification =
+        new PenaltyNotification(savedNotification.getId(), savedPenalty.getId());
+    PenaltyNotification savedPenaltyNotification =
+        penaltyNotificationRepository.save(penaltyNotification);
 
     // UUIDが自動生成されていることを確認
     assertThat(notification.getId()).isNotNull();
     assertThat(penaltyNotification.getId()).isNotNull();
     // データベースから取得
-    Optional<Notification> retrievedNotificationOpt = notificationRepository.findById(savedNotification.getId());
+    Optional<Notification> retrievedNotificationOpt =
+        notificationRepository.findById(savedNotification.getId());
     assertThat(retrievedNotificationOpt).isPresent();
-    Optional<PenaltyNotification> retrievedPenaltyNotificationOpt = penaltyNotificationRepository.findById(savedPenaltyNotification.getId());
+    Optional<PenaltyNotification> retrievedPenaltyNotificationOpt =
+        penaltyNotificationRepository.findById(savedPenaltyNotification.getId());
     assertThat(retrievedPenaltyNotificationOpt).isPresent();
 
     Notification retrievedNotification = retrievedNotificationOpt.get();
@@ -130,8 +137,8 @@ public class NotificationEntityTest {
 
     PenaltyNotification retrievedPenaltyNotification = retrievedPenaltyNotificationOpt.get();
     assertThat(retrievedPenaltyNotification.getId()).isEqualTo(savedPenaltyNotification.getId());
-    assertThat(retrievedPenaltyNotification.getNotificationId()).isEqualTo(savedNotification.getId());
+    assertThat(retrievedPenaltyNotification.getNotificationId())
+        .isEqualTo(savedNotification.getId());
     assertThat(retrievedPenaltyNotification.getPenaltyId()).isEqualTo(savedPenalty.getId());
   }
 }
-  
