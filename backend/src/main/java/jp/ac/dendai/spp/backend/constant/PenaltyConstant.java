@@ -8,4 +8,10 @@ public class PenaltyConstant {
           0, "投稿停止",
           1, "閲覧停止",
           2, "いいね停止");
+
+  public static final String DAYS = "days";
+  public static final String WEEKS = "weeks";
+  public static final String MONTHS = "months";
+  public static final String YEARS = "years";
+  public static final String UNLIMITED = "unlimited";
 }
