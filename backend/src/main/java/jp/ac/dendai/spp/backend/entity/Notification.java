@@ -9,13 +9,16 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "admin_users")
-public class AdminUser {
+@Table(name = "notifications")
+public class Notification {
 
   @Id
   @GeneratedValue
   @Column(name = "id", insertable = false, updatable = false)
   private UUID id;
+
+  @Column(name = "category_status_id", nullable = false)
+  private int categoryStatusId;
 
   @Column(name = "user_id", nullable = false)
   private UUID userId;
@@ -29,15 +32,20 @@ public class AdminUser {
   private ZonedDateTime createdAt;
 
   // コンストラクタ
-  public AdminUser() {}
+  public Notification() {}
 
-  public AdminUser(UUID userId) {
+  public Notification(int categoryStatusId, UUID userId) {
+    this.categoryStatusId = categoryStatusId;
     this.userId = userId;
   }
 
   // Getter, Setter
   public UUID getId() {
     return id;
+  }
+
+  public int getCategoryStatusId() {
+    return categoryStatusId;
   }
 
   public UUID getUserId() {
@@ -50,6 +58,15 @@ public class AdminUser {
 
   @Override
   public String toString() {
-    return "AdminUser{" + "id=" + id + ", userId='" + userId + ", createdAt=" + createdAt + '}';
+    return "Notification{"
+        + "id="
+        + id
+        + ", categoryStatusId="
+        + categoryStatusId
+        + ", userId="
+        + userId
+        + ", createdAt="
+        + createdAt
+        + '}';
   }
 }

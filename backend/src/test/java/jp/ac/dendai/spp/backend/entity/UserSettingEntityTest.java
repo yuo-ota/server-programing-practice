@@ -2,9 +2,10 @@ package jp.ac.dendai.spp.backend.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDate;
 import java.util.Optional;
-import jp.ac.dendai.spp.backend.repository.AdminRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
+import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("test")
-public class AdminUserEntityTest {
+public class UserSettingEntityTest {
 
   @ServiceConnection
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
@@ -34,26 +35,28 @@ public class AdminUserEntityTest {
   }
 
   @Autowired private UserRepository userRepository;
-  @Autowired private AdminRepository adminRepository;
+  @Autowired private UserSettingRepository userSettingRepository;
 
   @Test
-  void testPersistAndRetrieveAdminUser() {
+  void testPersistAndRetrieveUserSetting() {
     // 保存前にUUIDはnull
     User user = new User("test5@example.com", "password5");
     User savedUser = userRepository.save(user);
 
-    AdminUser adminUser = new AdminUser(savedUser.getUserId());
-    AdminUser savedAdminUser = adminRepository.save(adminUser);
+    UserSetting userSetting =
+        new UserSetting(
+            savedUser.getUserId(), "Test User", "testuser", LocalDate.parse("2000-01-01"), false);
+    UserSetting savedUserSetting = userSettingRepository.save(userSetting);
 
     // UUIDが自動生成されていることを確認
-    assertThat(savedAdminUser.getUserId()).isNotNull();
-
+    assertThat(savedUserSetting.getUserId()).isNotNull();
     // データベースから取得
-    Optional<AdminUser> retrievedAdminUserOpt = adminRepository.findById(savedAdminUser.getId());
-    assertThat(retrievedAdminUserOpt).isPresent();
+    Optional<UserSetting> retrievedUserSettingOpt =
+        userSettingRepository.findById(savedUserSetting.getId());
+    assertThat(retrievedUserSettingOpt).isPresent();
 
-    AdminUser retrievedAdminUser = retrievedAdminUserOpt.get();
-    assertThat(retrievedAdminUser.getUserId()).isEqualTo(savedUser.getUserId());
-    assertThat(retrievedAdminUser.getCreatedAt()).isNotNull();
+    UserSetting retrievedUserSetting = retrievedUserSettingOpt.get();
+    assertThat(retrievedUserSetting.getUserId()).isEqualTo(savedUser.getUserId());
+    assertThat(retrievedUserSetting.getCreatedAt()).isNotNull();
   }
 }

@@ -3,7 +3,7 @@ package jp.ac.dendai.spp.backend.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
-import jp.ac.dendai.spp.backend.repository.AdminRepository;
+import jp.ac.dendai.spp.backend.repository.SocialAccountRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,7 +18,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("test")
-public class AdminUserEntityTest {
+public class SocialAccountEntityTest {
 
   @ServiceConnection
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
@@ -34,26 +34,27 @@ public class AdminUserEntityTest {
   }
 
   @Autowired private UserRepository userRepository;
-  @Autowired private AdminRepository adminRepository;
+  @Autowired private SocialAccountRepository socialAccountRepository;
 
   @Test
-  void testPersistAndRetrieveAdminUser() {
+  void testPersistAndRetrieveSocialAccount() {
     // 保存前にUUIDはnull
-    User user = new User("test5@example.com", "password5");
+    User user = new User("test4@example.com", "password4");
     User savedUser = userRepository.save(user);
 
-    AdminUser adminUser = new AdminUser(savedUser.getUserId());
-    AdminUser savedAdminUser = adminRepository.save(adminUser);
+    SocialAccount socialAccount = new SocialAccount(savedUser.getUserId(), 1);
+    SocialAccount savedSocialAccount = socialAccountRepository.save(socialAccount);
 
     // UUIDが自動生成されていることを確認
-    assertThat(savedAdminUser.getUserId()).isNotNull();
+    assertThat(savedSocialAccount.getUserId()).isNotNull();
 
     // データベースから取得
-    Optional<AdminUser> retrievedAdminUserOpt = adminRepository.findById(savedAdminUser.getId());
-    assertThat(retrievedAdminUserOpt).isPresent();
+    Optional<SocialAccount> retrievedSocialAccountOpt =
+        socialAccountRepository.findById(savedSocialAccount.getId());
+    assertThat(retrievedSocialAccountOpt).isPresent();
 
-    AdminUser retrievedAdminUser = retrievedAdminUserOpt.get();
-    assertThat(retrievedAdminUser.getUserId()).isEqualTo(savedUser.getUserId());
-    assertThat(retrievedAdminUser.getCreatedAt()).isNotNull();
+    SocialAccount retrievedSocialAccount = retrievedSocialAccountOpt.get();
+    assertThat(retrievedSocialAccount.getUserId()).isEqualTo(savedUser.getUserId());
+    assertThat(retrievedSocialAccount.getCreatedAt()).isNotNull();
   }
 }

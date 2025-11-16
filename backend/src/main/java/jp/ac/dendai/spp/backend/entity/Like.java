@@ -9,8 +9,8 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "admin_users")
-public class AdminUser {
+@Table(name = "likes")
+public class Like {
 
   @Id
   @GeneratedValue
@@ -19,6 +19,9 @@ public class AdminUser {
 
   @Column(name = "user_id", nullable = false)
   private UUID userId;
+
+  @Column(name = "post_id")
+  private UUID postId;
 
   @Column(
       name = "created_at",
@@ -29,10 +32,11 @@ public class AdminUser {
   private ZonedDateTime createdAt;
 
   // コンストラクタ
-  public AdminUser() {}
+  public Like() {}
 
-  public AdminUser(UUID userId) {
+  public Like(UUID userId, UUID postId) {
     this.userId = userId;
+    this.postId = postId;
   }
 
   // Getter, Setter
@@ -44,12 +48,25 @@ public class AdminUser {
     return userId;
   }
 
+  public UUID getPostId() {
+    return postId;
+  }
+
   public ZonedDateTime getCreatedAt() {
     return createdAt;
   }
 
   @Override
   public String toString() {
-    return "AdminUser{" + "id=" + id + ", userId='" + userId + ", createdAt=" + createdAt + '}';
+    return "Like{"
+        + "id="
+        + id
+        + ", userId="
+        + userId
+        + ", postId="
+        + postId
+        + ", createdAt="
+        + createdAt
+        + '}';
   }
 }

@@ -9,8 +9,8 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "admin_users")
-public class AdminUser {
+@Table(name = "social_accounts")
+public class SocialAccount {
 
   @Id
   @GeneratedValue
@@ -19,6 +19,9 @@ public class AdminUser {
 
   @Column(name = "user_id", nullable = false)
   private UUID userId;
+
+  @Column(name = "platform_id", nullable = false)
+  private int platformId;
 
   @Column(
       name = "created_at",
@@ -29,10 +32,11 @@ public class AdminUser {
   private ZonedDateTime createdAt;
 
   // コンストラクタ
-  public AdminUser() {}
+  public SocialAccount() {}
 
-  public AdminUser(UUID userId) {
+  public SocialAccount(UUID userId, int platformId) {
     this.userId = userId;
+    this.platformId = platformId;
   }
 
   // Getter, Setter
@@ -44,12 +48,25 @@ public class AdminUser {
     return userId;
   }
 
+  public int getPlatformId() {
+    return platformId;
+  }
+
   public ZonedDateTime getCreatedAt() {
     return createdAt;
   }
 
   @Override
   public String toString() {
-    return "AdminUser{" + "id=" + id + ", userId='" + userId + ", createdAt=" + createdAt + '}';
+    return "SocialAccounts{"
+        + "id="
+        + id
+        + ", userId="
+        + userId
+        + ", platformId="
+        + platformId
+        + ", createdAt="
+        + createdAt
+        + '}';
   }
 }

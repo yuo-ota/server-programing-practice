@@ -1,27 +1,34 @@
 package jp.ac.dendai.spp.backend.entity;
 
+import io.hypersistence.utils.hibernate.type.interval.PostgreSQLIntervalType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.UUID;
+import org.hibernate.annotations.Type;
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "pre_register_tokens")
+public class PreRegisterToken {
 
   @Id
   @GeneratedValue
-  @Column(name = "user_id", insertable = false, updatable = false)
-  private UUID userId;
+  @Column(name = "id", insertable = false, updatable = false)
+  private UUID id;
 
   @Column(name = "email_address", nullable = false, unique = true, length = 255)
   private String emailAddress;
 
-  @Column(name = "password", nullable = false, length = 255)
-  private String password;
+  @Column(name = "token", nullable = false, length = 64)
+  private String token;
+
+  @Column(name = "duration", nullable = false)
+  @Type(PostgreSQLIntervalType.class)
+  private Duration duration;
 
   @Column(
       name = "created_at",
@@ -31,57 +38,47 @@ public class User {
       columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
   private ZonedDateTime createdAt;
 
-  @Column(
-      name = "updated_at",
-      nullable = false,
-      insertable = false,
-      columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
-  private ZonedDateTime updatedAt;
-
   // コンストラクタ
-  public User() {}
+  public PreRegisterToken() {}
 
-  public User(String emailAddress, String hashedPassword) {
+  public PreRegisterToken(String emailAddress, String token, Duration duration) {
     this.emailAddress = emailAddress;
-    this.password = hashedPassword;
+    this.token = token;
+    this.duration = duration;
   }
 
   // Getter, Setter
-  public UUID getUserId() {
-    return userId;
+  public UUID getId() {
+    return id;
   }
 
   public String getEmailAddress() {
     return emailAddress;
   }
 
-  public String getPassword() {
-    return password;
+  public String getToken() {
+    return token;
   }
 
-  public void setPassword(String hashedPassword) {
-    this.password = hashedPassword;
+  public Duration getDuration() {
+    return duration;
   }
 
   public ZonedDateTime getCreatedAt() {
     return createdAt;
   }
 
-  public ZonedDateTime getUpdatedAt() {
-    return updatedAt;
-  }
-
   @Override
   public String toString() {
-    return "User{"
-        + "userId="
-        + userId
+    return "PreRegisterTokens{"
+        + "id="
+        + id
         + ", emailAddress='"
-        + emailAddress
+        + emailAddress + '\''
+        + ", token='"
+        + token + '\''
         + ", createdAt="
         + createdAt
-        + ", updatedAt="
-        + updatedAt
         + '}';
   }
 }
