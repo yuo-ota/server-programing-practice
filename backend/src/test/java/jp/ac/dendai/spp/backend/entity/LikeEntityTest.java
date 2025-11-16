@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
 
-import jp.ac.dendai.spp.backend.repository.ImageRepository;
+import jp.ac.dendai.spp.backend.repository.LikeRepository;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
 import org.junit.jupiter.api.AfterAll;
@@ -20,7 +20,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("test")
-public class ImageTest {
+public class LikeEntityTest {
 
   @ServiceConnection
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
@@ -37,10 +37,10 @@ public class ImageTest {
 
   @Autowired private UserRepository userRepository;
   @Autowired private PostRepository postRepository;
-  @Autowired private ImageRepository imageRepository;
+  @Autowired private LikeRepository likeRepository;
 
   @Test
-  void testPersistAndRetrieveImage() {
+  void testPersistAndRetrieveLike() {
     // 保存前にUUIDはnull
     User user = new User("test5@example.com", "password5");
     User savedUser = userRepository.save(user);
@@ -48,17 +48,19 @@ public class ImageTest {
     Post post = new Post(savedUser.getUserId(), "Test Post", false, true);
     Post savedPost = postRepository.save(post);
 
-    Image image = new Image(savedPost.getId(), 0, "/images/test.jpg", "Test Image");
-    Image savedImage = imageRepository.save(image);
+    Like like = new Like(savedUser.getUserId(), savedPost.getId());
+    Like savedLike = likeRepository.save(like);
 
     // UUIDが自動生成されていることを確認
-    assertThat(savedImage.getId()).isNotNull();
+    assertThat(savedLike.getId()).isNotNull();
     // データベースから取得
-    Optional<Image> retrievedImageOpt = imageRepository.findById(savedImage.getId());
-    assertThat(retrievedImageOpt).isPresent();
+    Optional<Like> retrievedLikeOpt = likeRepository.findById(savedLike.getId());
+    assertThat(retrievedLikeOpt).isPresent();
 
-    Image retrievedImage = retrievedImageOpt.get();
-    assertThat(retrievedImage.getPostId()).isEqualTo(savedPost.getId());
-    assertThat(retrievedImage.getCreatedAt()).isNotNull();
+    Like retrievedLike = retrievedLikeOpt.get();
+    assertThat(retrievedLike.getUserId()).isEqualTo(savedUser.getUserId());
+    assertThat(retrievedLike.getPostId()).isEqualTo(savedPost.getId());
+    assertThat(retrievedLike.getCreatedAt()).isNotNull();
   }
 }
+  
