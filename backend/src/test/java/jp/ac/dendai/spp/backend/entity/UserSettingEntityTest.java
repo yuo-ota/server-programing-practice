@@ -38,7 +38,7 @@ public class UserSettingEntityTest {
   @Autowired private UserSettingRepository userSettingRepository;
 
   @Test
-  void testPersistAndRetrieveUser() {
+  void testPersistAndRetrieveUserSetting() {
     // 保存前にUUIDはnull
     User user = new User("test5@example.com", "password5");
     User savedUser = userRepository.save(user);

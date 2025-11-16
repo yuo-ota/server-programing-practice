@@ -37,7 +37,7 @@ public class PostTest {
   @Autowired private PostRepository postRepository;
 
   @Test
-  void testPersistAndRetrieveUser() {
+  void testPersistAndRetrievePost() {
     // 保存前にUUIDはnull
     User user = new User("test5@example.com", "password5");
     User savedUser = userRepository.save(user);

@@ -37,7 +37,7 @@ public class AdminUserEntityTest {
   @Autowired private AdminRepository adminRepository;
 
   @Test
-  void testPersistAndRetrieveUser() {
+  void testPersistAndRetrieveAdminUser() {
     // 保存前にUUIDはnull
     User user = new User("test5@example.com", "password5");
     User savedUser = userRepository.save(user);
