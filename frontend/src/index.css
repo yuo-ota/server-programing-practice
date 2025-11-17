@@ -24,6 +24,8 @@
   --active-brightness: 110%;
   --active-nega-brightness: 90%;
   --hover-opacity: 5%;
+  --hover-nega-opacity: 30%;
   --active-opacity: 20%;
+  --active-nega-opacity: 80%;
   font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
 }
