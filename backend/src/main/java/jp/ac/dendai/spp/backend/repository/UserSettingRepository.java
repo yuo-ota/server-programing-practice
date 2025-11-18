@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserSettingRepository extends JpaRepository<UserSetting, UUID> {
-  @Query("SELECT u FROM UserSetting u WHERE u.displayId = :displayId")
-  UserSetting findByDisplayId(@Param("displayId") String displayId);
+  UserSetting findByDisplayId(String displayId);
 }
