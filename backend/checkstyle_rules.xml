@@ -37,6 +37,9 @@
       <property name="allowClassImports" value="false"/>
       <property name="allowStaticMemberImports" value="false"/>
     </module>
+    
+    <!-- 未使用インポート -->
+    <module name="UnusedImports"/>
 
     <!-- 命名規約（基本的なもののみ） -->
     <module name="TypeName"/>
