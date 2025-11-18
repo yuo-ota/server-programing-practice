@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class DisplayIdController {
   private final DisplayIdService displayService;
 
-  // コンストラクタインジェクション（推奨）
   public DisplayIdController(DisplayIdService displayService) {
     this.displayService = displayService;
   }
