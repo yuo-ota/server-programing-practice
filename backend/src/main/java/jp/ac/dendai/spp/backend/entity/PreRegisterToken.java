@@ -74,9 +74,11 @@ public class PreRegisterToken {
         + "id="
         + id
         + ", emailAddress='"
-        + emailAddress + '\''
+        + emailAddress
+        + '\''
         + ", token='"
-        + token + '\''
+        + token
+        + '\''
         + ", createdAt="
         + createdAt
         + '}';
