@@ -21,8 +21,9 @@ public class DisplayIdController {
   }
 
   @GetMapping("/{userId}")
-  public ResponseEntity<?> check(CheckIdUsedRequest request) {
+  public ResponseEntity<?> check(@PathVariable String userId, CheckIdUsedRequest request) {
     try {
+      request.setUserId(userId);
       CheckIdUsedResponse response = displayService.check(request);
 
       return ResponseEntity.ok(response);
