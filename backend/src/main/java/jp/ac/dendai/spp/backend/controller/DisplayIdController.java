@@ -13,27 +13,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/user/check-id")
 public class DisplayIdController {
-    private final DisplayIdService displayService;
+  private final DisplayIdService displayService;
 
-    // コンストラクタインジェクション（推奨）
-    public DisplayIdController(DisplayIdService displayService) {
-        this.displayService = displayService;
+  // コンストラクタインジェクション（推奨）
+  public DisplayIdController(DisplayIdService displayService) {
+    this.displayService = displayService;
+  }
+
+  @GetMapping("/{userId}")
+  public ResponseEntity<?> check(CheckIdUsedRequest request) {
+    try {
+      CheckIdUsedResponse response = displayService.check(request);
+
+      return ResponseEntity.ok(response);
+
+    } catch (Exception e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("SERVICE_ERROR");
+      errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
+
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
-
-    @GetMapping("/{user-id}")
-    public ResponseEntity<?> check(CheckIdUsedRequest request) {
-        try {
-            CheckIdUsedResponse response = displayService.check(request);
-
-            return ResponseEntity.ok(response);
-
-        } catch (Exception e) {
-            ErrorResponse errorResponse = new ErrorResponse();
-
-            errorResponse.setCode("SERVICE_ERROR");
-            errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-        }
-    }
+  }
 }
