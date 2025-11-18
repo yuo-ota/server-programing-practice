@@ -150,13 +150,17 @@ public class UserSetting {
         + ", userId="
         + userId
         + ", displayId='"
-        + displayId + '\''
+        + displayId
+        + '\''
         + ", name='"
-        + name + '\''
+        + name
+        + '\''
         + ", introduction='"
-        + introduction + '\''
+        + introduction
+        + '\''
         + ", birthday='"
-        + birthday + '\''
+        + birthday
+        + '\''
         + ", createdAt="
         + createdAt
         + ", updatedAt="
