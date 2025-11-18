@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DisplayIdService {
-  private UserSettingRepository userSettingRepository;
+  private final UserSettingRepository userSettingRepository;
 
   public DisplayIdService(UserSettingRepository userSettingRepository) {
     this.userSettingRepository = userSettingRepository;
