@@ -6,13 +6,12 @@ type T = typeof SelectBox;
 export default {
   component: SelectBox,
   args: {
-    displayStatus : 'normal' ,
+    displayStatus: 'normal',
     label: 'test',
     options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-    onSelect: (v) => console.log('選択:', v),
+    onSelect: () => {},
     className: 'w-30',
   },
 } satisfies Meta<T>;
 
-export const Default: StoryObj<T> = {
-};
+export const Default: StoryObj<T> = {};
