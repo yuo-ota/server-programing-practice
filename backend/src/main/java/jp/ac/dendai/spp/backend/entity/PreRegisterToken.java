@@ -1,19 +1,16 @@
 package jp.ac.dendai.spp.backend.entity;
 
-import io.hypersistence.utils.hibernate.type.interval.PostgreSQLIntervalType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.Duration;
-import java.time.ZonedDateTime;
 import java.util.UUID;
-import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "pre_register_tokens")
-public class PreRegisterToken {
+public class PreRegisterToken extends BaseToken {
 
   @Id
   @GeneratedValue
@@ -23,28 +20,14 @@ public class PreRegisterToken {
   @Column(name = "email_address", nullable = false, unique = true, length = 255)
   private String emailAddress;
 
-  @Column(name = "token", nullable = false, length = 64)
-  private String token;
-
-  @Column(name = "duration", nullable = false)
-  @Type(PostgreSQLIntervalType.class)
-  private Duration duration;
-
-  @Column(
-      name = "created_at",
-      nullable = false,
-      updatable = false,
-      insertable = false,
-      columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
-  private ZonedDateTime createdAt;
-
   // コンストラクタ
-  public PreRegisterToken() {}
+  public PreRegisterToken() {
+    super();
+  }
 
   public PreRegisterToken(String emailAddress, String token, Duration duration) {
+    super(token, duration);
     this.emailAddress = emailAddress;
-    this.token = token;
-    this.duration = duration;
   }
 
   // Getter, Setter
@@ -56,18 +39,6 @@ public class PreRegisterToken {
     return emailAddress;
   }
 
-  public String getToken() {
-    return token;
-  }
-
-  public Duration getDuration() {
-    return duration;
-  }
-
-  public ZonedDateTime getCreatedAt() {
-    return createdAt;
-  }
-
   @Override
   public String toString() {
     return "PreRegisterTokens{"
@@ -77,10 +48,10 @@ public class PreRegisterToken {
         + emailAddress
         + '\''
         + ", token='"
-        + token
+        + getToken()
         + '\''
         + ", createdAt="
-        + createdAt
+        + getCreatedAt()
         + '}';
   }
 }
