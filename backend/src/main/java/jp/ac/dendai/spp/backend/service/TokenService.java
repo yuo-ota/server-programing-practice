@@ -1,5 +1,7 @@
 package jp.ac.dendai.spp.backend.service;
 
+import org.springframework.stereotype.Service;
+
 import jp.ac.dendai.spp.backend.constant.TokenConstant;
 import jp.ac.dendai.spp.backend.entity.BaseToken;
 import jp.ac.dendai.spp.backend.error.AuthenticationFailedException;
@@ -9,6 +11,7 @@ import jp.ac.dendai.spp.backend.repository.PasswordResetTokenRepository;
 import jp.ac.dendai.spp.backend.repository.PreRegisterTokenRepository;
 import jp.ac.dendai.spp.backend.util.TimeManage;
 
+@Service
 public class TokenService {
   public final AuthService authService;
   public final PreRegisterTokenRepository preRegisterTokenRepository;
