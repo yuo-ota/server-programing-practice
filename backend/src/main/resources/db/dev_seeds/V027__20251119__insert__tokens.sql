@@ -1,5 +1,5 @@
-INSERT INTO pre_register_tokens (email_address, token, duration) VALUES
-('user5@example.com', 'dc5a4d3d82f7e15792959dc661538ae0e541ce66494516f5c9cfd9cd3308494d', '15min');
+INSERT INTO pre_register_tokens (email_address, password, token, duration) VALUES
+('user5@example.com', '$2a$08$ava0DsxqbPYB7hUYPkOuFOmfCFNH5R0OcTdtcYKxw2tOPZDM9F286', 'dc5a4d3d82f7e15792959dc661538ae0e541ce66494516f5c9cfd9cd3308494d', '15min');
 
 INSERT INTO password_reset_tokens (user_id, token, duration)
 SELECT

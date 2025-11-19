@@ -15,13 +15,13 @@ public class DisplayIdService {
   }
 
   public CheckIdUsedResponse check(CheckIdUsedRequest request) {
-    UserSetting userSetting = userSettingRepository.findByDisplayId(request.getUserId());
     CheckIdUsedResponse response = new CheckIdUsedResponse();
-    if (userSetting == null) {
-      response.setAvailable(true);
-      return response;
-    }
-    response.setAvailable(false);
+    response.setAvailable(!isUsed(request.getUserId()));
     return response;
+  }
+
+  public boolean isUsed(String displayId) {
+    UserSetting userSetting = userSettingRepository.findByDisplayId(displayId);
+    return userSetting != null;
   }
 }

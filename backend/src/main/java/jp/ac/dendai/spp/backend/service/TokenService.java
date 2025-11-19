@@ -33,12 +33,19 @@ public class TokenService {
    * @throws AuthenticationFailedException
    */
   public void isAvailable(AuthRequest request) {
+    String token = request.getToken();
+    String pathType = request.getPathType();
+
+    verifyToken(token, pathType);
+  }
+
+  public BaseToken verifyToken(String token, String pathType) {
     BaseToken tokenEntity;
 
-    if (request.getPathType().equals(TokenConstant.PRE_REGISTER)) {
-      tokenEntity = preRegisterTokenRepository.findByToken(request.getToken());
-    } else if (request.getPathType().equals(TokenConstant.PASSWORD_RESET)) {
-      tokenEntity = passwordResetTokenRepository.findByToken(request.getToken());
+    if (pathType.equals(TokenConstant.PRE_REGISTER)) {
+      tokenEntity = preRegisterTokenRepository.findByToken(token);
+    } else if (pathType.equals(TokenConstant.PASSWORD_RESET)) {
+      tokenEntity = passwordResetTokenRepository.findByToken(token);
     } else {
       throw new InvalidParameterException("Invalid path type");
     }
@@ -49,5 +56,7 @@ public class TokenService {
     if (TimeManage.isExpired(tokenEntity)) {
       throw new AuthenticationFailedException("Failed to authenticate token");
     }
+
+    return tokenEntity;
   }
 }
