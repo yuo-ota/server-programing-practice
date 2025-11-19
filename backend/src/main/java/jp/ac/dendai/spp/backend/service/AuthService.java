@@ -7,7 +7,6 @@ import jp.ac.dendai.spp.backend.entity.AdminUser;
 import jp.ac.dendai.spp.backend.entity.User;
 import jp.ac.dendai.spp.backend.error.AuthenticationFailedException;
 import jp.ac.dendai.spp.backend.form.request.LoginRequest;
-import jp.ac.dendai.spp.backend.form.response.LoginResponse;
 import jp.ac.dendai.spp.backend.repository.AdminRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
 import jp.ac.dendai.spp.backend.util.JWTVerifyAction;
@@ -56,9 +55,7 @@ public class AuthService {
     return user;
   }
 
-  /**
-   * 
-   */
+  /** */
   public ResponseCookie buildCookie(UUID id) {
     // JWTトークンの生成
     JWTbuilder jwtBuilder = new JWTbuilder(secret);

@@ -5,13 +5,12 @@ import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.request.AuthRequest;
 import jp.ac.dendai.spp.backend.form.request.LoginRequest;
 import jp.ac.dendai.spp.backend.form.response.ErrorResponse;
-import jp.ac.dendai.spp.backend.form.response.LoginResponse;
 import jp.ac.dendai.spp.backend.service.AuthService;
 import jp.ac.dendai.spp.backend.service.TokenService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -34,9 +33,7 @@ public class AuthController {
     try {
       ResponseCookie cookie = authService.login(request);
 
-      return ResponseEntity.ok()
-        .header(HttpHeaders.SET_COOKIE, cookie.toString())
-        .build();
+      return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
 
     } catch (InvalidParameterException e) {
       ErrorResponse errorResponse = new ErrorResponse();
@@ -69,9 +66,7 @@ public class AuthController {
     try {
       ResponseCookie cookie = authService.adminLogin(request);
 
-      return ResponseEntity.ok()
-        .header(HttpHeaders.SET_COOKIE, cookie.toString())
-        .build();
+      return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
 
     } catch (InvalidParameterException e) {
       ErrorResponse errorResponse = new ErrorResponse();
@@ -100,7 +95,7 @@ public class AuthController {
   }
 
   @PostMapping("/auth")
-  public ResponseEntity<?> auth(AuthRequest request) {
+  public ResponseEntity<?> auth(@RequestBody AuthRequest request) {
     try {
       tokenService.isAvailable(request);
 
