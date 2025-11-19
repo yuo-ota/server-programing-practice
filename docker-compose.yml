@@ -20,6 +20,7 @@ services:
       SPRING_DEVTOOLS_RESTART_ENABLED: "true"
       SPRING_DEVTOOLS_LIVERELOAD_ENABLED: "true"
       SPRING_DEVTOOLS_RESTART_ADDITIONAL_PATHS: "/app/src"
+      JWT_SECRET: ${JWT_SECRET}
     networks:
       - project-network
 
