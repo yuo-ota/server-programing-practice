@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import java.util.Date;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,8 +11,8 @@ public class JWTbuilder {
   private static final Long EXPIRATION_TIME = 1000L * 60L * 60L * 1L;
   private final String secret;
 
-  public JWTbuilder(@Value("${jwt.secret}") String secret) {
-    this.secret = secret;
+  public JWTbuilder() {
+    secret = System.getenv("JWT_SECRET");
   }
 
   /**

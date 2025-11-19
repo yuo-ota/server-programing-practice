@@ -11,7 +11,6 @@ import jp.ac.dendai.spp.backend.repository.AdminRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
 import jp.ac.dendai.spp.backend.util.JWTVerifyAction;
 import jp.ac.dendai.spp.backend.util.JWTbuilder;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,11 +22,8 @@ public class AuthService {
   private final AdminRepository adminRepository;
   private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-  public AuthService(
-      @Value("${jwt.secret}") String secret,
-      UserRepository userRepository,
-      AdminRepository adminRepository) {
-    this.secret = secret;
+  public AuthService(UserRepository userRepository, AdminRepository adminRepository) {
+    secret = System.getenv("JWT_SECRET");
     this.userRepository = userRepository;
     this.adminRepository = adminRepository;
   }
@@ -58,7 +54,7 @@ public class AuthService {
   /** */
   public ResponseCookie buildCookie(UUID id) {
     // JWTトークンの生成
-    JWTbuilder jwtBuilder = new JWTbuilder(secret);
+    JWTbuilder jwtBuilder = new JWTbuilder();
     String token = jwtBuilder.build(id);
 
     ResponseCookie cookie =
