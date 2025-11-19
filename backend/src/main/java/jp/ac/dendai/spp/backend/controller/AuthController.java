@@ -2,7 +2,6 @@ package jp.ac.dendai.spp.backend.controller;
 
 import jp.ac.dendai.spp.backend.error.AuthenticationFailedException;
 import jp.ac.dendai.spp.backend.error.InvalidParameterException;
-import jp.ac.dendai.spp.backend.form.request.AdminAuthRequest;
 import jp.ac.dendai.spp.backend.form.request.AuthRequest;
 import jp.ac.dendai.spp.backend.form.request.LoginRequest;
 import jp.ac.dendai.spp.backend.form.response.ErrorResponse;
@@ -10,13 +9,14 @@ import jp.ac.dendai.spp.backend.form.response.LoginResponse;
 import jp.ac.dendai.spp.backend.service.AuthService;
 import jp.ac.dendai.spp.backend.service.TokenService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api")
@@ -32,9 +32,11 @@ public class AuthController {
   @PostMapping("/login")
   public ResponseEntity<?> login(@RequestBody LoginRequest request) {
     try {
-      LoginResponse response = authService.login(request);
+      ResponseCookie cookie = authService.login(request);
 
-      return ResponseEntity.ok(response);
+      return ResponseEntity.ok()
+        .header(HttpHeaders.SET_COOKIE, cookie.toString())
+        .build();
 
     } catch (InvalidParameterException e) {
       ErrorResponse errorResponse = new ErrorResponse();
@@ -61,7 +63,41 @@ public class AuthController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
   }
-  
+
+  @PostMapping("/admin/login")
+  public ResponseEntity<?> adminLogin(@RequestBody LoginRequest request) {
+    try {
+      ResponseCookie cookie = authService.adminLogin(request);
+
+      return ResponseEntity.ok()
+        .header(HttpHeaders.SET_COOKIE, cookie.toString())
+        .build();
+
+    } catch (InvalidParameterException e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("INVALID_PARAMETER");
+      errorResponse.setMessage("無効なパラメータが指定されました。");
+
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+
+    } catch (AuthenticationFailedException e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("AUTHENTICATION_FAILED");
+      errorResponse.setMessage("ユーザー認証に失敗しました。");
+
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+
+    } catch (Exception e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("SERVICE_ERROR");
+      errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
+
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+  }
 
   @PostMapping("/auth")
   public ResponseEntity<?> auth(AuthRequest request) {

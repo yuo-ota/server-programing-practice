@@ -43,4 +43,8 @@ public class JWTbuilder {
             .sign(algorithm); // アルゴリズム指定して、署名を行う
     return token;
   }
+
+  public static Long getExpirationTime() {
+    return EXPIRATION_TIME / 1000L;
+  }
 }

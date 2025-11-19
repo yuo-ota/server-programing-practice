@@ -6,7 +6,6 @@ import java.util.UUID;
 import jp.ac.dendai.spp.backend.entity.AdminUser;
 import jp.ac.dendai.spp.backend.entity.User;
 import jp.ac.dendai.spp.backend.error.AuthenticationFailedException;
-import jp.ac.dendai.spp.backend.form.request.AdminAuthRequest;
 import jp.ac.dendai.spp.backend.form.request.LoginRequest;
 import jp.ac.dendai.spp.backend.form.response.LoginResponse;
 import jp.ac.dendai.spp.backend.repository.AdminRepository;
@@ -14,6 +13,7 @@ import jp.ac.dendai.spp.backend.repository.UserRepository;
 import jp.ac.dendai.spp.backend.util.JWTVerifyAction;
 import jp.ac.dendai.spp.backend.util.JWTbuilder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,12 +34,12 @@ public class AuthService {
   }
 
   /**
-   * ユーザー認証を行い、JWTトークンを含むオブジェクトを返す
+   * メールアドレスとパスワードでユーザー認証を行う
    *
    * @param request
    * @return
    */
-  public LoginResponse login(LoginRequest request) {
+  public User getUserByEmailAndPassword(LoginRequest request) {
     User user = userRepository.findByEmailAddress(request.getEmailAddress());
     if (user == null) {
       throw new AuthenticationFailedException(
@@ -53,10 +53,57 @@ public class AuthService {
           "Invalid password for email: " + request.getEmailAddress());
     }
 
+    return user;
+  }
+
+  /**
+   * 
+   */
+  public ResponseCookie buildCookie(UUID id) {
     // JWTトークンの生成
     JWTbuilder jwtBuilder = new JWTbuilder(secret);
-    String token = jwtBuilder.build(user.getUserId());
-    return new LoginResponse(token);
+    String token = jwtBuilder.build(id);
+
+    ResponseCookie cookie =
+        ResponseCookie.from("token", token)
+            .httpOnly(true)
+            .secure(true)
+            .path("/")
+            .maxAge(JWTbuilder.getExpirationTime())
+            .sameSite("Strict")
+            .build();
+    return cookie;
+  }
+
+  /**
+   * ユーザー認証を行い、JWTトークンを含むオブジェクトを返す
+   *
+   * @param request
+   * @return
+   */
+  public ResponseCookie login(LoginRequest request) {
+    User user = getUserByEmailAndPassword(request);
+
+    return buildCookie(user.getUserId());
+  }
+
+  /**
+   * ユーザー認証を行い、JWTトークンを含むオブジェクトを返す
+   *
+   * @param request
+   * @return
+   */
+  public ResponseCookie adminLogin(LoginRequest request) {
+    User user = getUserByEmailAndPassword(request);
+
+    // AdminUserの存在確認
+    AdminUser adminUser = adminRepository.findByUserId(user.getUserId());
+    if (adminUser == null) {
+      throw new AuthenticationFailedException(
+          "Admin user not found for userId: " + user.getUserId());
+    }
+
+    return buildCookie(user.getUserId());
   }
 
   /**
@@ -64,12 +111,35 @@ public class AuthService {
    *
    * @param userId
    */
-  public void authAdminByUserId(UUID userId) {
-    AdminUser adminUser = adminRepository.findByUserId(userId);
+  public void authByUserId(UUID userId) {
+    User user = userRepository.findByUserId(userId);
+
+    if (user == null) {
+      throw new AuthenticationFailedException("User not found for userId: " + userId);
+    }
+  }
+
+  /**
+   * Admin認証をuserIdで行う userIdに対応するAdminUserが存在しなければAuthenticationFailedExceptionを投げる
+   *
+   * @param adminUserId
+   */
+  public void authAdminByUserId(UUID adminUserId) {
+    AdminUser adminUser = adminRepository.findByUserId(adminUserId);
 
     if (adminUser == null) {
-      throw new AuthenticationFailedException("Admin user not found for userId: " + userId);
+      throw new AuthenticationFailedException("Admin user not found for userId: " + adminUserId);
     }
+  }
+
+  /**
+   * User認証をJWTトークンで行う トークンが不正またはUserが存在しなければAuthenticationFailedExceptionを投げる
+   *
+   * @param token
+   */
+  public void auth(String token) {
+    UUID userId = authByJwt(token);
+    authByUserId(userId);
   }
 
   /**
@@ -78,7 +148,6 @@ public class AuthService {
    * @param token
    */
   public void adminAuth(String token) {
-    System.out.println("AdminAuthRequest token: " + token);
     UUID userId = authByJwt(token);
     authAdminByUserId(userId);
   }
@@ -95,12 +164,10 @@ public class AuthService {
 
     try {
       // 署名・有効期限を検証
-      System.out.println("jwtToken: " + jwtToken);
       DecodedJWT jwt = verifier.verifyRead(jwtToken);
 
       // ユーザーIDを抽出
       String idStr = jwt.getSubject();
-      System.out.println("Decoded userId: " + idStr);
 
       return UUID.fromString(idStr);
 
