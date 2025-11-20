@@ -14,6 +14,7 @@ import jp.ac.dendai.spp.backend.entity.User;
 import jp.ac.dendai.spp.backend.entity.UserSetting;
 import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.request.CreateUserRequest;
+import jp.ac.dendai.spp.backend.repository.PreRegisterTokenRepository;
 import jp.ac.dendai.spp.backend.repository.SocialAccountRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
 import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
@@ -30,6 +31,7 @@ public class UserService {
   private final UserSettingRepository userSettingRepository;
   private final SocialAccountRepository socialAccountRepository;
   private final DisplayIdService displayIdService;
+  private final PreRegisterTokenRepository preRegisterTokenRepository;
 
   public UserService(
       AuthService authService,
@@ -37,13 +39,15 @@ public class UserService {
       UserRepository userRepository,
       UserSettingRepository userSettingRepository,
       SocialAccountRepository socialAccountRepository,
-      DisplayIdService displayIdService) {
+      DisplayIdService displayIdService,
+      PreRegisterTokenRepository preRegisterTokenRepository) {
     this.authService = authService;
     this.tokenService = tokenService;
     this.userRepository = userRepository;
     this.userSettingRepository = userSettingRepository;
     this.socialAccountRepository = socialAccountRepository;
     this.displayIdService = displayIdService;
+    this.preRegisterTokenRepository = preRegisterTokenRepository;
   }
 
   @Transactional
@@ -55,8 +59,12 @@ public class UserService {
       throw new InvalidParameterException("Display ID is already in use");
     }
 
+    if (request.getBirthday().isAfter(LocalDate.now())) {
+      throw new InvalidParameterException("Birthday cannot be in the future");
+    }
+
     boolean showAdultContents =
-        request.getBirthday().plusYears(CommonConstant.ADULT_AGE).isBefore(LocalDate.now())
+        !request.getBirthday().plusYears(CommonConstant.ADULT_AGE).isAfter(LocalDate.now())
             && request.getShowAdultContents();
 
     User user = createUser(preRegisterToken);
@@ -72,6 +80,9 @@ public class UserService {
     userSettingRepository.save(setting);
 
     createSocialAccounts(request.getSocialAccounts(), user.getUserId());
+
+    preRegisterTokenRepository.delete(preRegisterToken);
+
     return authService.buildCookie(user.getUserId());
   }
 
@@ -88,9 +99,11 @@ public class UserService {
 
     for (SocialAccount account : socialAccounts) {
       String link = SocialAccountManage.convertLink(account.getName(), account.getIdentifier());
-      SocialAccountEntity entity =
-          new SocialAccountEntity(
-              userId, PlatformConstant.PLATFORM_LIST.indexOf(account.getName()), link);
+      int platformId = PlatformConstant.PLATFORM_LIST.indexOf(account.getName());
+      if (platformId == -1) {
+        throw new InvalidParameterException("Invalid platform name: " + account.getName());
+      }
+      SocialAccountEntity entity = new SocialAccountEntity(userId, platformId, link);
       accountsToSave.add(entity);
     }
     socialAccountRepository.saveAll(accountsToSave);
