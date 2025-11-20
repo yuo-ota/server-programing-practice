@@ -42,18 +42,19 @@ public class SocialAccountEntityTest {
     User user = new User("test4@example.com", "password4");
     User savedUser = userRepository.save(user);
 
-    SocialAccount socialAccount = new SocialAccount(savedUser.getUserId(), 1);
-    SocialAccount savedSocialAccount = socialAccountRepository.save(socialAccount);
+    SocialAccountEntity socialAccount =
+        new SocialAccountEntity(savedUser.getUserId(), 1, "https://example.com/profile");
+    SocialAccountEntity savedSocialAccount = socialAccountRepository.save(socialAccount);
 
     // UUIDが自動生成されていることを確認
     assertThat(savedSocialAccount.getUserId()).isNotNull();
 
     // データベースから取得
-    Optional<SocialAccount> retrievedSocialAccountOpt =
+    Optional<SocialAccountEntity> retrievedSocialAccountOpt =
         socialAccountRepository.findById(savedSocialAccount.getId());
     assertThat(retrievedSocialAccountOpt).isPresent();
 
-    SocialAccount retrievedSocialAccount = retrievedSocialAccountOpt.get();
+    SocialAccountEntity retrievedSocialAccount = retrievedSocialAccountOpt.get();
     assertThat(retrievedSocialAccount.getUserId()).isEqualTo(savedUser.getUserId());
     assertThat(retrievedSocialAccount.getCreatedAt()).isNotNull();
   }

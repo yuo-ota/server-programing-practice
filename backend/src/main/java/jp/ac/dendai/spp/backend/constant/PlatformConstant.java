@@ -1,13 +1,8 @@
 package jp.ac.dendai.spp.backend.constant;
 
-import java.util.Map;
+import java.util.List;
 
 public class PlatformConstant {
-  public static final Map<Integer, String> PLATFORM_MAP =
-      Map.of(
-          0, "X",
-          1, "Instagram",
-          2, "Pixiv",
-          3, "Skeb",
-          4, "Bluesky");
+  public static final List<String> PLATFORM_LIST =
+      List.of("x", "Instagram", "Pixiv", "Skeb", "Bluesky");
 }
