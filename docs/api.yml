@@ -1251,7 +1251,7 @@ paths:
                     type: string
                   message:
                     type: string
-  /api/users/check-id/{user_id}:
+  /api/users/check-id/{user_Id}:
     get:
       summary: ユーザーIDの利用可否を確認
       parameters:
