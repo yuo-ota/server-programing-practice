@@ -14,6 +14,7 @@ import jp.ac.dendai.spp.backend.entity.User;
 import jp.ac.dendai.spp.backend.entity.UserSetting;
 import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.request.CreateUserRequest;
+import jp.ac.dendai.spp.backend.form.request.UpdateUserRequest;
 import jp.ac.dendai.spp.backend.repository.PreRegisterTokenRepository;
 import jp.ac.dendai.spp.backend.repository.SocialAccountRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
@@ -107,5 +108,58 @@ public class UserService {
       accountsToSave.add(entity);
     }
     socialAccountRepository.saveAll(accountsToSave);
+  }
+
+  @Transactional
+  public void update(String token, UpdateUserRequest request) {
+    UUID userId = authService.authByJwt(token);
+    System.out.println(request.getUserId());
+    UserSetting userSetting = userSettingRepository.findByUserId(userId);
+    if (userSetting == null) {
+      throw new InvalidParameterException("User not found");
+    }
+
+    if (request.getBirthday() != null) {
+      if (request.getBirthday().isAfter(LocalDate.now())) {
+        throw new InvalidParameterException("Birthday cannot be in the future");
+      }
+      userSetting.setBirthday(request.getBirthday());
+      boolean showAdultContents =
+          !request.getBirthday().plusYears(CommonConstant.ADULT_AGE).isAfter(LocalDate.now())
+              && request.getShowAdultContents();
+      userSetting.setShowAdultContent(showAdultContents);
+    }
+
+    if (request.getName() != null) {
+      userSetting.setName(request.getName());
+    }
+
+    if (request.getUserId() != null) {
+      if (!request.getUserId().equals(userSetting.getDisplayId())
+          && displayIdService.isUsed(request.getUserId())) {
+        throw new InvalidParameterException("Display ID is already in use");
+      }
+      userSetting.setDisplayId(request.getUserId());
+    }
+
+    if (request.getIntroduction() != null) {
+      userSetting.setIntroduction(request.getIntroduction());
+    }
+
+    if (request.getIcon() != null && !request.getIcon().isEmpty()) {
+      String iconPath = "/images/icons/" + request.getIcon().getOriginalFilename();
+      userSetting.setIconPath(iconPath);
+    }
+
+    if (request.getHeader() != null && !request.getHeader().isEmpty()) {
+      String headerPath = "/images/headers/" + request.getHeader().getOriginalFilename();
+      userSetting.setHeaderPath(headerPath);
+    }
+
+    socialAccountRepository.deleteByUserId(userId);
+    createSocialAccounts(request.getSocialAccounts(), userId);
+
+    System.out.println(userSetting);
+    userSettingRepository.save(userSetting);
   }
 }

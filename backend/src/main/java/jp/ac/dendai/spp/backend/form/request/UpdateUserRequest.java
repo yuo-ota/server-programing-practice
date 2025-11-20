@@ -9,6 +9,7 @@ public class UpdateUserRequest {
   private String userId;
   private String name;
   private MultipartFile icon;
+  private MultipartFile header;
   private List<SocialAccount> socialAccounts;
   private String introduction;
   private LocalDate birthday;
@@ -37,6 +38,14 @@ public class UpdateUserRequest {
 
   public void setIcon(MultipartFile icon) {
     this.icon = icon;
+  }
+
+  public MultipartFile getHeader() {
+    return header;
+  }
+
+  public void setHeader(MultipartFile header) {
+    this.header = header;
   }
 
   public List<SocialAccount> getSocialAccounts() {
