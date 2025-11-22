@@ -108,4 +108,8 @@ public class UserService {
     }
     socialAccountRepository.saveAll(accountsToSave);
   }
+
+  public User findByEmailAddress(String emailAddress) {
+    return userRepository.findByEmailAddress(emailAddress);
+  }
 }
