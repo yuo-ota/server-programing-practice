@@ -8,6 +8,10 @@ import jp.ac.dendai.spp.backend.form.request.AuthRequest;
 import jp.ac.dendai.spp.backend.repository.PasswordResetTokenRepository;
 import jp.ac.dendai.spp.backend.repository.PreRegisterTokenRepository;
 import jp.ac.dendai.spp.backend.util.TimeManage;
+
+import java.security.SecureRandom;
+import java.util.Base64;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -58,5 +62,13 @@ public class TokenService {
     }
 
     return tokenEntity;
+  }
+
+  public String generateToken() {
+    SecureRandom sr = new SecureRandom();
+    byte[] bytes = new byte[TokenConstant.TOKEN_BYTE_LENGTH];
+    sr.nextBytes(bytes);
+
+    return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
   }
 }

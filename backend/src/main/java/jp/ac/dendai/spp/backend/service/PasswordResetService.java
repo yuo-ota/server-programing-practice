@@ -45,7 +45,7 @@ public class PasswordResetService {
       throw new AuthenticationFailedException("User not found");
     }
 
-    String token = generateToken();
+    String token = tokenService.generateToken();
     passwordResetTokenRepository.save(
         new PasswordResetToken(
             user.getUserId(), token, TokenConstant.PASSWORD_RESET_TOKEN_DURATION));
@@ -70,14 +70,6 @@ public class PasswordResetService {
             + "※このメールに心当たりがない場合は、破棄してください。";
 
     emailManager.sendSimpleEmail(emailAddress, TokenConstant.PASSWORD_RESET_MAIL_SUBJECT, passwordResetMailBody);
-  }
-
-  public String generateToken() {
-    SecureRandom sr = new SecureRandom();
-    byte[] bytes = new byte[TokenConstant.TOKEN_BYTE_LENGTH];
-    sr.nextBytes(bytes);
-
-    return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
   }
 
   /**
