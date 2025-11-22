@@ -1,5 +1,7 @@
 package jp.ac.dendai.spp.backend.service;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import jp.ac.dendai.spp.backend.constant.TokenConstant;
 import jp.ac.dendai.spp.backend.entity.BaseToken;
 import jp.ac.dendai.spp.backend.error.AuthenticationFailedException;
@@ -8,10 +10,6 @@ import jp.ac.dendai.spp.backend.form.request.AuthRequest;
 import jp.ac.dendai.spp.backend.repository.PasswordResetTokenRepository;
 import jp.ac.dendai.spp.backend.repository.PreRegisterTokenRepository;
 import jp.ac.dendai.spp.backend.util.TimeManage;
-
-import java.security.SecureRandom;
-import java.util.Base64;
-
 import org.springframework.stereotype.Service;
 
 @Service

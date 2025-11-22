@@ -88,6 +88,7 @@ public class UserService {
 
   /**
    * ユーザーを作成する
+   *
    * @param preRegisterToken
    * @return
    */
