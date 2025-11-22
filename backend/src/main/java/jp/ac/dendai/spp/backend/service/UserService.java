@@ -86,12 +86,23 @@ public class UserService {
     return authService.buildCookie(user.getUserId());
   }
 
+  /**
+   * ユーザーを作成する
+   * @param preRegisterToken
+   * @return
+   */
   public User createUser(PreRegisterToken preRegisterToken) {
     User user = new User(preRegisterToken.getEmailAddress(), preRegisterToken.getPassword());
     userRepository.save(user);
     return user;
   }
 
+  /**
+   * ソーシャルアカウント情報を保存する
+   *
+   * @param socialAccounts
+   * @param userId
+   */
   public void createSocialAccounts(List<SocialAccount> socialAccounts, UUID userId) {
     if (socialAccounts == null || socialAccounts.isEmpty()) return;
 
@@ -109,6 +120,12 @@ public class UserService {
     socialAccountRepository.saveAll(accountsToSave);
   }
 
+  /**
+   * メールアドレスからユーザー情報を取得する
+   *
+   * @param emailAddress
+   * @return
+   */
   public User findByEmailAddress(String emailAddress) {
     return userRepository.findByEmailAddress(emailAddress);
   }
