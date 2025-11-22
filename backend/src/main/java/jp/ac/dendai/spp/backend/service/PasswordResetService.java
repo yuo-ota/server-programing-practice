@@ -1,7 +1,5 @@
 package jp.ac.dendai.spp.backend.service;
 
-import java.security.SecureRandom;
-import java.util.Base64;
 import jp.ac.dendai.spp.backend.constant.TokenConstant;
 import jp.ac.dendai.spp.backend.entity.PasswordResetToken;
 import jp.ac.dendai.spp.backend.entity.User;
