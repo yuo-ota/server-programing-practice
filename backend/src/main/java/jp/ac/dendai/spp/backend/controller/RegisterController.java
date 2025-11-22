@@ -1,18 +1,16 @@
 package jp.ac.dendai.spp.backend.controller;
 
+import jakarta.validation.Valid;
 import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.request.RegisterRequest;
 import jp.ac.dendai.spp.backend.form.response.ErrorResponse;
 import jp.ac.dendai.spp.backend.service.PreRegisterService;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/register")
@@ -29,7 +27,7 @@ public class RegisterController {
       preRegisterService.registerProcess(request);
 
       return ResponseEntity.status(HttpStatus.CREATED).build();
-      
+
     } catch (InvalidParameterException e) {
       ErrorResponse errorResponse = new ErrorResponse();
 
