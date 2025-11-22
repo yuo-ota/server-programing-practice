@@ -69,7 +69,7 @@ public class PasswordResetService {
             + "\n\n"
             + "※このメールに心当たりがない場合は、破棄してください。";
 
-    emailManager.sendSimpleEmail(emailAddress, "パスワード再設定のご案内", passwordResetMailBody);
+    emailManager.sendSimpleEmail(emailAddress, TokenConstant.PASSWORD_RESET_MAIL_SUBJECT, passwordResetMailBody);
   }
 
   public String generateToken() {
