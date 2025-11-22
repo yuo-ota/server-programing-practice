@@ -51,6 +51,16 @@ public class AuthService {
     return user;
   }
 
+  /**
+   * パスワードをハッシュ化する
+   *
+   * @param rawPassword
+   * @return
+   */
+  public String hashPassword(String rawPassword) {
+    return encoder.encode(rawPassword);
+  }
+
   /** */
   public ResponseCookie buildCookie(UUID id) {
     // JWTトークンの生成

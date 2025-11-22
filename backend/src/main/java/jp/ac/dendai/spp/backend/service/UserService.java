@@ -112,4 +112,27 @@ public class UserService {
   public User findByEmailAddress(String emailAddress) {
     return userRepository.findByEmailAddress(emailAddress);
   }
+
+  /**
+   * ユーザーIDからユーザー情報を取得する
+   *
+   * @param userId
+   * @return
+   */
+  public User findByUserId(UUID userId) {
+    return userRepository.findByUserId(userId);
+  }
+
+  /**
+   * パスワードを更新する
+   *
+   * @param userId
+   * @param password
+   */
+  public void updatePassword(UUID userId, String password) {
+    User user = userRepository.findByUserId(userId);
+
+    user.setPassword(password);
+    userRepository.save(user);
+  }
 }
