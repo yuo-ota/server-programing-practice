@@ -1,26 +1,23 @@
 package jp.ac.dendai.spp.backend.form.request;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import jp.ac.dendai.spp.backend.dto.SocialAccount;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.List;
+import jp.ac.dendai.spp.backend.dto.SocialAccount;
 
 public class CreateUserRequest {
-  @NotNull
-  private String token;
+  @NotNull private String token;
+
   @NotBlank
   @Pattern(regexp = "^(?=.*\\S).+$")
   private String name;
-  @Past
-  private LocalDate birthday;
-  @NotNull
-  private boolean showAdultContents;
+
+  @Past private LocalDate birthday;
+  @NotNull private boolean showAdultContents;
   private List<SocialAccount> socialAccounts;
 
   @NotBlank
