@@ -174,7 +174,6 @@ public class UserService {
 
     if (request.getIcon() != null && !request.getIcon().isEmpty()) {
       String iconPath;
-      System.out.println(request.getIcon());
       try {
         iconPath = ImageManager.processAndSaveImage(request.getIcon(), ImageConstant.TYPE_ICON);
       } catch (Exception e) {
