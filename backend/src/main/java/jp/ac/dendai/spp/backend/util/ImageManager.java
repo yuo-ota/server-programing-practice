@@ -11,24 +11,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Utility class for processing and saving image files to the server.
- * <p>
- * Provides methods to handle image uploads, generate unique filenames,
- * ensure target directories exist, and save images to disk.
+ *
+ * <p>Provides methods to handle image uploads, generate unique filenames, ensure target directories
+ * exist, and save images to disk.
  */
 public class ImageManager {
-  private static final int MAX_FILENAME_GENERATION_ATTEMPTS = 10;
 
   /**
    * Processes and saves an uploaded image file to the server.
-   * <p>
-   * Generates a unique filename using UUID, ensures the target directory exists,
-   * and saves the image file to disk. Returns the absolute path to the saved image.
+   *
+   * <p>Generates a unique filename using UUID, ensures the target directory exists, and saves the
+   * image file to disk. Returns the absolute path to the saved image.
    *
    * @param image the uploaded image file (must not be null or empty)
    * @param imageTypeKey the key representing the image type, used to determine the target directory
    * @return the absolute path to the saved image file
-   * @throws IOException if an I/O error occurs during saving or directory creation,
-   *         or if a unique filename cannot be generated after several attempts
+   * @throws IOException if an I/O error occurs during saving or directory creation, or if a unique
+   *     filename cannot be generated after several attempts
    * @throws IllegalArgumentException if the image is empty or the imageTypeKey is invalid
    * @throws NullPointerException if the image or its original filename is null
    */
@@ -47,9 +46,23 @@ public class ImageManager {
         Objects.requireNonNull(image.getOriginalFilename(), "Original filename must not be null.");
     String extension = getFileExtension(originalFilename);
 
+    if (!isAllowedExtension(extension)) {
+      throw new IllegalArgumentException("Unsupported image extension: " + extension);
+    }
+
+    long size = image.getSize();
+    if (size > ImageConstant.MAX_FILE_SIZE_BYTES) {
+      throw new IllegalArgumentException(
+          "Image file is too large: "
+              + size
+              + " bytes (max "
+              + ImageConstant.MAX_FILE_SIZE_BYTES
+              + " bytes)");
+    }
+
     Path dir = ensureDirectoryExists(absoluteDirStr);
 
-    for (int attempt = 0; attempt < MAX_FILENAME_GENERATION_ATTEMPTS; attempt++) {
+    for (int attempt = 0; attempt < ImageConstant.MAX_FILENAME_GENERATION_ATTEMPTS; attempt++) {
       String newFilename = generateUuidFilename(extension);
       Path targetPath = dir.resolve(newFilename);
 
@@ -58,7 +71,7 @@ public class ImageManager {
       }
 
       try (var is = image.getInputStream()) {
-        Files.copy(is, targetPath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(is, targetPath);
       }
 
       return absoluteDirStr + "/" + newFilename;
@@ -66,7 +79,7 @@ public class ImageManager {
 
     throw new IOException(
         "Failed to generate a unique filename after "
-            + MAX_FILENAME_GENERATION_ATTEMPTS
+            + ImageConstant.MAX_FILENAME_GENERATION_ATTEMPTS
             + " attempts.");
   }
 
@@ -96,5 +109,15 @@ public class ImageManager {
       return filename.substring(dotIndex + 1).toLowerCase();
     }
     return "";
+  }
+
+  // 許可された拡張子かどうかを判定する（Twitterで一般的に使用される画像拡張子を参考）
+  private static boolean isAllowedExtension(String extension) {
+    if (extension == null || extension.isEmpty()) {
+      return false;
+    }
+    String ext =
+        extension.startsWith(".") ? extension.substring(1).toLowerCase() : extension.toLowerCase();
+    return ImageConstant.ALLOWED_EXTENSIONS.contains(ext);
   }
 }
