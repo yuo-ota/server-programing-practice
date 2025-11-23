@@ -53,8 +53,8 @@ public class UserService {
 
   @Transactional
   public ResponseCookie register(CreateUserRequest request) {
-    PreRegisterToken preRegisterToken =
-        (PreRegisterToken) tokenService.verifyToken(request.getToken(), TokenConstant.PRE_REGISTER);
+    PreRegisterToken preRegisterToken = (PreRegisterToken) tokenService.verifyToken(request.getToken(),
+        TokenConstant.PRE_REGISTER);
 
     if (displayIdService.isUsed(request.getUserId())) {
       throw new InvalidParameterException("Display ID is already in use");
@@ -64,19 +64,17 @@ public class UserService {
       throw new InvalidParameterException("Birthday cannot be in the future");
     }
 
-    boolean showAdultContents =
-        !request.getBirthday().plusYears(CommonConstant.ADULT_AGE).isAfter(LocalDate.now())
-            && request.getShowAdultContents();
+    boolean showAdultContents = !request.getBirthday().plusYears(CommonConstant.ADULT_AGE).isAfter(LocalDate.now())
+        && request.getShowAdultContents();
 
     User user = createUser(preRegisterToken);
 
-    UserSetting setting =
-        new UserSetting(
-            user.getUserId(),
-            request.getName(),
-            request.getUserId(),
-            request.getBirthday(),
-            showAdultContents);
+    UserSetting setting = new UserSetting(
+        user.getUserId(),
+        request.getName(),
+        request.getUserId(),
+        request.getBirthday(),
+        showAdultContents);
 
     userSettingRepository.save(setting);
 
@@ -87,14 +85,27 @@ public class UserService {
     return authService.buildCookie(user.getUserId());
   }
 
+  /**
+   * ユーザーを作成する
+   *
+   * @param preRegisterToken
+   * @return
+   */
   public User createUser(PreRegisterToken preRegisterToken) {
     User user = new User(preRegisterToken.getEmailAddress(), preRegisterToken.getPassword());
     userRepository.save(user);
     return user;
   }
 
+  /**
+   * ソーシャルアカウント情報を保存する
+   *
+   * @param socialAccounts
+   * @param userId
+   */
   public void createSocialAccounts(List<SocialAccount> socialAccounts, UUID userId) {
-    if (socialAccounts == null || socialAccounts.isEmpty()) return;
+    if (socialAccounts == null || socialAccounts.isEmpty())
+      return;
 
     List<SocialAccountEntity> accountsToSave = new ArrayList<SocialAccountEntity>();
 
@@ -124,9 +135,8 @@ public class UserService {
         throw new InvalidParameterException("Birthday cannot be in the future");
       }
       userSetting.setBirthday(request.getBirthday());
-      boolean showAdultContents =
-          !request.getBirthday().plusYears(CommonConstant.ADULT_AGE).isAfter(LocalDate.now())
-              && request.getShowAdultContents();
+      boolean showAdultContents = !request.getBirthday().plusYears(CommonConstant.ADULT_AGE).isAfter(LocalDate.now())
+          && request.getShowAdultContents();
       userSetting.setShowAdultContent(showAdultContents);
     }
 
@@ -161,5 +171,38 @@ public class UserService {
 
     System.out.println(userSetting);
     userSettingRepository.save(userSetting);
+  }
+
+  /**
+   * メールアドレスからユーザー情報を取得する
+   *
+   * @param emailAddress
+   * @return
+   */
+  public User findByEmailAddress(String emailAddress) {
+    return userRepository.findByEmailAddress(emailAddress);
+  }
+
+  /**
+   * ユーザーIDからユーザー情報を取得する
+   *
+   * @param userId
+   * @return
+   */
+  public User findByUserId(UUID userId) {
+    return userRepository.findByUserId(userId);
+  }
+
+  /**
+   * パスワードを更新する
+   *
+   * @param userId
+   * @param password
+   */
+  public void updatePassword(UUID userId, String password) {
+    User user = userRepository.findByUserId(userId);
+
+    user.setPassword(password);
+    userRepository.save(user);
   }
 }

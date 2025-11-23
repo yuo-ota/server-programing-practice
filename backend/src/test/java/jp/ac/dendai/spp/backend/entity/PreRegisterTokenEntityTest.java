@@ -41,6 +41,7 @@ public class PreRegisterTokenEntityTest {
     PreRegisterToken preRegisterToken =
         new PreRegisterToken(
             "test4@example.com",
+            "$2a$08$ava0DsxqbPYB7hUYPkOuFOmfCFNH5R0OcTdtcYKxw2tOPZDM9F286",
             "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb",
             Duration.ofMinutes(5));
     assertThat(preRegisterToken.getId()).isNull();

@@ -28,9 +28,10 @@ public class PreRegisterToken extends BaseToken {
     super();
   }
 
-  public PreRegisterToken(String emailAddress, String token, Duration duration) {
+  public PreRegisterToken(String emailAddress, String password, String token, Duration duration) {
     super(token, duration);
     this.emailAddress = emailAddress;
+    this.password = password;
   }
 
   // Getter, Setter
