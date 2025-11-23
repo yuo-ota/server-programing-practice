@@ -139,7 +139,6 @@ public class UserService {
    */
   public void update(String token, UpdateUserRequest request) {
     UUID userId = authService.authByJwt(token);
-    System.out.println(request.getUserId());
     UserSetting userSetting = userSettingRepository.findByUserId(userId);
     if (userSetting == null) {
       throw new InvalidParameterException("User not found");
