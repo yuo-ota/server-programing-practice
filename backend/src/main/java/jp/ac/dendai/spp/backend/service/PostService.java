@@ -1,6 +1,7 @@
 package jp.ac.dendai.spp.backend.service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -40,8 +41,16 @@ public class PostService {
     this.authService = authService;
   }
 
+  /**
+   * 指定されたユーザーの投稿を上書き投稿する
+   *
+   * @param userId
+   * @param request
+   */
   @Transactional
   public void createPost(UUID userId, CreatePostRequest request) {
+    overwritePost(userId);
+
     boolean isSensitive = Boolean.parseBoolean(request.getSensitive());
     Post post = new Post(userId, request.getText(), isSensitive, false);
     Post savedPost = postRepository.save(post);
@@ -122,6 +131,11 @@ public class PostService {
    */
   public void checkValidDate(LocalDate date) {
     LocalDate today = LocalDate.now();
+    LocalTime nowTime = LocalTime.now();
+
+    if (nowTime.isBefore(PostConstant.DATE_CHANGE_TIME)) {
+      today = today.minusDays(1);
+    }
 
     if (date.isBefore(today.minusDays(PostConstant.DAYS_VIEWABLE_TRACEBACK))
         || date.isAfter(today)) {
@@ -165,5 +179,14 @@ public class PostService {
     image.setPath(imageEntity.getPath());
     image.setAlt(imageEntity.getAlt());
     return image;
+  }
+
+  public void overwritePost(UUID userId) {
+    Post existingPosts = postRepository.findByCreatorId(userId, PostConstant.DATE_CHANGE_TIME.getHour());
+
+    if (existingPosts == null) {
+      return;
+    }
+    postRepository.delete(existingPosts);
   }
 }
