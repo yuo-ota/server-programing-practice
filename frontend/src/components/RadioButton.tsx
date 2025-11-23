@@ -1,9 +1,6 @@
-import LikeButton from "../features/posts/components/LikeButton";
-
 interface RadioButtonProps {
   id: string;
   name: string;
-  value: string;
   label: string;
   checked: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -13,20 +10,18 @@ interface RadioButtonProps {
 const RadioButton = ({
   id,
   name,
-  value,
   label,
   checked,
   onChange,
   className = '',
 }: RadioButtonProps) => {
   return (
-    <div className="flex gap-10">
-      <div className="inline-flex items-center">
+      <div className={`${className} inline-flex items-center`}>
         <label className="relative flex items-center cursor-pointer" htmlFor={id}>
           <input
             name={name}
             type="radio"
-            className="peer h-5 w-5 cursor-pointer appearance-none rounded-full border border-slate-300 checked:border-theme transition-all"
+            className="peer h-[21px] w-[21px] cursor-pointer appearance-none rounded-full border border-slate-300 checked:border-theme transition-all"
             id={id}
             checked={checked}
             onChange={onChange}
@@ -35,7 +30,6 @@ const RadioButton = ({
         </label>
         <label className="ml-2 text-foreground cursor-pointer text-subtitle">{label}</label>
       </div>
-    </div>
   )
 }
 

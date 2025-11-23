@@ -8,7 +8,6 @@ export default {
   args: {
     id: 'テキスト',
     name: 'テキスト',
-    value: 'テキスト',
     label: 'テキスト',
     checked: true,
     className: '',
