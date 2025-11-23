@@ -40,6 +40,13 @@ public class PostService {
     // TODO: 投稿作成のロジックをここに実装
   }
 
+  /**
+   * 指定されたユーザーの指定された日の投稿を取得する
+   *
+   * @param userId
+   * @param date
+   * @return
+   */
   public List<ShowPostResponse> showPost(UUID userId, LocalDate date) {
     checkValidDate(date);
 
@@ -53,6 +60,12 @@ public class PostService {
     return responses;
   }
 
+  /**
+   * 指定された投稿IDの投稿を取得する
+   *
+   * @param postId
+   * @return
+   */
   public ShowPostResponse showSinglePost(UUID postId) {
     Post post = postRepository.findByPostId(postId);
     if (post == null) {
@@ -61,6 +74,24 @@ public class PostService {
 
     ShowPostResponse response = convertToShowPostResponse(postId);
     return response;
+  }
+
+  /**
+   * 指定された投稿を削除する
+   *
+   * @param userId
+   * @param postId
+   */
+  public void deletePost(UUID userId, UUID postId) {
+    Post post = postRepository.findByPostId(postId);
+    if (post == null) {
+      throw new InvalidParameterException("指定された投稿は存在しません。");
+    }
+    if (!post.getCreatorId().equals(userId)) {
+      throw new InvalidParameterException("指定された投稿の削除権限がありません。");
+    }
+
+    postRepository.delete(post);
   }
 
   /**
