@@ -1,5 +1,6 @@
 package jp.ac.dendai.spp.backend.form.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -9,7 +10,7 @@ import jp.ac.dendai.spp.backend.dto.SocialAccount;
 import org.springframework.web.multipart.MultipartFile;
 
 public class UpdateUserRequest {
-  @Pattern(regexp = "^(?=.*\\S).+$")
+  @NotBlank
   private String name;
 
   private MultipartFile icon;
@@ -18,7 +19,8 @@ public class UpdateUserRequest {
   @Size(max = 200, message = "自己紹介は200文字以下で設定してください。")
   private String introduction;
 
-  @Past private LocalDate birthday;
+  @Past(message = "誕生日は過去の日付で設定してください。")
+  private LocalDate birthday;
   private boolean showAdultContents;
 
   @Size(min = 3, max = 15, message = "ユーザーIDは3文字以上15文字以下で設定してください。")

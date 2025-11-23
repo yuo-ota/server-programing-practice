@@ -1,7 +1,6 @@
 package jp.ac.dendai.spp.backend.form.request;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -10,14 +9,15 @@ import java.util.List;
 import jp.ac.dendai.spp.backend.dto.SocialAccount;
 
 public class CreateUserRequest {
-  @NotNull private String token;
+  @NotBlank
+  private String token;
 
   @NotBlank
-  @Pattern(regexp = "^(?=.*\\S).+$")
   private String name;
 
-  @Past private LocalDate birthday;
-  @NotNull private boolean showAdultContents;
+  @Past(message = "誕生日は過去の日付で設定してください。")
+  private LocalDate birthday;
+  private boolean showAdultContents;
   private List<SocialAccount> socialAccounts;
 
   @NotBlank
