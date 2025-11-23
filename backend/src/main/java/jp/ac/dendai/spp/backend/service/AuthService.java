@@ -110,7 +110,7 @@ public class AuthService {
   }
 
   /**
-   * Admin認証をuserIdで行う userIdに対応するAdminUserが存在しなければAuthenticationFailedExceptionを投げる
+   * ユーザー認証をuserIdで行う userIdに対応するUserが存在しなければAuthenticationFailedExceptionを投げる
    *
    * @param userId
    */

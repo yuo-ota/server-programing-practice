@@ -1,6 +1,5 @@
 package jp.ac.dendai.spp.backend.form.request;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -10,9 +9,11 @@ import jp.ac.dendai.spp.backend.dto.SocialAccount;
 import org.springframework.web.multipart.MultipartFile;
 
 public class UpdateUserRequest {
-  @NotBlank private String name;
+  @Pattern(regexp = "^(?=.*\\S).+$")
+  private String name;
 
   private MultipartFile icon;
+  private MultipartFile header;
   private List<SocialAccount> socialAccounts;
 
   @Size(max = 200, message = "自己紹介は200文字以下で設定してください。")
@@ -50,6 +51,14 @@ public class UpdateUserRequest {
 
   public void setIcon(MultipartFile icon) {
     this.icon = icon;
+  }
+
+  public MultipartFile getHeader() {
+    return header;
+  }
+
+  public void setHeader(MultipartFile header) {
+    this.header = header;
   }
 
   public List<SocialAccount> getSocialAccounts() {
