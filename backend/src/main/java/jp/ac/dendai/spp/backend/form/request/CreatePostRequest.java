@@ -1,11 +1,18 @@
 package jp.ac.dendai.spp.backend.form.request;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public class CreatePostRequest {
+
+  @Size(max = 140)
   private String text;
-  private List<MultipartFile> images;
+
+  @NotNull private List<MultipartFile> images;
+
+  @NotNull private boolean isSensitive;
 
   // Getters and Setters
   public String getText() {
@@ -22,5 +29,13 @@ public class CreatePostRequest {
 
   public void setImages(List<MultipartFile> images) {
     this.images = images;
+  }
+
+  public boolean isSensitive() {
+    return isSensitive;
+  }
+
+  public void setSensitive(boolean isSensitive) {
+    this.isSensitive = isSensitive;
   }
 }
