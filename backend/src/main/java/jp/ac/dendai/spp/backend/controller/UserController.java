@@ -1,5 +1,6 @@
 package jp.ac.dendai.spp.backend.controller;
 
+import jakarta.validation.Valid;
 import jp.ac.dendai.spp.backend.error.AuthenticationFailedException;
 import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.request.CreateUserRequest;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +29,7 @@ public class UserController {
   }
 
   @PostMapping
-  public ResponseEntity<?> create(@RequestBody CreateUserRequest request) {
+  public ResponseEntity<?> create(@RequestBody @Valid CreateUserRequest request) {
     try {
       ResponseCookie cookie = userService.register(request);
 
@@ -57,15 +59,12 @@ public class UserController {
     }
   }
 
-  @PatchMapping()
+  @PatchMapping
   public ResponseEntity<?> update(
-      @RequestHeader("Authorization") String token, @RequestBody UpdateUserRequest request) {
-    System.out.println("UserController update called");
+      @RequestHeader("Authorization") String token,
+      @Valid @ModelAttribute UpdateUserRequest request) {
     try {
-      System.out.println("UserController update try block entered");
       userService.update(token, request);
-      System.out.println("UserController update completed");
-
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     } catch (InvalidParameterException e) {
       ErrorResponse errorResponse = new ErrorResponse();

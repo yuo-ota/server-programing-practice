@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import jp.ac.dendai.spp.backend.constant.CommonConstant;
+import jp.ac.dendai.spp.backend.constant.ImageConstant;
 import jp.ac.dendai.spp.backend.constant.PlatformConstant;
 import jp.ac.dendai.spp.backend.constant.TokenConstant;
 import jp.ac.dendai.spp.backend.dto.SocialAccount;
@@ -19,6 +20,7 @@ import jp.ac.dendai.spp.backend.repository.PreRegisterTokenRepository;
 import jp.ac.dendai.spp.backend.repository.SocialAccountRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
 import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
+import jp.ac.dendai.spp.backend.util.ImageManager;
 import jp.ac.dendai.spp.backend.util.SocialAccountManage;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
@@ -53,8 +55,8 @@ public class UserService {
 
   @Transactional
   public ResponseCookie register(CreateUserRequest request) {
-    PreRegisterToken preRegisterToken = (PreRegisterToken) tokenService.verifyToken(request.getToken(),
-        TokenConstant.PRE_REGISTER);
+    PreRegisterToken preRegisterToken =
+        (PreRegisterToken) tokenService.verifyToken(request.getToken(), TokenConstant.PRE_REGISTER);
 
     if (displayIdService.isUsed(request.getUserId())) {
       throw new InvalidParameterException("Display ID is already in use");
@@ -64,17 +66,19 @@ public class UserService {
       throw new InvalidParameterException("Birthday cannot be in the future");
     }
 
-    boolean showAdultContents = !request.getBirthday().plusYears(CommonConstant.ADULT_AGE).isAfter(LocalDate.now())
-        && request.getShowAdultContents();
+    boolean showAdultContents =
+        !request.getBirthday().plusYears(CommonConstant.ADULT_AGE).isAfter(LocalDate.now())
+            && request.getShowAdultContents();
 
     User user = createUser(preRegisterToken);
 
-    UserSetting setting = new UserSetting(
-        user.getUserId(),
-        request.getName(),
-        request.getUserId(),
-        request.getBirthday(),
-        showAdultContents);
+    UserSetting setting =
+        new UserSetting(
+            user.getUserId(),
+            request.getName(),
+            request.getUserId(),
+            request.getBirthday(),
+            showAdultContents);
 
     userSettingRepository.save(setting);
 
@@ -104,8 +108,7 @@ public class UserService {
    * @param userId
    */
   public void createSocialAccounts(List<SocialAccount> socialAccounts, UUID userId) {
-    if (socialAccounts == null || socialAccounts.isEmpty())
-      return;
+    if (socialAccounts == null || socialAccounts.isEmpty()) return;
 
     List<SocialAccountEntity> accountsToSave = new ArrayList<SocialAccountEntity>();
 
@@ -135,8 +138,9 @@ public class UserService {
         throw new InvalidParameterException("Birthday cannot be in the future");
       }
       userSetting.setBirthday(request.getBirthday());
-      boolean showAdultContents = !request.getBirthday().plusYears(CommonConstant.ADULT_AGE).isAfter(LocalDate.now())
-          && request.getShowAdultContents();
+      boolean showAdultContents =
+          !request.getBirthday().plusYears(CommonConstant.ADULT_AGE).isAfter(LocalDate.now())
+              && request.getShowAdultContents();
       userSetting.setShowAdultContent(showAdultContents);
     }
 
@@ -157,12 +161,24 @@ public class UserService {
     }
 
     if (request.getIcon() != null && !request.getIcon().isEmpty()) {
-      String iconPath = "/images/icons/" + request.getIcon().getOriginalFilename();
+      String iconPath;
+      System.out.println(request.getIcon());
+      try {
+        iconPath = ImageManager.processAndSaveImage(request.getIcon(), ImageConstant.TYPE_ICON);
+      } catch (Exception e) {
+        throw new InvalidParameterException("Failed to process icon image");
+      }
       userSetting.setIconPath(iconPath);
     }
 
     if (request.getHeader() != null && !request.getHeader().isEmpty()) {
-      String headerPath = "/images/headers/" + request.getHeader().getOriginalFilename();
+      String headerPath;
+      try {
+        headerPath =
+            ImageManager.processAndSaveImage(request.getHeader(), ImageConstant.TYPE_HEADER);
+      } catch (Exception e) {
+        throw new InvalidParameterException("Failed to process header image");
+      }
       userSetting.setHeaderPath(headerPath);
     }
 
