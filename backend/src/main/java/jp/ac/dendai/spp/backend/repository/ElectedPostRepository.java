@@ -12,7 +12,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ElectedPostRepository extends JpaRepository<ElectedPost, UUID> {
   @Query(
-      "SELECT e FROM ElectedPost e WHERE e.userId = :userId AND DATE(e.deliveredAt) = :date ORDER BY e.index ASC")
-  List<ElectedPost> findByUserIdAndDate(
-      @Param("userId") UUID userId, @Param("date") LocalDate date);
+      "SELECT e FROM ElectedPost e WHERE e.userId = :userId AND e.deliveredAt >= :startOfDay AND e.deliveredAt < :startOfNextDay ORDER BY e.index ASC")
+  List<ElectedPost> findByUserIdAndDeliveredAtBetween(
+      @Param("userId") UUID userId,
+      @Param("startOfDay") java.time.LocalDateTime startOfDay,
+      @Param("startOfNextDay") java.time.LocalDateTime startOfNextDay);
 }
