@@ -5,14 +5,24 @@ import java.util.List;
 import jp.ac.dendai.spp.backend.dto.SocialAccount;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public class UpdateUserRequest {
-  private String userId;
+  @Pattern(regexp = "^(?=.*\\S).+$")
   private String name;
   private MultipartFile icon;
   private List<SocialAccount> socialAccounts;
+  @Size(max = 200, message = "自己紹介は200文字以下で設定してください。")
   private String introduction;
+  @Past
   private LocalDate birthday;
   private boolean showAdultContents;
+
+  @Size(min = 3, max = 15, message = "ユーザーIDは3文字以上15文字以下で設定してください。")
+  @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "ユーザーIDは英数字とアンダースコア(_)のみ使用できます。")
+  private String userId;
 
   // Getters and Setters
   public String getUserId() {
