@@ -42,7 +42,7 @@ services:
   init-images:
     image: alpine
     command: >
-      sh -c "cp -R /seed/* /images/"
+      sh -c "if [ \"$(ls -A /images)\" = \"\" ]; then cp -R /seed/* /images/; else echo 'Images directory already populated, skipping seed copy.'; fi"
     volumes:
       - images:/images
       - ./seed-images:/seed
