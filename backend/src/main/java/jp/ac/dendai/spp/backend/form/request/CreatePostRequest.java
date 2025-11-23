@@ -12,7 +12,7 @@ public class CreatePostRequest {
 
   @NotNull private List<MultipartFile> images;
 
-  @NotNull private boolean isSensitive;
+  @NotNull private String sensitive;
 
   // Getters and Setters
   public String getText() {
@@ -31,11 +31,11 @@ public class CreatePostRequest {
     this.images = images;
   }
 
-  public boolean isSensitive() {
-    return isSensitive;
+  public String getSensitive() {
+    return sensitive;
   }
 
-  public void setSensitive(boolean isSensitive) {
-    this.isSensitive = isSensitive;
+  public void setSensitive(String sensitive) {
+    this.sensitive = sensitive;
   }
 }

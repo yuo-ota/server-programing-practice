@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import jp.ac.dendai.spp.backend.constant.ImageConstant;
 import jp.ac.dendai.spp.backend.constant.PostConstant;
 import jp.ac.dendai.spp.backend.dto.Image;
 import jp.ac.dendai.spp.backend.entity.ElectedPost;
@@ -15,7 +16,10 @@ import jp.ac.dendai.spp.backend.form.response.ShowPostResponse;
 import jp.ac.dendai.spp.backend.repository.ElectedPostRepository;
 import jp.ac.dendai.spp.backend.repository.ImageRepository;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
+import jp.ac.dendai.spp.backend.util.ImageManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class PostService {
@@ -36,8 +40,26 @@ public class PostService {
     this.authService = authService;
   }
 
+  @Transactional
   public void createPost(UUID userId, CreatePostRequest request) {
-    // TODO: 投稿作成のロジックをここに実装
+    boolean isSensitive = Boolean.parseBoolean(request.getSensitive());
+    Post post = new Post(userId, request.getText(), isSensitive, false);
+    Post savedPost = postRepository.save(post);
+    System.out.println(isSensitive);
+
+    for (int i = 0; i < request.getImages().size(); i++) {
+      MultipartFile imageDto = request.getImages().get(i);
+      String imagePath;
+
+      try {
+        imagePath = ImageManager.processAndSaveImage(imageDto, ImageConstant.TYPE_WORKS);
+      } catch (Exception e) {
+        throw new InvalidParameterException("Failed to process work image", e);
+      }
+
+      ImageEntity imageEntity = new ImageEntity(savedPost.getId(), i, imagePath, "");
+      imageRepository.save(imageEntity);
+    }
   }
 
   /**
