@@ -125,6 +125,18 @@ public class UserService {
   }
 
   @Transactional
+  /**
+   * Updates the user's settings and social accounts.
+   *
+   * <p>This method authenticates the user by JWT token, validates and updates user settings
+   * such as birthday, name, display ID, introduction, icon, and header images. It also updates
+   * the user's social accounts. If any validation fails, an {@link InvalidParameterException}
+   * is thrown.
+   *
+   * @param token JWT token used for user authentication
+   * @param request {@link UpdateUserRequest} containing the new user settings and social accounts
+   * @throws InvalidParameterException if validation fails or user is not found
+   */
   public void update(String token, UpdateUserRequest request) {
     UUID userId = authService.authByJwt(token);
     System.out.println(request.getUserId());
