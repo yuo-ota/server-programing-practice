@@ -14,6 +14,7 @@ import jp.ac.dendai.spp.backend.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,6 +73,38 @@ public class PostController {
       List<ShowPostResponse> responses = postService.showPost(userId, date);
 
       return ResponseEntity.status(HttpStatus.OK).body(responses);
+
+    } catch (InvalidParameterException e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("BAD_REQUEST_PARAM");
+      errorResponse.setMessage(e.getMessage());
+
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    } catch (AuthenticationFailedException e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("AUTHENTICATION_FAILED");
+      errorResponse.setMessage("ユーザー認証に失敗しました。");
+
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    } catch (Exception e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("SERVICE_ERROR");
+      errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+  }
+
+  @GetMapping("/{postId}")
+  public ResponseEntity<?> show(
+      @RequestHeader("Authorization") String token, @PathVariable("postId") UUID postId) {
+    try {
+      authService.auth(token);
+      ShowPostResponse response = postService.showSinglePost(postId);
+
+      return ResponseEntity.status(HttpStatus.OK).body(response);
 
     } catch (InvalidParameterException e) {
       ErrorResponse errorResponse = new ErrorResponse();

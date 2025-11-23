@@ -47,11 +47,20 @@ public class PostService {
 
     List<ShowPostResponse> responses = new ArrayList<>();
     for (ElectedPost post : electedPosts) {
-      System.out.println(post);
       responses.add(convertToShowPostResponse(post.getPostId()));
     }
 
     return responses;
+  }
+
+  public ShowPostResponse showSinglePost(UUID postId) {
+    Post post = postRepository.findByPostId(postId);
+    if (post == null) {
+      throw new InvalidParameterException("指定された投稿は存在しません。");
+    }
+
+    ShowPostResponse response = convertToShowPostResponse(postId);
+    return response;
   }
 
   /**
