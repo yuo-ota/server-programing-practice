@@ -1,5 +1,7 @@
 package jp.ac.dendai.spp.backend.service;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import jp.ac.dendai.spp.backend.constant.TokenConstant;
 import jp.ac.dendai.spp.backend.entity.BaseToken;
 import jp.ac.dendai.spp.backend.error.AuthenticationFailedException;
@@ -58,5 +60,13 @@ public class TokenService {
     }
 
     return tokenEntity;
+  }
+
+  public String generateToken() {
+    SecureRandom sr = new SecureRandom();
+    byte[] bytes = new byte[TokenConstant.TOKEN_BYTE_LENGTH];
+    sr.nextBytes(bytes);
+
+    return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
   }
 }

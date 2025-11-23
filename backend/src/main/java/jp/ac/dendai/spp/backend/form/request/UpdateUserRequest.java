@@ -1,18 +1,32 @@
 package jp.ac.dendai.spp.backend.form.request;
 
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 import jp.ac.dendai.spp.backend.dto.SocialAccount;
 import org.springframework.web.multipart.MultipartFile;
 
 public class UpdateUserRequest {
-  private String userId;
+  @Pattern(regexp = "^(?=.*\\S).+$")
   private String name;
+
   private MultipartFile icon;
+  private MultipartFile header;
   private List<SocialAccount> socialAccounts;
+
+  @Size(max = 200, message = "自己紹介は200文字以下で設定してください。")
   private String introduction;
+
+  @Past(message = "誕生日は過去の日付で設定してください。")
   private LocalDate birthday;
+
   private boolean showAdultContents;
+
+  @Size(min = 3, max = 15, message = "ユーザーIDは3文字以上15文字以下で設定してください。")
+  @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "ユーザーIDは英数字とアンダースコア(_)のみ使用できます。")
+  private String userId;
 
   // Getters and Setters
   public String getUserId() {
@@ -37,6 +51,14 @@ public class UpdateUserRequest {
 
   public void setIcon(MultipartFile icon) {
     this.icon = icon;
+  }
+
+  public MultipartFile getHeader() {
+    return header;
+  }
+
+  public void setHeader(MultipartFile header) {
+    this.header = header;
   }
 
   public List<SocialAccount> getSocialAccounts() {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import jp.ac.dendai.spp.backend.constant.CommonConstant;
+import jp.ac.dendai.spp.backend.constant.ImageConstant;
 import jp.ac.dendai.spp.backend.constant.PlatformConstant;
 import jp.ac.dendai.spp.backend.constant.TokenConstant;
 import jp.ac.dendai.spp.backend.dto.SocialAccount;
@@ -14,10 +15,12 @@ import jp.ac.dendai.spp.backend.entity.User;
 import jp.ac.dendai.spp.backend.entity.UserSetting;
 import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.request.CreateUserRequest;
+import jp.ac.dendai.spp.backend.form.request.UpdateUserRequest;
 import jp.ac.dendai.spp.backend.repository.PreRegisterTokenRepository;
 import jp.ac.dendai.spp.backend.repository.SocialAccountRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
 import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
+import jp.ac.dendai.spp.backend.util.ImageManager;
 import jp.ac.dendai.spp.backend.util.SocialAccountManage;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
@@ -64,8 +67,7 @@ public class UserService {
     }
 
     boolean showAdultContents =
-        !request.getBirthday().plusYears(CommonConstant.ADULT_AGE).isAfter(LocalDate.now())
-            && request.getShowAdultContents();
+        isShowAdultContents(request.getBirthday(), request.getShowAdultContents());
 
     User user = createUser(preRegisterToken);
 
@@ -86,12 +88,24 @@ public class UserService {
     return authService.buildCookie(user.getUserId());
   }
 
+  /**
+   * ユーザーを作成する
+   *
+   * @param preRegisterToken
+   * @return
+   */
   public User createUser(PreRegisterToken preRegisterToken) {
     User user = new User(preRegisterToken.getEmailAddress(), preRegisterToken.getPassword());
     userRepository.save(user);
     return user;
   }
 
+  /**
+   * ソーシャルアカウント情報を保存する
+   *
+   * @param socialAccounts
+   * @param userId
+   */
   public void createSocialAccounts(List<SocialAccount> socialAccounts, UUID userId) {
     if (socialAccounts == null || socialAccounts.isEmpty()) return;
 
@@ -107,5 +121,123 @@ public class UserService {
       accountsToSave.add(entity);
     }
     socialAccountRepository.saveAll(accountsToSave);
+  }
+
+  /**
+   *    * Updates the user's settings and social accounts.    *    *
+   *
+   * <p>   * This method authenticates the user by JWT token, validates and updates user    *
+   * settings such as    * birthday, name, display ID, introduction, icon, and header images. It
+   * also    * updates the user's    * social accounts. If any validation fails, an    * {@link
+   * InvalidParameterException} is thrown.    *    * @param token   JWT token used for user
+   * authentication    * @param request {@link UpdateUserRequest} containing the new user settings
+   * and    *                social accounts    * @throws InvalidParameterException if validation
+   * fails or user is not found
+   */
+  @Transactional
+  public void update(String token, UpdateUserRequest request) {
+    UUID userId = authService.authByJwt(token);
+    UserSetting userSetting = userSettingRepository.findByUserId(userId);
+    if (userSetting == null) {
+      throw new InvalidParameterException("User not found");
+    }
+
+    if (request.getBirthday() != null) {
+      if (request.getBirthday().isAfter(LocalDate.now())) {
+        throw new InvalidParameterException("Birthday cannot be in the future");
+      }
+      userSetting.setBirthday(request.getBirthday());
+    }
+
+    boolean showAdultContents =
+        isShowAdultContents(userSetting.getBirthday(), request.getShowAdultContents());
+    userSetting.setShowAdultContent(showAdultContents);
+
+    if (request.getName() != null) {
+      userSetting.setName(request.getName());
+    }
+
+    if (request.getUserId() != null) {
+      if (!request.getUserId().equals(userSetting.getDisplayId())
+          && displayIdService.isUsed(request.getUserId())) {
+        throw new InvalidParameterException("Display ID is already in use");
+      }
+      userSetting.setDisplayId(request.getUserId());
+    }
+
+    if (request.getIntroduction() != null) {
+      userSetting.setIntroduction(request.getIntroduction());
+    }
+
+    if (request.getIcon() != null && !request.getIcon().isEmpty()) {
+      String iconPath;
+      try {
+        iconPath = ImageManager.processAndSaveImage(request.getIcon(), ImageConstant.TYPE_ICON);
+      } catch (Exception e) {
+        throw new InvalidParameterException("Failed to process icon image", e);
+      }
+      userSetting.setIconPath(iconPath);
+    }
+
+    if (request.getHeader() != null && !request.getHeader().isEmpty()) {
+      String headerPath;
+      try {
+        headerPath =
+            ImageManager.processAndSaveImage(request.getHeader(), ImageConstant.TYPE_HEADER);
+      } catch (Exception e) {
+        throw new InvalidParameterException("Failed to process header image", e);
+      }
+      userSetting.setHeaderPath(headerPath);
+    }
+
+    socialAccountRepository.deleteByUserId(userId);
+    createSocialAccounts(request.getSocialAccounts(), userId);
+
+    userSettingRepository.save(userSetting);
+  }
+
+  /**
+   * メールアドレスからユーザー情報を取得する
+   *
+   * @param emailAddress
+   * @return
+   */
+  public User findByEmailAddress(String emailAddress) {
+    return userRepository.findByEmailAddress(emailAddress);
+  }
+
+  /**
+   * ユーザーIDからユーザー情報を取得する
+   *
+   * @param userId
+   * @return
+   */
+  public User findByUserId(UUID userId) {
+    return userRepository.findByUserId(userId);
+  }
+
+  /**
+   * パスワードを更新する
+   *
+   * @param userId
+   * @param password
+   */
+  public void updatePassword(UUID userId, String password) {
+    User user = userRepository.findByUserId(userId);
+
+    user.setPassword(password);
+    userRepository.save(user);
+  }
+
+  /**
+   * 成人向けコンテンツ表示設定を決定する
+   *
+   * @param birthday
+   * @param showAdultContents
+   * @return
+   */
+  public boolean isShowAdultContents(LocalDate birthday, boolean showAdultContents) {
+    return !birthday.plusYears(CommonConstant.ADULT_AGE).isAfter(LocalDate.now())
+        && showAdultContents;
   }
 }
