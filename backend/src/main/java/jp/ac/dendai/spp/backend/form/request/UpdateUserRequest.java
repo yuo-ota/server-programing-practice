@@ -10,8 +10,7 @@ import jp.ac.dendai.spp.backend.dto.SocialAccount;
 import org.springframework.web.multipart.MultipartFile;
 
 public class UpdateUserRequest {
-  @NotBlank
-  private String name;
+  @NotBlank private String name;
 
   private MultipartFile icon;
   private List<SocialAccount> socialAccounts;
@@ -21,6 +20,7 @@ public class UpdateUserRequest {
 
   @Past(message = "誕生日は過去の日付で設定してください。")
   private LocalDate birthday;
+
   private boolean showAdultContents;
 
   @Size(min = 3, max = 15, message = "ユーザーIDは3文字以上15文字以下で設定してください。")
