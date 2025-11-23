@@ -45,7 +45,6 @@ public class PostService {
     boolean isSensitive = Boolean.parseBoolean(request.getSensitive());
     Post post = new Post(userId, request.getText(), isSensitive, false);
     Post savedPost = postRepository.save(post);
-    System.out.println(isSensitive);
 
     for (int i = 0; i < request.getImages().size(); i++) {
       MultipartFile imageDto = request.getImages().get(i);
