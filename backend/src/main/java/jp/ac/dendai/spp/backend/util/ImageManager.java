@@ -9,9 +9,29 @@ import java.util.UUID;
 import jp.ac.dendai.spp.backend.constant.ImageConstant;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Utility class for processing and saving image files to the server.
+ * <p>
+ * Provides methods to handle image uploads, generate unique filenames,
+ * ensure target directories exist, and save images to disk.
+ */
 public class ImageManager {
   private static final int MAX_FILENAME_GENERATION_ATTEMPTS = 10;
 
+  /**
+   * Processes and saves an uploaded image file to the server.
+   * <p>
+   * Generates a unique filename using UUID, ensures the target directory exists,
+   * and saves the image file to disk. Returns the absolute path to the saved image.
+   *
+   * @param image the uploaded image file (must not be null or empty)
+   * @param imageTypeKey the key representing the image type, used to determine the target directory
+   * @return the absolute path to the saved image file
+   * @throws IOException if an I/O error occurs during saving or directory creation,
+   *         or if a unique filename cannot be generated after several attempts
+   * @throws IllegalArgumentException if the image is empty or the imageTypeKey is invalid
+   * @throws NullPointerException if the image or its original filename is null
+   */
   public static String processAndSaveImage(MultipartFile image, String imageTypeKey)
       throws IOException {
     Objects.requireNonNull(image, "Image file must not be null");
