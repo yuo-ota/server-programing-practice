@@ -16,21 +16,23 @@ const RadioButton = ({
   className = '',
 }: RadioButtonProps) => {
   return (
-      <div className={`${className} inline-flex items-center`}>
-        <label className="relative flex items-center cursor-pointer" htmlFor={id}>
-          <input
-            name={name}
-            type="radio"
-            className="peer h-[21px] w-[21px] cursor-pointer appearance-none rounded-full border border-slate-300 checked:border-theme transition-all"
-            id={id}
-            checked={checked}
-            onChange={onChange}
-          />
-          <span className="absolute bg-theme w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></span>
-        </label>
-        <label className="ml-2 text-foreground cursor-pointer text-subtitle">{label}</label>
-      </div>
-  )
-}
+    <div className={`${className} inline-flex items-center`}>
+      <label className="relative flex cursor-pointer items-center" htmlFor={id}>
+        <input
+          name={name}
+          type="radio"
+          className="peer checked:border-theme h-[17px] w-[17px] cursor-pointer appearance-none rounded-full border border-slate-300 transition-all"
+          id={id}
+          checked={checked}
+          onChange={onChange}
+        />
+        <span className="bg-theme absolute top-1/2 left-1/2 h-[11px] w-[11px] -translate-x-1/2 -translate-y-1/2 transform rounded-full opacity-0 transition-opacity duration-200 peer-checked:opacity-100"></span>
+      </label>
+      <label className="text-foreground text-subtitle ml-2 cursor-pointer">
+        {label}
+      </label>
+    </div>
+  );
+};
 
 export default RadioButton;
