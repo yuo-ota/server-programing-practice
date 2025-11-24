@@ -100,8 +100,7 @@ public class PostService {
    * @return
    */
   public ShowPostResponse showSinglePost(UUID userId, UUID postId) {
-    ShowPostResponse response = convertToShowPostResponse(userId, postId);
-    return response;
+    return convertToShowPostResponse(userId, postId);
   }
 
   /**
