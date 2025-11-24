@@ -20,14 +20,18 @@ public class PreRegisterToken extends BaseToken {
   @Column(name = "email_address", nullable = false, unique = true, length = 255)
   private String emailAddress;
 
+  @Column(name = "password", nullable = false, length = 255)
+  private String password;
+
   // コンストラクタ
   public PreRegisterToken() {
     super();
   }
 
-  public PreRegisterToken(String emailAddress, String token, Duration duration) {
+  public PreRegisterToken(String emailAddress, String password, String token, Duration duration) {
     super(token, duration);
     this.emailAddress = emailAddress;
+    this.password = password;
   }
 
   // Getter, Setter
@@ -37,6 +41,10 @@ public class PreRegisterToken extends BaseToken {
 
   public String getEmailAddress() {
     return emailAddress;
+  }
+
+  public String getPassword() {
+    return password;
   }
 
   @Override

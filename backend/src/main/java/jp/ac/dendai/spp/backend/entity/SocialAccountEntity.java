@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "social_accounts")
-public class SocialAccount {
+public class SocialAccountEntity {
 
   @Id
   @GeneratedValue
@@ -23,6 +23,9 @@ public class SocialAccount {
   @Column(name = "platform_id", nullable = false)
   private int platformId;
 
+  @Column(name = "link", nullable = false)
+  private String link;
+
   @Column(
       name = "created_at",
       nullable = false,
@@ -32,11 +35,12 @@ public class SocialAccount {
   private ZonedDateTime createdAt;
 
   // コンストラクタ
-  public SocialAccount() {}
+  public SocialAccountEntity() {}
 
-  public SocialAccount(UUID userId, int platformId) {
+  public SocialAccountEntity(UUID userId, int platformId, String link) {
     this.userId = userId;
     this.platformId = platformId;
+    this.link = link;
   }
 
   // Getter, Setter
@@ -52,6 +56,10 @@ public class SocialAccount {
     return platformId;
   }
 
+  public String getLink() {
+    return link;
+  }
+
   public ZonedDateTime getCreatedAt() {
     return createdAt;
   }
@@ -65,6 +73,9 @@ public class SocialAccount {
         + userId
         + ", platformId="
         + platformId
+        + ", link='"
+        + link
+        + '\''
         + ", createdAt="
         + createdAt
         + '}';

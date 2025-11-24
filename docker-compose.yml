@@ -5,9 +5,11 @@ services:
     container_name: spp-backend
     depends_on:
       - postgres
+      - init-images
     volumes:
       - ./backend:/app
       - maven-repo:/root/.m2
+      - images:/images
     working_dir: /app
     env_file:
       - .env
@@ -37,9 +39,18 @@ services:
     networks:
       - project-network
 
+  init-images:
+    image: alpine
+    command: >
+      sh -c "if [ \"$(ls -A /images)\" = \"\" ]; then cp -R /seed/* /images/; else echo 'Images directory already populated, skipping seed copy.'; fi"
+    volumes:
+      - images:/images
+      - ./seed-images:/seed
+
 volumes:
   maven-repo:
   postgres_data:
+  images:
 
 networks:
   project-network:

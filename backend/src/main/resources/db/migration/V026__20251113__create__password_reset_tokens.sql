@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
   -- 属性
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL,
-  token VARCHAR(64) NOT NULL,
+  token VARCHAR(64) NOT NULL UNIQUE,
   duration INTERVAL NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 

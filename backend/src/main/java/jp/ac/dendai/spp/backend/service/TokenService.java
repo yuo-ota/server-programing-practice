@@ -1,5 +1,7 @@
 package jp.ac.dendai.spp.backend.service;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import jp.ac.dendai.spp.backend.constant.TokenConstant;
 import jp.ac.dendai.spp.backend.entity.BaseToken;
 import jp.ac.dendai.spp.backend.error.AuthenticationFailedException;
@@ -33,12 +35,19 @@ public class TokenService {
    * @throws AuthenticationFailedException
    */
   public void isAvailable(AuthRequest request) {
+    String token = request.getToken();
+    String pathType = request.getPathType();
+
+    verifyToken(token, pathType);
+  }
+
+  public BaseToken verifyToken(String token, String pathType) {
     BaseToken tokenEntity;
 
-    if (request.getPathType().equals(TokenConstant.PRE_REGISTER)) {
-      tokenEntity = preRegisterTokenRepository.findByToken(request.getToken());
-    } else if (request.getPathType().equals(TokenConstant.PASSWORD_RESET)) {
-      tokenEntity = passwordResetTokenRepository.findByToken(request.getToken());
+    if (pathType.equals(TokenConstant.PRE_REGISTER)) {
+      tokenEntity = preRegisterTokenRepository.findByToken(token);
+    } else if (pathType.equals(TokenConstant.PASSWORD_RESET)) {
+      tokenEntity = passwordResetTokenRepository.findByToken(token);
     } else {
       throw new InvalidParameterException("Invalid path type");
     }
@@ -49,5 +58,15 @@ public class TokenService {
     if (TimeManage.isExpired(tokenEntity)) {
       throw new AuthenticationFailedException("Failed to authenticate token");
     }
+
+    return tokenEntity;
+  }
+
+  public String generateToken() {
+    SecureRandom sr = new SecureRandom();
+    byte[] bytes = new byte[TokenConstant.TOKEN_BYTE_LENGTH];
+    sr.nextBytes(bytes);
+
+    return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
   }
 }

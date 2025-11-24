@@ -301,6 +301,83 @@ paths:
                     type: string
                   message:
                     type: string
+    patch:
+      summary: アカウント編集, ユーザー設定
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                name:
+                  type: string
+                icon:
+                  type: string
+                  format: binary
+                header:
+                  type: string
+                  format: binary
+                social_accounts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      platform_id:
+                        type: integer
+                      identifier:
+                        type: string
+                introduction:
+                  type: string
+                birthday:
+                  type: string
+                show_adult_contents:
+                  type: boolean
+      responses:
+        "200":
+          description: 編集登録できた場合
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
 
   /api/user/{userId}:
     get:
@@ -415,90 +492,6 @@ paths:
                     type: string
                   message:
                     type: string
-
-    patch:
-      summary: アカウント編集, ユーザー設定
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          required: true
-          schema:
-            type: string
-          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                user_id:
-                  type: string
-                name:
-                  type: string
-                icon:
-                  type: string
-                  format: binary
-                header:
-                  type: string
-                  format: binary
-                social_accounts:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      platform_id:
-                        type: integer
-                      identifier:
-                        type: string
-                introduction:
-                  type: string
-                birthday:
-                  type: string
-                show_adult_contents:
-                  type: boolean
-      responses:
-        "200":
-          description: 編集登録できた場合
-        "400":
-          description: パラメーターが不正の場合
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
-        "401":
-          description: ユーザーIDが不正の場合
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
-        "500":
-          description: SQLエラー等の全般的なエラーの発生
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
-
   /api/notification:
     get:
       summary: 通知取得
@@ -1258,7 +1251,7 @@ paths:
                     type: string
                   message:
                     type: string
-  /api/users/check-id:
+  /api/users/check-id/{user_Id}:
     get:
       summary: ユーザーIDの利用可否を確認
       parameters:

@@ -51,6 +51,16 @@ public class AuthService {
     return user;
   }
 
+  /**
+   * パスワードをハッシュ化する
+   *
+   * @param rawPassword
+   * @return
+   */
+  public String hashPassword(String rawPassword) {
+    return encoder.encode(rawPassword);
+  }
+
   /** */
   public ResponseCookie buildCookie(UUID id) {
     // JWTトークンの生成
@@ -100,7 +110,7 @@ public class AuthService {
   }
 
   /**
-   * Admin認証をuserIdで行う userIdに対応するAdminUserが存在しなければAuthenticationFailedExceptionを投げる
+   * ユーザー認証をuserIdで行う userIdに対応するUserが存在しなければAuthenticationFailedExceptionを投げる
    *
    * @param userId
    */

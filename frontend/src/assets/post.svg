@@ -1,0 +1,7 @@
+<svg id="PostButton" xmlns="http://www.w3.org/2000/svg" width="53" height="53" viewBox="0 0 53 53">
+  <g id="スマホ用" transform="translate(-116.331 -664.331)">
+    <circle id="楕円形_7" data-name="楕円形 7" cx="26.5" cy="26.5" r="26.5" transform="translate(116.331 664.331)" fill="#fdc021"/>
+    <rect id="長方形_21" data-name="長方形 21" width="5" height="34" rx="2.5" transform="translate(159.331 688.331) rotate(90)" fill="#303030"/>
+    <rect id="長方形_22" data-name="長方形 22" width="5" height="34" rx="2.5" transform="translate(145.331 707.331) rotate(180)" fill="#303030"/>
+  </g>
+</svg>
