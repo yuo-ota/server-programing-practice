@@ -55,6 +55,7 @@ public class PostService {
     Post post = new Post(userId, request.getText(), isSensitive, false);
     Post savedPost = postRepository.save(post);
 
+    List<ImageEntity> imageEntities = new ArrayList<>();
     for (int i = 0; i < request.getImages().size(); i++) {
       MultipartFile imageDto = request.getImages().get(i);
       String imagePath;
@@ -66,8 +67,10 @@ public class PostService {
       }
 
       ImageEntity imageEntity = new ImageEntity(savedPost.getId(), i, imagePath, "");
-      imageRepository.save(imageEntity);
+      imageEntities.add(imageEntity);
     }
+
+    imageRepository.saveAll(imageEntities);
   }
 
   /**

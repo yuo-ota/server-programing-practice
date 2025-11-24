@@ -35,7 +35,7 @@ services:
       - .env
       - .env.${SPRING_PROFILES_ACTIVE:-dev}
     environment:
-      - TZ=Asia/Tokyo
+      - TZ=${TIMEZONE}
     ports:
       - "${POSTGRES_PORT}:5432"
     networks:

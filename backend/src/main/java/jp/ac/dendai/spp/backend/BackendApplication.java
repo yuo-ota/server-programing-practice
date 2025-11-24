@@ -8,7 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BackendApplication {
 
   public static void main(String[] args) {
-    TimeZone.setDefault(TimeZone.getTimeZone("Asia/Tokyo"));
+    String timezone = System.getenv("TIMEZONE");
+    TimeZone.setDefault(TimeZone.getTimeZone(timezone));
 
     SpringApplication.run(BackendApplication.class, args);
   }
