@@ -54,7 +54,7 @@ build/
 !**/src/test/**/build/
 
 # ====================
-# Ningx
+# Nginx
 # ====================
 nginx/conf.d/default.conf
 nginx/on
