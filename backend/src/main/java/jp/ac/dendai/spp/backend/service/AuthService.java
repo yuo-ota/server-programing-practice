@@ -5,10 +5,12 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.UUID;
 import jp.ac.dendai.spp.backend.entity.AdminUser;
 import jp.ac.dendai.spp.backend.entity.User;
+import jp.ac.dendai.spp.backend.entity.UserSetting;
 import jp.ac.dendai.spp.backend.error.AuthenticationFailedException;
 import jp.ac.dendai.spp.backend.form.request.LoginRequest;
 import jp.ac.dendai.spp.backend.repository.AdminRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
+import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
 import jp.ac.dendai.spp.backend.util.JWTVerifyAction;
 import jp.ac.dendai.spp.backend.util.JWTbuilder;
 import org.springframework.http.ResponseCookie;
@@ -20,12 +22,17 @@ public class AuthService {
   private final String secret;
   private final UserRepository userRepository;
   private final AdminRepository adminRepository;
+  private final UserSettingRepository userSettingRepository;
   private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-  public AuthService(UserRepository userRepository, AdminRepository adminRepository) {
+  public AuthService(
+      UserRepository userRepository,
+      AdminRepository adminRepository,
+      UserSettingRepository userSettingRepository) {
     secret = System.getenv("JWT_SECRET");
     this.userRepository = userRepository;
     this.adminRepository = adminRepository;
+    this.userSettingRepository = userSettingRepository;
   }
 
   /**
@@ -109,6 +116,16 @@ public class AuthService {
     return buildCookie(user.getUserId());
   }
 
+  public String getDisplayIdByUserId(UUID userId) {
+    UserSetting user = userSettingRepository.findByUserId(userId);
+
+    if (user == null) {
+      throw new AuthenticationFailedException("User not found for userId: " + userId);
+    }
+
+    return user.getDisplayId();
+  }
+
   /**
    * ユーザー認証をuserIdで行う userIdに対応するUserが存在しなければAuthenticationFailedExceptionを投げる
    *
@@ -139,20 +156,26 @@ public class AuthService {
    * User認証をJWTトークンで行う トークンが不正またはUserが存在しなければAuthenticationFailedExceptionを投げる
    *
    * @param token
+   * @return
    */
-  public void auth(String token) {
+  public UUID auth(String token) {
     UUID userId = authByJwt(token);
     authByUserId(userId);
+
+    return userId;
   }
 
   /**
    * Admin認証をJWTトークンで行う トークンが不正またはAdminUserが存在しなければAuthenticationFailedExceptionを投げる
    *
    * @param token
+   * @return
    */
-  public void adminAuth(String token) {
+  public UUID adminAuth(String token) {
     UUID userId = authByJwt(token);
     authAdminByUserId(userId);
+
+    return userId;
   }
 
   /**
