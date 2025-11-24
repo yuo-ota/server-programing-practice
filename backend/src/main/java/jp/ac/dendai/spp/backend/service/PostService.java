@@ -97,10 +97,7 @@ public class PostService {
    * @return
    */
   public ShowPostResponse showSinglePost(UUID postId) {
-    Post post = postRepository.findByPostId(postId);
-    if (post == null) {
-      throw new InvalidParameterException("指定された投稿は存在しません。");
-    }
+    getPostById(postId);
 
     ShowPostResponse response = convertToShowPostResponse(postId);
     return response;
@@ -113,13 +110,7 @@ public class PostService {
    * @param postId
    */
   public void deletePost(UUID userId, UUID postId) {
-    Post post = postRepository.findByPostId(postId);
-    if (post == null) {
-      throw new InvalidParameterException("指定された投稿は存在しません。");
-    }
-    if (!post.getCreatorId().equals(userId)) {
-      throw new InvalidParameterException("指定された投稿の削除権限がありません。");
-    }
+    Post post = getPostById(postId);
 
     postRepository.delete(post);
   }
@@ -152,7 +143,7 @@ public class PostService {
   public ShowPostResponse convertToShowPostResponse(UUID postId) {
     ShowPostResponse response = new ShowPostResponse();
 
-    Post post = postRepository.findByPostId(postId);
+    Post post = getPostById(postId);
     String displayId = authService.getDisplayIdByUserId(post.getCreatorId());
     List<ImageEntity> images = imageRepository.findByPostId(postId);
     List<Image> imageDtos = new ArrayList<>();
@@ -181,6 +172,10 @@ public class PostService {
     return image;
   }
 
+  /**
+   * 指定されたユーザーの投稿を上書きする
+   * @param userId
+   */
   public void overwritePost(UUID userId) {
     Post existingPosts = postRepository.findByCreatorId(userId, PostConstant.DATE_CHANGE_TIME.getHour());
 
@@ -188,5 +183,22 @@ public class PostService {
       return;
     }
     postRepository.delete(existingPosts);
+  }
+
+  /**
+   * 指定された投稿IDの投稿を取得する
+   * @param postId
+   * @return
+   */
+  public Post getPostById(UUID postId) {
+    if (postId == null) {
+      throw new InvalidParameterException("投稿IDが指定されていません。");
+    }
+
+    Post post = postRepository.findById(postId).orElse(null);
+    if (post == null) {
+      throw new InvalidParameterException("指定された投稿は存在しません。");
+    }
+    return post;
   }
 }
