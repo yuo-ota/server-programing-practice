@@ -11,7 +11,7 @@ server {
     }
 
     # Static files
-    location /image/ {
+    location /images/ {
         alias /usr/share/nginx/images/;
     }
 }

@@ -9,7 +9,7 @@ services:
     volumes:
       - ./backend:/app
       - maven-repo:/root/.m2
-      - images:/images
+      - images:/usr/share/nginx/images
     working_dir: /app
     env_file:
       - .env
@@ -37,11 +37,10 @@ services:
   nginx:
     image: nginx:stable
     volumes:
-      - ./nginx/default.conf.template:/etc/nginx/conf.d/default.conf.template
-      - ./nginx:/etc/nginx/conf.d
+      - ./nginx:/etc/nginx
       - images:/usr/share/nginx/images
     ports:
-      - "8000:80"
+      - "${NGINX_PORT}:80"
     env_file:
       - .env
       - .env.${SPRING_PROFILES_ACTIVE:-dev}

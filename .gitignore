@@ -56,7 +56,8 @@ build/
 # ====================
 # Ningx
 # ====================
-nginx/default.conf
+nginx/conf.d/default.conf
+nginx/on
 
 # ====================
 # Editor & OS Files
