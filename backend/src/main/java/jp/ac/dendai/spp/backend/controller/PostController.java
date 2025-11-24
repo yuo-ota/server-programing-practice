@@ -103,8 +103,8 @@ public class PostController {
   public ResponseEntity<?> show(
       @RequestHeader("Authorization") String token, @PathVariable("postId") UUID postId) {
     try {
-      authService.auth(token);
-      ShowPostResponse response = postService.showSinglePost(postId);
+      UUID userId = authService.auth(token);
+      ShowPostResponse response = postService.showSinglePost(userId, postId);
 
       return ResponseEntity.status(HttpStatus.OK).body(response);
 

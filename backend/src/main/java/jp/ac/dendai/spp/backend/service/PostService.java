@@ -84,7 +84,7 @@ public class PostService {
 
     List<ShowPostResponse> responses = new ArrayList<>();
     for (ElectedPost post : electedPosts) {
-      responses.add(convertToShowPostResponse(post.getPostId()));
+      responses.add(convertToShowPostResponse(userId, post.getPostId()));
     }
 
     return responses;
@@ -96,10 +96,8 @@ public class PostService {
    * @param postId
    * @return
    */
-  public ShowPostResponse showSinglePost(UUID postId) {
-    getPostById(postId);
-
-    ShowPostResponse response = convertToShowPostResponse(postId);
+  public ShowPostResponse showSinglePost(UUID userId, UUID postId) {
+    ShowPostResponse response = convertToShowPostResponse(userId, postId);
     return response;
   }
 
@@ -140,10 +138,12 @@ public class PostService {
    * @param postId
    * @return
    */
-  public ShowPostResponse convertToShowPostResponse(UUID postId) {
+  public ShowPostResponse convertToShowPostResponse(UUID userId, UUID postId) {
     ShowPostResponse response = new ShowPostResponse();
 
     Post post = getPostById(postId);
+    checkValidPost(userId, post);
+
     String displayId = authService.getDisplayIdByUserId(post.getCreatorId());
     List<ImageEntity> images = imageRepository.findByPostId(postId);
     List<Image> imageDtos = new ArrayList<>();
@@ -200,5 +200,24 @@ public class PostService {
       throw new InvalidParameterException("指定された投稿は存在しません。");
     }
     return post;
+  }
+
+  /**
+   * 指定された投稿が有効かどうかをチェックする
+   * @param userId
+   * @param post
+   */
+  public void checkValidPost(UUID userId, Post post) {
+    if (post.getDeletedAt() != null) {
+      throw new InvalidParameterException("指定された投稿は削除されています。");
+    }
+
+    if (post.getCreatorId().equals(userId)) {
+      return;
+    }
+
+    if (!post.isPublished()) {
+      throw new InvalidParameterException("指定された投稿は公開されていません。");
+    }
   }
 }
