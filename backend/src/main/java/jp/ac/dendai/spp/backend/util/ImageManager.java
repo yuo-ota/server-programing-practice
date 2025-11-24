@@ -37,8 +37,9 @@ public class ImageManager {
     if (image.isEmpty()) {
       throw new IllegalArgumentException("Image file is empty");
     }
-    String absoluteDirStr = ImageConstant.IMAGE_TYPE_MAP.get(imageTypeKey);
-    if (absoluteDirStr == null) {
+    String resolvedImageDirectory = ImageConstant.IMAGE_TYPE_MAP.get(imageTypeKey);
+    String absoluteImageDirectory = ImageConstant.IMAGE_DIR_MAP.get(imageTypeKey);
+    if (resolvedImageDirectory == null || absoluteImageDirectory == null) {
       throw new IllegalArgumentException("Invalid image type key: " + imageTypeKey);
     }
 
@@ -60,7 +61,7 @@ public class ImageManager {
               + " bytes)");
     }
 
-    Path dir = ensureDirectoryExists(absoluteDirStr);
+    Path dir = ensureDirectoryExists(absoluteImageDirectory);
 
     for (int attempt = 0; attempt < ImageConstant.MAX_FILENAME_GENERATION_ATTEMPTS; attempt++) {
       String newFilename = generateUuidFilename(extension);
@@ -74,7 +75,7 @@ public class ImageManager {
         Files.copy(is, targetPath);
       }
 
-      return absoluteDirStr + "/" + newFilename;
+      return resolvedImageDirectory + "/" + newFilename;
     }
 
     throw new IOException(

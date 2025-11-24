@@ -39,12 +39,29 @@ services:
     networks:
       - project-network
 
+  nginx:
+    image: nginx:stable
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - images:/usr/share/nginx/images
+    ports:
+      - "8000:80"
+    depends_on:
+      - app
+    networks:
+      - project-network
+
   init-images:
     image: alpine
     command: >
-      sh -c "if [ \"$(ls -A /images)\" = \"\" ]; then cp -R /seed/* /images/; else echo 'Images directory already populated, skipping seed copy.'; fi"
+      sh -c "if [ -z \"$(ls -A /usr/share/nginx/images)\" ]; then
+              cp -R /seed/* /usr/share/nginx/images/;
+              echo 'Images seeded.';
+            else
+              echo 'Images directory already populated, skipping seed copy.';
+            fi"
     volumes:
-      - images:/images
+      - images:/usr/share/nginx/images
       - ./seed-images:/seed
 
 volumes:
