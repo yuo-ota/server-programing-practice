@@ -9,10 +9,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, UUID> {
-  @Query(value = """
+  @Query(
+      value =
+          """
     SELECT * FROM posts WHERE creator_id = :creatorId
     AND EXTRACT(HOUR FROM created_at) >= :hour LIMIT 1
     """,
-    nativeQuery = true)
+      nativeQuery = true)
   Post findByCreatorId(@Param("creatorId") UUID creatorId, @Param("hour") int hour);
 }

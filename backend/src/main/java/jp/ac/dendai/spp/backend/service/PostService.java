@@ -174,10 +174,12 @@ public class PostService {
 
   /**
    * 指定されたユーザーの投稿を上書きする
+   *
    * @param userId
    */
   public void overwritePost(UUID userId) {
-    Post existingPosts = postRepository.findByCreatorId(userId, PostConstant.DATE_CHANGE_TIME.getHour());
+    Post existingPosts =
+        postRepository.findByCreatorId(userId, PostConstant.DATE_CHANGE_TIME.getHour());
 
     if (existingPosts == null) {
       return;
@@ -187,6 +189,7 @@ public class PostService {
 
   /**
    * 指定された投稿IDの投稿を取得する
+   *
    * @param postId
    * @return
    */
@@ -204,6 +207,7 @@ public class PostService {
 
   /**
    * 指定された投稿が有効かどうかをチェックする
+   *
    * @param userId
    * @param post
    */
