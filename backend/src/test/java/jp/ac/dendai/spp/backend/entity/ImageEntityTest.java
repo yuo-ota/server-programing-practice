@@ -47,16 +47,16 @@ public class ImageEntityTest {
     Post post = new Post(savedUser.getUserId(), "Test Post", false, true);
     Post savedPost = postRepository.save(post);
 
-    Image image = new Image(savedPost.getId(), 0, "/images/test.jpg", "Test Image");
-    Image savedImage = imageRepository.save(image);
+    ImageEntity image = new ImageEntity(savedPost.getId(), 0, "/images/test.jpg", "Test Image");
+    ImageEntity savedImage = imageRepository.save(image);
 
     // UUIDが自動生成されていることを確認
     assertThat(savedImage.getId()).isNotNull();
     // データベースから取得
-    Optional<Image> retrievedImageOpt = imageRepository.findById(savedImage.getId());
+    Optional<ImageEntity> retrievedImageOpt = imageRepository.findById(savedImage.getId());
     assertThat(retrievedImageOpt).isPresent();
 
-    Image retrievedImage = retrievedImageOpt.get();
+    ImageEntity retrievedImage = retrievedImageOpt.get();
     assertThat(retrievedImage.getPostId()).isEqualTo(savedPost.getId());
     assertThat(retrievedImage.getCreatedAt()).isNotNull();
   }

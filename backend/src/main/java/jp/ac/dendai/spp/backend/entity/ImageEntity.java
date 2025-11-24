@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "images")
-public class Image {
+public class ImageEntity {
 
   @Id
   @GeneratedValue
@@ -38,9 +38,9 @@ public class Image {
   private ZonedDateTime createdAt;
 
   // コンストラクタ
-  public Image() {}
+  public ImageEntity() {}
 
-  public Image(UUID postId, int index, String path, String alt) {
+  public ImageEntity(UUID postId, int index, String path, String alt) {
     this.postId = postId;
     this.index = index;
     this.path = path;

@@ -36,8 +36,6 @@ public class PreRegisterService {
       throw new InvalidParameterException("Email address and password must not be null.");
     }
 
-    System.out.println(request.getPassword());
-
     String token = tokenService.generateToken();
     String hashedPassword = authService.hashPassword(request.getPassword());
     preRegisterTokenRepository.save(
