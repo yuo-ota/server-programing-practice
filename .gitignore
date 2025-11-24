@@ -54,6 +54,11 @@ build/
 !**/src/test/**/build/
 
 # ====================
+# Ningx
+# ====================
+nginx/default.conf
+
+# ====================
 # Editor & OS Files
 # ====================
 # VS Code
