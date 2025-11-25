@@ -13,5 +13,8 @@ server {
     # Static files
     location /images/ {
         alias /usr/share/nginx/images/;
+
+        expires 2d;
+        add_header Cache-Control "public";
     }
 }
