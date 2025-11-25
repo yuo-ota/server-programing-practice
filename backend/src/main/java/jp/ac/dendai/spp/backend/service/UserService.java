@@ -240,4 +240,13 @@ public class UserService {
     return !birthday.plusYears(CommonConstant.ADULT_AGE).isAfter(LocalDate.now())
         && showAdultContents;
   }
+
+  @Transactional
+  public void delete(UUID userId) {
+    UserSetting userSetting = userSettingRepository.findByUserId(userId);
+    if (userSetting == null) {
+      throw new InvalidParameterException("User data not found for authenticated ID.");
+    }
+    userRepository.deleteById(userId);
+  }
 }
