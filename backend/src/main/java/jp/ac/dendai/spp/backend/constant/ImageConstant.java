@@ -17,4 +17,10 @@ public class ImageConstant {
           TYPE_HEADER, "/images/headers",
           TYPE_ICON, "/images/icons",
           TYPE_WORKS, "/images/works");
+
+  public static final Map<String, String> IMAGE_DIR_MAP =
+      Map.of(
+          TYPE_HEADER, "/usr/share/nginx/images/headers",
+          TYPE_ICON, "/usr/share/nginx/images/icons",
+          TYPE_WORKS, "/usr/share/nginx/images/works");
 }
