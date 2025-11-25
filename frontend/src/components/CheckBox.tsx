@@ -19,13 +19,13 @@ const CheckBox = ({
 }: CheckBoxProps) => {
   return (
     <>
-    <div className={`${className} flex flex-col items-start`}>
-      <div className="flex items-center h-5">
-        <input name={name} type="checkbox" className="w-4 h-4 text-theme bg-background checked:bg-theme checked:border-theme border-default-medium" id={id} checked={checked} onChange={onChange}/>
-        <label className="ml-2 text-subtitle text-foreground" htmlFor={id}>{label}</label>
+      <div className={`${className} flex flex-col items-start`}>
+        <div className="flex items-center h-5" >
+          <input name={name} type="checkbox" className="cursor-pointer w-4 h-4 accent-theme" id={id} checked={checked} onChange={onChange}/>
+          <label className="cursor-pointer ml-2 text-subtitle text-foreground" htmlFor={id}>{label}</label>
+        </div>
+        <p className="text-subtitle mx-6 text-annotation break-all">{helperText}</p>
       </div>
-      <p className="text-subtitle mx-6 text-annotation break-all">{helperText}</p>
-    </div>
     </>
   );
 };
