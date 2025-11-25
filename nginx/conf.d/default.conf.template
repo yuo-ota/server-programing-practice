@@ -15,6 +15,5 @@ server {
         alias /usr/share/nginx/images/;
 
         expires 2d;
-        add_header Cache-Control "public";
     }
 }
