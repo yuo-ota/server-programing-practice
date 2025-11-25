@@ -266,7 +266,7 @@ paths:
             type: string
           description: "Bearer トークンを入れる（例: Bearer <JWT>）"
       responses:
-        "200":
+        "204":
           description: 削除できた場合
         "400":
           description: パラメーターが不正の場合
