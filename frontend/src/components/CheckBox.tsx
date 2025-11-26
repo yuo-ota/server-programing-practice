@@ -20,11 +20,25 @@ const CheckBox = ({
   return (
     <>
       <div className={`${className} flex flex-col items-start`}>
-        <div className="flex items-center h-5" >
-          <input name={name} type="checkbox" className="cursor-pointer w-4 h-4 accent-theme" id={id} checked={checked} onChange={onChange}/>
-          <label className="cursor-pointer ml-2 text-subtitle text-foreground" htmlFor={id}>{label}</label>
+        <div className="flex h-5 items-center">
+          <input
+            name={name}
+            type="checkbox"
+            className="accent-theme h-4 w-4 cursor-pointer"
+            id={id}
+            checked={checked}
+            onChange={onChange}
+          />
+          <label
+            className="text-subtitle text-foreground ml-2 cursor-pointer"
+            htmlFor={id}
+          >
+            {label}
+          </label>
         </div>
-        <p className="text-subtitle mx-6 text-annotation break-all">{helperText}</p>
+        <p className="text-subtitle text-annotation mx-6 break-all">
+          {helperText}
+        </p>
       </div>
     </>
   );
