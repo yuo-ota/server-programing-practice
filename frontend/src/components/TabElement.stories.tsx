@@ -7,6 +7,7 @@ export default {
   component: TabElement,
   args: {
     label: 'test',
+    selected: false,
     onClick: () => {},
     className: 'w-24 h-11',
   },
