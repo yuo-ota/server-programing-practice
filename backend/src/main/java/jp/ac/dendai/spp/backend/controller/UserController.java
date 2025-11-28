@@ -108,6 +108,13 @@ public class UserController {
       errorResponse.setMessage("ユーザー認証に失敗しました。");
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    } catch (InvalidParameterException e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("BAD_REQUEST_PARAM");
+      errorResponse.setMessage(e.getMessage());
+
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     } catch (Exception e) {
       ErrorResponse errorResponse = new ErrorResponse();
 

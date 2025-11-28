@@ -243,8 +243,8 @@ public class UserService {
 
   @Transactional
   public void delete(UUID userId) {
-    UserSetting userSetting = userSettingRepository.findByUserId(userId);
-    if (userSetting == null) {
+    User user = userRepository.findByUserId(userId);
+    if (user == null) {
       throw new InvalidParameterException("User data not found for authenticated ID.");
     }
     userRepository.deleteById(userId);
