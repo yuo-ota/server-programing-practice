@@ -13,7 +13,7 @@ const SimpleButton = ({
     <div className={`${className}`}>
       <button
         onClick={onClick}
-        className= "bg-background transition-brightness flex w-full items-center justify-center rounded-full border hover:brightness-(--hover-nega-brightness) active:brightness-(--active-nega-brightness)"
+        className="bg-background transition-brightness flex w-full items-center justify-center rounded-full border hover:brightness-(--hover-nega-brightness) active:brightness-(--active-nega-brightness)"
         type="button"
       >
         <p className="text-subtitle mx-4 my-1 text-center">
