@@ -15,7 +15,9 @@ import jp.ac.dendai.spp.backend.entity.User;
 import jp.ac.dendai.spp.backend.entity.UserSetting;
 import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.request.CreateUserRequest;
+import jp.ac.dendai.spp.backend.form.request.ShowUserRequest;
 import jp.ac.dendai.spp.backend.form.request.UpdateUserRequest;
+import jp.ac.dendai.spp.backend.form.response.UserDataResponse;
 import jp.ac.dendai.spp.backend.repository.PreRegisterTokenRepository;
 import jp.ac.dendai.spp.backend.repository.SocialAccountRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
@@ -55,8 +57,8 @@ public class UserService {
 
   @Transactional
   public ResponseCookie register(CreateUserRequest request) {
-    PreRegisterToken preRegisterToken =
-        (PreRegisterToken) tokenService.verifyToken(request.getToken(), TokenConstant.PRE_REGISTER);
+    PreRegisterToken preRegisterToken = (PreRegisterToken) tokenService.verifyToken(request.getToken(),
+        TokenConstant.PRE_REGISTER);
 
     if (displayIdService.isUsed(request.getUserId())) {
       throw new InvalidParameterException("Display ID is already in use");
@@ -66,18 +68,16 @@ public class UserService {
       throw new InvalidParameterException("Birthday cannot be in the future");
     }
 
-    boolean showAdultContents =
-        isShowAdultContents(request.getBirthday(), request.getShowAdultContents());
+    boolean showAdultContents = isShowAdultContents(request.getBirthday(), request.getShowAdultContents());
 
     User user = createUser(preRegisterToken);
 
-    UserSetting setting =
-        new UserSetting(
-            user.getUserId(),
-            request.getName(),
-            request.getUserId(),
-            request.getBirthday(),
-            showAdultContents);
+    UserSetting setting = new UserSetting(
+        user.getUserId(),
+        request.getName(),
+        request.getUserId(),
+        request.getBirthday(),
+        showAdultContents);
 
     userSettingRepository.save(setting);
 
@@ -107,7 +107,8 @@ public class UserService {
    * @param userId
    */
   public void createSocialAccounts(List<SocialAccount> socialAccounts, UUID userId) {
-    if (socialAccounts == null || socialAccounts.isEmpty()) return;
+    if (socialAccounts == null || socialAccounts.isEmpty())
+      return;
 
     List<SocialAccountEntity> accountsToSave = new ArrayList<SocialAccountEntity>();
 
@@ -126,12 +127,19 @@ public class UserService {
   /**
    *    * Updates the user's settings and social accounts.    *    *
    *
-   * <p>   * This method authenticates the user by JWT token, validates and updates user    *
-   * settings such as    * birthday, name, display ID, introduction, icon, and header images. It
-   * also    * updates the user's    * social accounts. If any validation fails, an    * {@link
-   * InvalidParameterException} is thrown.    *    * @param token   JWT token used for user
-   * authentication    * @param request {@link UpdateUserRequest} containing the new user settings
-   * and    *                social accounts    * @throws InvalidParameterException if validation
+   * <p>
+   *    * This method authenticates the user by JWT token, validates and updates
+   * user    *
+   * settings such as    * birthday, name, display ID, introduction, icon, and
+   * header images. It
+   * also    * updates the user's    * social accounts. If any validation fails,
+   * an    * {@link
+   * InvalidParameterException} is thrown.    *    * @param token   JWT token used
+   * for user
+   * authentication    * @param request {@link UpdateUserRequest} containing the
+   * new user settings
+   * and    *                social accounts    * @throws
+   * InvalidParameterException if validation
    * fails or user is not found
    */
   @Transactional
@@ -149,8 +157,7 @@ public class UserService {
       userSetting.setBirthday(request.getBirthday());
     }
 
-    boolean showAdultContents =
-        isShowAdultContents(userSetting.getBirthday(), request.getShowAdultContents());
+    boolean showAdultContents = isShowAdultContents(userSetting.getBirthday(), request.getShowAdultContents());
     userSetting.setShowAdultContent(showAdultContents);
 
     if (request.getName() != null) {
@@ -182,8 +189,7 @@ public class UserService {
     if (request.getHeader() != null && !request.getHeader().isEmpty()) {
       String headerPath;
       try {
-        headerPath =
-            ImageManager.processAndSaveImage(request.getHeader(), ImageConstant.TYPE_HEADER);
+        headerPath = ImageManager.processAndSaveImage(request.getHeader(), ImageConstant.TYPE_HEADER);
       } catch (Exception e) {
         throw new InvalidParameterException("Failed to process header image", e);
       }
@@ -248,5 +254,17 @@ public class UserService {
       throw new InvalidParameterException("User data not found for authenticated ID.");
     }
     userRepository.deleteById(userId);
+  }
+
+  public UserDataResponse show(String token, ShowUserRequest request) {
+    authService.auth(token);
+    String targetDisplayId = request.getUserId();
+    UserSetting targetUserSetting = userSettingRepository.findByDisplayId(targetDisplayId);
+    if (targetUserSetting == null) {
+      throw new InvalidParameterException("Target user not found with ID: " + targetDisplayId);
+    }
+    UUID targetUserId = targetUserSetting.getUserId();
+
+    return null;
   }
 }
