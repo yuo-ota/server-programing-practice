@@ -30,7 +30,7 @@ const RequireAdminAuth = () => {
 
   if (checking) return <div>認証中...</div>;
 
-  if (!authenticated) return <Navigate to="/not-found" replace />;
+  if (!authenticated) return <Navigate to="/unauthorized" replace />;
 
   return <Outlet />;
 };

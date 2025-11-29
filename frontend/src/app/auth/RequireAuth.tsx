@@ -2,35 +2,35 @@ import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router';
 
 const RequireAuth = () => {
-  const [checking, setChecking] = useState(false);
-  const [authenticated, setAuthenticated] = useState(true);
+  const [checking, setChecking] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
 
-  // useEffect(() => {
-  //   const verifyToken = async () => {
-  //     try {
-  //       const response = await fetch('/api/auth', {
-  //         method: 'POST',
-  //         credentials: 'include',
-  //       });
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await fetch('/api/auth', {
+          method: 'POST',
+          credentials: 'include',
+        });
 
-  //       if (response.ok) {
-  //         setAuthenticated(true);
-  //       } else {
-  //         setAuthenticated(false);
-  //       }
-  //     } catch {
-  //       setAuthenticated(false);
-  //     } finally {
-  //       setChecking(false);
-  //     }
-  //   };
+        if (response.ok) {
+          setAuthenticated(true);
+        } else {
+          setAuthenticated(false);
+        }
+      } catch {
+        setAuthenticated(false);
+      } finally {
+        setChecking(false);
+      }
+    };
 
-  //   verifyToken();
-  // }, []);
+    verifyToken();
+  }, []);
 
   if (checking) return <div>認証中...</div>;
 
-  if (!authenticated) return <Navigate to="/not-found" replace />;
+  if (!authenticated) return <Navigate to="/unauthorized" replace />;
 
   return <Outlet />;
 };
