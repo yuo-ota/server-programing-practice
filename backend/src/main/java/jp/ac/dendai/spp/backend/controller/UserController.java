@@ -102,7 +102,7 @@ public class UserController {
   @DeleteMapping
   public ResponseEntity<?> delete(@RequestHeader("Authorization") String token) {
     try {
-      UUID userId = authService.authByJwt(token);
+      UUID userId = authService.auth(token);
       userService.delete(userId);
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     } catch (AuthenticationFailedException e) {
@@ -135,7 +135,9 @@ public class UserController {
       ShowUserRequest request = new ShowUserRequest();
       request.setUserId(displayId);
 
-      UserDataResponse response = userService.show(token, request);
+      UUID userId = authService.auth(token);
+
+      UserDataResponse response = userService.show(userId, request);
 
       return ResponseEntity.ok(response);
     } catch (AuthenticationFailedException e) {
@@ -156,6 +158,7 @@ public class UserController {
       ErrorResponse errorResponse = new ErrorResponse();
 
       errorResponse.setCode("SERVICE_ERROR");
+      e.printStackTrace();
       errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }

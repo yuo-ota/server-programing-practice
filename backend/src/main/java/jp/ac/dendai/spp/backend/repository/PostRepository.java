@@ -1,5 +1,6 @@
 package jp.ac.dendai.spp.backend.repository;
 
+import java.util.List;
 import java.util.UUID;
 import jp.ac.dendai.spp.backend.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,9 +13,12 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
   @Query(
       value =
           """
-    SELECT * FROM posts WHERE creator_id = :creatorId
-    AND EXTRACT(HOUR FROM created_at) >= :hour LIMIT 1
-    """,
+      SELECT * FROM posts WHERE creator_id = :creatorId
+      AND EXTRACT(HOUR FROM created_at) >= :hour LIMIT 1
+      """,
       nativeQuery = true)
-  Post findByCreatorId(@Param("creatorId") UUID creatorId, @Param("hour") int hour);
+  Post findByCreatorIdInToday(@Param("creatorId") UUID creatorId, @Param("hour") int hour);
+
+  @Query("SELECT p FROM Post p WHERE p.creatorId = :creatorId")
+  List<Post> findByCreatorId(@Param("creatorId") UUID creatorId);
 }
