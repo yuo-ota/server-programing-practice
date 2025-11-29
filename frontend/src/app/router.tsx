@@ -18,6 +18,7 @@ import { Likes as HomeProfileLikes } from './routes/home/profile/Likes';
 import { Edit as HomeProfileEdit } from './routes/home/profile/Edit';
 import { Report as HomeProfileReport } from './routes/home/profile/Report';
 import { New as PostNew } from './routes/posts/New';
+import { Setting } from './routes/Setting';
 import { Reports as AdminHomeReports } from './routes/admin/home/Reports';
 import { Penalty as AdminHomePostsPostPenalty } from './routes/admin/home/posts/Penalty';
 import { Root as AdminHomeProfileRoot } from './routes/admin/home/profile/Root';
@@ -66,6 +67,7 @@ export const AppRoutes = () => {
             </Route>
           </Route>
           <Route path="posts/new" element={<PostNew />} />
+          <Route path="/setting" element={<Setting />}></Route>
         </Route>
 
         {/* Admin Auth Required */}
