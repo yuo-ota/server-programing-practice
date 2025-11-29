@@ -4,11 +4,10 @@ import java.util.Optional;
 import java.util.UUID;
 import jp.ac.dendai.spp.backend.entity.Like;
 import jp.ac.dendai.spp.backend.entity.Post;
+import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.request.LikeRequest;
 import jp.ac.dendai.spp.backend.repository.LikeRepository;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
-import jp.ac.dendai.spp.backend.error.InvalidParameterException;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +17,10 @@ public class LikeService {
   private final LikeRepository likeRepository;
   private final PostRepository postRepository;
 
-  public LikeService(NotificationService notificationService, LikeRepository likeRepository, PostRepository postRepository) {
+  public LikeService(
+      NotificationService notificationService,
+      LikeRepository likeRepository,
+      PostRepository postRepository) {
     this.notificationService = notificationService;
     this.likeRepository = likeRepository;
     this.postRepository = postRepository;

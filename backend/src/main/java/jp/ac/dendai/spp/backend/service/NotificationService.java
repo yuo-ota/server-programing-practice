@@ -58,8 +58,7 @@ public class NotificationService {
   public LikeNotification createLikeNotification(UUID userId, Like like) {
     Notification notification =
         createNotification(NotificationConstant.NOTIFICATION_CATEGORY_MAP.get("いいね通知"), userId);
-    LikeNotification likeNotification =
-        new LikeNotification(notification.getId(), like.getId());
+    LikeNotification likeNotification = new LikeNotification(notification.getId(), like.getId());
 
     LikeNotification savedLikeNotification = likeNotificationRepository.save(likeNotification);
 
@@ -75,7 +74,7 @@ public class NotificationService {
   public Notification deleteLikeNotification(UUID likeId) {
     LikeNotification likeNotification = likeNotificationRepository.findByLikeId(likeId);
 
-    if(likeNotification == null) {
+    if (likeNotification == null) {
       throw new InvalidParameterException("いいね通知が見つかりません。");
     }
 
