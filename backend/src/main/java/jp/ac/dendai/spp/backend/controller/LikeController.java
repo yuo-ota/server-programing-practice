@@ -65,7 +65,7 @@ public class LikeController {
       UUID userId = authService.auth(token);
       likeService.deleteLike(userId, request);
 
-      return ResponseEntity.status(HttpStatus.CREATED).build();
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     } catch (InvalidParameterException e) {
       ErrorResponse errorResponse = new ErrorResponse();
 
