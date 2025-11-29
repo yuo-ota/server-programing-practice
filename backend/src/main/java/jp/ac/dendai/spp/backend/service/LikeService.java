@@ -2,8 +2,11 @@ package jp.ac.dendai.spp.backend.service;
 
 import java.util.UUID;
 import jp.ac.dendai.spp.backend.entity.Like;
+import jp.ac.dendai.spp.backend.entity.Post;
 import jp.ac.dendai.spp.backend.form.request.LikeRequest;
 import jp.ac.dendai.spp.backend.repository.LikeRepository;
+import jp.ac.dendai.spp.backend.repository.PostRepository;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class LikeService {
   private final NotificationService notificationService;
   private final LikeRepository likeRepository;
+  private final PostRepository postRepository;
 
-  public LikeService(NotificationService notificationService, LikeRepository likeRepository) {
+  public LikeService(NotificationService notificationService, LikeRepository likeRepository, PostRepository postRepository) {
     this.notificationService = notificationService;
     this.likeRepository = likeRepository;
+    this.postRepository = postRepository;
   }
 
   /**
@@ -26,10 +31,11 @@ public class LikeService {
   @Transactional
   public void createLike(UUID userId, LikeRequest request) {
     Like like = new Like(userId, request.getPostId());
+    Post post = postRepository.findById(request.getPostId()).orElseThrow();
 
     Like savedLike = likeRepository.save(like);
 
-    notificationService.createLikeNotification(userId, savedLike);
+    notificationService.createLikeNotification(post.getCreatorId(), savedLike);
   }
 
   /**
