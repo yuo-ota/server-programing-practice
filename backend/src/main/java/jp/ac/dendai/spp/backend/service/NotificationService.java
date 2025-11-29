@@ -5,6 +5,7 @@ import jp.ac.dendai.spp.backend.constant.NotificationConstant;
 import jp.ac.dendai.spp.backend.entity.Like;
 import jp.ac.dendai.spp.backend.entity.LikeNotification;
 import jp.ac.dendai.spp.backend.entity.Notification;
+import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.repository.LikeNotificationRepository;
 import jp.ac.dendai.spp.backend.repository.NotificationRepository;
 import org.springframework.stereotype.Service;
@@ -73,6 +74,10 @@ public class NotificationService {
    */
   public Notification deleteLikeNotification(UUID likeId) {
     LikeNotification likeNotification = likeNotificationRepository.findByLikeId(likeId);
+
+    if(likeNotification == null) {
+      throw new InvalidParameterException("いいね通知が見つかりません。");
+    }
 
     return deleteNotification(likeNotification.getNotificationId());
   }

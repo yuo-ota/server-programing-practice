@@ -1,11 +1,13 @@
 package jp.ac.dendai.spp.backend.service;
 
+import java.util.Optional;
 import java.util.UUID;
 import jp.ac.dendai.spp.backend.entity.Like;
 import jp.ac.dendai.spp.backend.entity.Post;
 import jp.ac.dendai.spp.backend.form.request.LikeRequest;
 import jp.ac.dendai.spp.backend.repository.LikeRepository;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
+import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,11 +33,15 @@ public class LikeService {
   @Transactional
   public void createLike(UUID userId, LikeRequest request) {
     Like like = new Like(userId, request.getPostId());
-    Post post = postRepository.findById(request.getPostId()).orElseThrow();
+    Optional<Post> post = postRepository.findById(request.getPostId());
+
+    if (post.isEmpty()) {
+      throw new InvalidParameterException("投稿が見つかりません。");
+    }
 
     Like savedLike = likeRepository.save(like);
 
-    notificationService.createLikeNotification(post.getCreatorId(), savedLike);
+    notificationService.createLikeNotification(post.get().getCreatorId(), savedLike);
   }
 
   /**
