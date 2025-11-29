@@ -54,7 +54,7 @@ export const AppRoutes = () => {
           <Route path="/home">
             <Route path="notifications" element={<HomeNotifications />} />
             <Route path="posts">
-              <Route index element={<HomePostsRoot />} />
+              <Route element={<HomePostsRoot />} />
               <Route path=":postId" element={<HomePostsPost />} />
               <Route path=":postId/report" element={<HomePostsPostReport />} />
             </Route>
