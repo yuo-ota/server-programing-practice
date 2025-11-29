@@ -54,8 +54,11 @@ public class LikeService {
   public void deleteLike(UUID userId, LikeRequest request) {
     Like like = likeRepository.findByUserIdAndPostId(userId, request.getPostId());
 
-    likeRepository.delete(like);
+    if (like == null) {
+      throw new InvalidParameterException("いいねが見つかりません。");
+    }
 
+    likeRepository.delete(like);
     notificationService.deleteLikeNotification(like.getId());
   }
 }
