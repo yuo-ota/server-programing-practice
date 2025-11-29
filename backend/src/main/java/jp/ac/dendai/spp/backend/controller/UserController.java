@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("api/user")
@@ -130,8 +129,8 @@ public class UserController {
   }
 
   @GetMapping("/{userId}")
-  public ResponseEntity<?> show(@RequestHeader("Authorization") String token,
-      @PathVariable("userId") String displayId) {
+  public ResponseEntity<?> show(
+      @RequestHeader("Authorization") String token, @PathVariable("userId") String displayId) {
     try {
       ShowUserRequest request = new ShowUserRequest();
       request.setUserId(displayId);
@@ -161,5 +160,4 @@ public class UserController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
   }
-
 }
