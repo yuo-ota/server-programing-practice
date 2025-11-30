@@ -75,6 +75,7 @@ public class ReportService {
 
     reportRepository.save(report);
   }
+  /**
    * 報告カテゴリをIDにマッピングします。
    * @param reportTypes 報告カテゴリの名前の配列
    * @param categoriesList 有効な報告カテゴリ名のリスト

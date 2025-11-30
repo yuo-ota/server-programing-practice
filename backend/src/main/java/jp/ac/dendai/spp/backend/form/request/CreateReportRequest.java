@@ -1,5 +1,6 @@
 package jp.ac.dendai.spp.backend.form.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.UUID;
 
@@ -7,7 +8,9 @@ public class CreateReportRequest {
   private String reporteeUser;
   private UUID reporteePost;
 
-  @NotEmpty private String[] reportType;
+  @NotEmpty
+  @NotBlank
+  private String[] reportType;
   private String detail;
 
   // Getters and Setters
