@@ -36,9 +36,12 @@ const CheckBox = ({
             {label}
           </label>
         </div>
-        <p className="text-subtitle text-annotation mx-6 break-all">
+        <label
+          className="text-subtitle text-annotation mx-6 cursor-pointer break-all"
+          htmlFor={id}
+        >
           {helperText}
-        </p>
+        </label>
       </div>
     </>
   );

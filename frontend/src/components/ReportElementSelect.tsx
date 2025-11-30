@@ -86,8 +86,6 @@ const ReportElementSelect = ({ className = '' }: ReportElementSelectProps) => {
           />
         ))}
       </div>
-
-      <hr className="my-4" />
     </div>
   );
 };
