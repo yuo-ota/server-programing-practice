@@ -52,7 +52,7 @@ public class ReportService {
     if (reporteeUserSetting == null) {
       throw new InvalidParameterException("User not found");
     }
-    
+
     UUID reporteeUserId = reporteeUserSetting.getUserId();
     List<Integer> categoryStatusId =
         mapCategoryStatus(request.getReportType(), ReportConstant.REPORT_USER_CATEGORIES_LIST);
@@ -93,7 +93,7 @@ public class ReportService {
     List<Integer> categoryStatusId = new ArrayList<>();
     for (String type : reportTypes) {
       int index = categoriesList.indexOf(type);
-      if (index != -1) {
+      if (index != -1 && !categoryStatusId.contains(index)) {
         categoryStatusId.add(index);
       } else {
         throw new InvalidParameterException("無効な報告カテゴリが含まれています: " + type);
