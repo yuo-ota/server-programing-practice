@@ -9,7 +9,6 @@ import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.request.CreateReportRequest;
 import jp.ac.dendai.spp.backend.repository.ReportRepository;
 import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +25,7 @@ public class ReportService {
 
   /**
    * 報告作成
+   *
    * @param userId
    * @param request
    */
@@ -41,6 +41,7 @@ public class ReportService {
 
   /**
    * ユーザ報告作成
+   *
    * @param userId
    * @param request
    */
@@ -59,6 +60,7 @@ public class ReportService {
 
   /**
    * 投稿報告作成
+   *
    * @param userId
    * @param request
    */
@@ -76,6 +78,7 @@ public class ReportService {
 
   /**
    * 報告カテゴリをIDにマッピング
+   *
    * @param reportTypes
    * @param categoriesList
    * @return
