@@ -1,6 +1,8 @@
 interface TextInputProps {
+  displayStatus: 'normal' | 'unrounded-left';
   label: string;
   placeholder: string;
+  prefix: string;
   error?: string;
   id: string;
   value: string;
@@ -10,27 +12,44 @@ interface TextInputProps {
 }
 
 const TextInput = ({
+  displayStatus,
   label,
   placeholder,
+  prefix,
   error,
   id,
+  value,
+  onChange,
+  onBlur,
   className = '',
 }: TextInputProps) => {
   return (
-    <div className={`${className} min-w-24`}>
-      <label htmlFor={id} className="text-subtitle">
+    <div className={`${className} min-h-11 min-w-24`}>
+      <label htmlFor={id} className="text-subtitle h-full">
         {label}
       </label>
-      <input
-        id={id}
-        className={
-          `placeholder:text-placeholder text-foreground text-subtitle ease w-full rounded-md border bg-transparent px-3 py-2 shadow-md transition duration-150 focus:shadow focus:outline-none ` +
-          (error
+      <div
+        className={`flex h-full w-full cursor-pointer items-center justify-start border bg-transparent px-3 py-2 transition duration-150 focus:shadow focus:outline-none ${
+          error
             ? 'border-error focus:border-error'
-            : 'border-foreground focus:border-theme hover:border-foreground/(--hover-nega-opacity)')
-        }
-        placeholder={placeholder}
-      />
+            : 'border-foreground focus:border-theme hover:border-foreground/(--hover-nega-opacity)'
+        } ${displayStatus === 'unrounded-left' ? 'rounded-r-lg' : 'rounded-lg'}`}
+      >
+        <label
+          className="text-foreground text-body flex-none cursor-pointer"
+          htmlFor={id}
+        >
+          {prefix}
+        </label>
+        <input
+          id={id}
+          className="placeholder:text-placeholder text-foreground text-subtitle ease flex-1 outline-none"
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          placeholder={placeholder}
+        />
+      </div>
       <p className="text-subparagraph mx-2 min-h-5 break-all">
         {error && <span className="text-error">{error}</span>}
       </p>
