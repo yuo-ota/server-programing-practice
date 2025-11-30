@@ -24,6 +24,11 @@ public class ReportService {
     this.userSettingRepository = userSettingRepository;
   }
 
+  /**
+   * 報告作成
+   * @param userId
+   * @param request
+   */
   public void createReport(UUID userId, CreateReportRequest request) {
     if (request.getReporteeUser() != null) {
       createUserReport(userId, request);
@@ -34,6 +39,11 @@ public class ReportService {
     }
   }
 
+  /**
+   * ユーザ報告作成
+   * @param userId
+   * @param request
+   */
   @Transactional
   public void createUserReport(UUID userId, CreateReportRequest request) {
     UUID reporteeUserId =
@@ -47,6 +57,11 @@ public class ReportService {
     reportRepository.save(report);
   }
 
+  /**
+   * 投稿報告作成
+   * @param userId
+   * @param request
+   */
   @Transactional
   public void createPostReport(UUID userId, CreateReportRequest request) {
     List<Integer> categoryStatusId =
@@ -59,6 +74,12 @@ public class ReportService {
     reportRepository.save(report);
   }
 
+  /**
+   * 報告カテゴリをIDにマッピング
+   * @param reportTypes
+   * @param categoriesList
+   * @return
+   */
   public List<Integer> mapCategoryStatus(String[] reportTypes, List<String> categoriesList) {
     List<Integer> categoryStatusId = new ArrayList<>();
     for (String type : reportTypes) {
