@@ -61,7 +61,7 @@ public class Report {
     this.isReportUser = isReportUser;
     this.reportee = reportee;
     this.reportedPostId = reportedPostId;
-    this.categoryStatusId = List.copyOf(categoryStatusId);
+    this.categoryStatusId = categoryStatusId == null ? List.of() : List.copyOf(categoryStatusId);
     this.details = details;
   }
 
