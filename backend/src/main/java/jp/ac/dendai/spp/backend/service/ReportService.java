@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import jp.ac.dendai.spp.backend.constant.ReportConstant;
 import jp.ac.dendai.spp.backend.entity.Report;
+import jp.ac.dendai.spp.backend.entity.UserSetting;
 import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.request.CreateReportRequest;
 import jp.ac.dendai.spp.backend.repository.ReportRepository;
@@ -47,8 +48,12 @@ public class ReportService {
    */
   @Transactional
   public void createUserReport(UUID userId, CreateReportRequest request) {
-    UUID reporteeUserId =
-        userSettingRepository.findByDisplayId(request.getReporteeUser()).getUserId();
+    UserSetting reporteeUserSetting = userSettingRepository.findByDisplayId(request.getReporteeUser());
+    if (reporteeUserSetting == null) {
+      throw new InvalidParameterException("User not found");
+    }
+    
+    UUID reporteeUserId = reporteeUserSetting.getUserId();
     List<Integer> categoryStatusId =
         mapCategoryStatus(request.getReportType(), ReportConstant.REPORT_USER_CATEGORIES_LIST);
 
