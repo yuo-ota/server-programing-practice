@@ -1,0 +1,137 @@
+import { Link, useNavigate } from 'react-router';
+import TextInput from '@/components/TextInput';
+import TransitionButton from '@/components/TransitionButton';
+import { useState } from 'react';
+import { login } from '@/api/AuthApi';
+
+const LoginInputGroup = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  /**
+   * メールアドレス入力時の処理
+   * @param e
+   */
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!checkEmailFormat(e.target.value)) {
+      setEmailError('メールアドレスの形式が正しくありません');
+    }
+
+    setEmail(e.target.value);
+    setEmailError('');
+  };
+
+  /**
+   * パスワード入力時の処理
+   * @param e
+   */
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!checkPasswordFormat(e.target.value)) {
+      setPasswordError('パスワードは8文字以上で入力してください');
+    }
+
+    setPassword(e.target.value);
+    setPasswordError('');
+  };
+
+  /**
+   * ログインボタンがクリックされたときの処理
+   * @returns
+   */
+  const handleLoginButtonClick = () => {
+    if (getLoginButtonStatus() === 'disabled-solid') {
+      return;
+    }
+
+    handleLogin(email, password);
+    navigate('/home');
+  };
+
+  /**
+   * ボタンの状態の取得
+   * @returns ボタンの状態
+   */
+  const getLoginButtonStatus = (): 'solid' | 'disabled-solid' => {
+    if (
+      email === '' ||
+      password === '' ||
+      emailError !== '' ||
+      passwordError !== ''
+    ) {
+      return 'disabled-solid';
+    }
+    return 'solid';
+  };
+
+  /**
+   * メールアドレスの形式チェック
+   * @param email
+   * @returns
+   */
+  const checkEmailFormat = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  /**
+   * パスワードの形式チェック
+   * @param password
+   * @returns
+   */
+  const checkPasswordFormat = (password: string): boolean => {
+    return password.length >= 8;
+  };
+
+  /**
+   * ログイン処理を実行する
+   * @param email
+   * @param password
+   */
+  const handleLogin = async (
+    email: string,
+    password: string
+  ): Promise<void> => {
+    await login(email, password);
+  };
+
+  return (
+    <>
+      <div className="flex w-full flex-col gap-3.5">
+        <TextInput
+          label="メールアドレス"
+          placeholder="xxx@example.com"
+          error={emailError}
+          id="email-input"
+          value={email}
+          onChange={handleEmailChange}
+        />
+        <TextInput
+          label="パスワード(8文字以上)"
+          placeholder="********"
+          error={passwordError}
+          id="password-input"
+          value={password}
+          onChange={handlePasswordChange}
+        />
+        <div className="mt-3.5 flex flex-col items-center gap-2.5">
+          <TransitionButton
+            displayStatus={getLoginButtonStatus()}
+            label={'ログイン'}
+            onClick={handleLoginButtonClick}
+            className="h-11 w-full"
+          />
+          <Link
+            className="text-annotation text-subparagraph"
+            to="/password-reset"
+          >
+            パスワードをリセット
+          </Link>
+        </div>
+      </div>
+    </>
+  );
+};
+export default LoginInputGroup;
