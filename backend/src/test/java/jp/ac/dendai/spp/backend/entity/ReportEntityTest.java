@@ -81,7 +81,7 @@ public class ReportEntityTest {
     Report report =
         new Report(
             savedReporter.getUserId(),
-            true,
+            false,
             null,
             savedPost.getId(),
             List.of(1),
