@@ -48,7 +48,8 @@ public class ReportService {
    */
   @Transactional
   public void createUserReport(UUID userId, CreateReportRequest request) {
-    UserSetting reporteeUserSetting = userSettingRepository.findByDisplayId(request.getReporteeUser());
+    UserSetting reporteeUserSetting =
+        userSettingRepository.findByDisplayId(request.getReporteeUser());
     if (reporteeUserSetting == null) {
       throw new InvalidParameterException("User not found");
     }
@@ -80,14 +81,13 @@ public class ReportService {
 
     reportRepository.save(report);
   }
+
   /**
    * 報告カテゴリをIDにマッピングします。
+   *
    * @param reportTypes 報告カテゴリの名前の配列
    * @param categoriesList 有効な報告カテゴリ名のリスト
    * @return 報告カテゴリ名に対応するカテゴリIDのリスト
-   * @param reportTypes
-   * @param categoriesList
-   * @return
    */
   public List<Integer> mapCategoryStatus(String[] reportTypes, List<String> categoriesList) {
     List<Integer> categoryStatusId = new ArrayList<>();

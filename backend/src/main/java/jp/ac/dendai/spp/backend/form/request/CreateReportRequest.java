@@ -8,9 +8,7 @@ public class CreateReportRequest {
   private String reporteeUser;
   private UUID reporteePost;
 
-  @NotEmpty
-  @NotBlank
-  private String[] reportType;
+  @NotEmpty @NotBlank private String[] reportType;
   private String detail;
 
   // Getters and Setters
