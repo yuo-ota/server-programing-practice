@@ -31,11 +31,11 @@ public class CreateReportRequest {
   }
 
   public String[] getReportType() {
-    return reportType.clone();
+    return reportType == null ? null : reportType.clone();
   }
 
   public void setReportType(String[] reportType) {
-    this.reportType = reportType.clone();
+    this.reportType = (reportType == null) ? null : reportType.clone();
   }
 
   public String getDetail() {
