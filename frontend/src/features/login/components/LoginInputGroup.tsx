@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router';
 import TextInput from '@/components/TextInput';
 import TransitionButton from '@/components/TransitionButton';
 import { useState } from 'react';
-import { login } from '@/api/AuthApi';
+import { login } from '@/api/authApi';
 
 const LoginInputGroup = () => {
   const navigate = useNavigate();
