@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router";
-import TransitionButton from "../../../components/TransitionButton";
-import ErrorDetail from "./ErrorDetail";
+import { useNavigate } from 'react-router';
+import TransitionButton from '../../../components/TransitionButton';
+import ErrorDetail from './ErrorDetail';
 
 interface ErrorPageProps {
   statusCode: number;
@@ -14,7 +14,7 @@ const ErrorPage = ({ statusCode, message, details }: ErrorPageProps) => {
   const handleHomeButtonClick = () => {
     navigate('/');
   };
-  
+
   return (
     <>
       <div className="flex flex-col items-center gap-12">
