@@ -2,8 +2,11 @@ package jp.ac.dendai.spp.backend.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import jp.ac.dendai.spp.backend.constant.CommonConstant;
 import jp.ac.dendai.spp.backend.constant.ImageConstant;
 import jp.ac.dendai.spp.backend.constant.PlatformConstant;
@@ -11,6 +14,7 @@ import jp.ac.dendai.spp.backend.constant.TokenConstant;
 import jp.ac.dendai.spp.backend.dto.Content;
 import jp.ac.dendai.spp.backend.dto.LikedPost;
 import jp.ac.dendai.spp.backend.dto.OwnPost;
+import jp.ac.dendai.spp.backend.dto.PostIdAndCount;
 import jp.ac.dendai.spp.backend.dto.SocialAccount;
 import jp.ac.dendai.spp.backend.entity.ImageEntity;
 import jp.ac.dendai.spp.backend.entity.Post;
@@ -75,8 +79,8 @@ public class UserService {
 
   @Transactional
   public ResponseCookie register(CreateUserRequest request) {
-    PreRegisterToken preRegisterToken = (PreRegisterToken) tokenService.verifyToken(request.getToken(),
-        TokenConstant.PRE_REGISTER);
+    PreRegisterToken preRegisterToken =
+        (PreRegisterToken) tokenService.verifyToken(request.getToken(), TokenConstant.PRE_REGISTER);
 
     if (displayIdService.isUsed(request.getUserId())) {
       throw new InvalidParameterException("Display ID is already in use");
@@ -86,16 +90,18 @@ public class UserService {
       throw new InvalidParameterException("Birthday cannot be in the future");
     }
 
-    boolean showAdultContents = isShowAdultContents(request.getBirthday(), request.getShowAdultContents());
+    boolean showAdultContents =
+        isShowAdultContents(request.getBirthday(), request.getShowAdultContents());
 
     User user = createUser(preRegisterToken);
 
-    UserSetting setting = new UserSetting(
-        user.getUserId(),
-        request.getName(),
-        request.getUserId(),
-        request.getBirthday(),
-        showAdultContents);
+    UserSetting setting =
+        new UserSetting(
+            user.getUserId(),
+            request.getName(),
+            request.getUserId(),
+            request.getBirthday(),
+            showAdultContents);
 
     userSettingRepository.save(setting);
 
@@ -125,8 +131,7 @@ public class UserService {
    * @param userId
    */
   public void createSocialAccounts(List<SocialAccount> socialAccounts, UUID userId) {
-    if (socialAccounts == null || socialAccounts.isEmpty())
-      return;
+    if (socialAccounts == null || socialAccounts.isEmpty()) return;
 
     List<SocialAccountEntity> accountsToSave = new ArrayList<SocialAccountEntity>();
 
@@ -145,19 +150,12 @@ public class UserService {
   /**
    *    * Updates the user's settings and social accounts.    *    *
    *
-   * <p>
-   *    * This method authenticates the user by JWT token, validates and updates
-   * user    *
-   * settings such as    * birthday, name, display ID, introduction, icon, and
-   * header images. It
-   * also    * updates the user's    * social accounts. If any validation fails,
-   * an    * {@link
-   * InvalidParameterException} is thrown.    *    * @param token   JWT token used
-   * for user
-   * authentication    * @param request {@link UpdateUserRequest} containing the
-   * new user settings
-   * and    *                social accounts    * @throws
-   * InvalidParameterException if validation
+   * <p>   * This method authenticates the user by JWT token, validates and updates user    *
+   * settings such as    * birthday, name, display ID, introduction, icon, and header images. It
+   * also    * updates the user's    * social accounts. If any validation fails, an    * {@link
+   * InvalidParameterException} is thrown.    *    * @param token   JWT token used for user
+   * authentication    * @param request {@link UpdateUserRequest} containing the new user settings
+   * and    *                social accounts    * @throws InvalidParameterException if validation
    * fails or user is not found
    */
   @Transactional
@@ -175,7 +173,8 @@ public class UserService {
       userSetting.setBirthday(request.getBirthday());
     }
 
-    boolean showAdultContents = isShowAdultContents(userSetting.getBirthday(), request.getShowAdultContents());
+    boolean showAdultContents =
+        isShowAdultContents(userSetting.getBirthday(), request.getShowAdultContents());
     userSetting.setShowAdultContent(showAdultContents);
 
     if (request.getName() != null) {
@@ -207,7 +206,8 @@ public class UserService {
     if (request.getHeader() != null && !request.getHeader().isEmpty()) {
       String headerPath;
       try {
-        headerPath = ImageManager.processAndSaveImage(request.getHeader(), ImageConstant.TYPE_HEADER);
+        headerPath =
+            ImageManager.processAndSaveImage(request.getHeader(), ImageConstant.TYPE_HEADER);
       } catch (Exception e) {
         throw new InvalidParameterException("Failed to process header image", e);
       }
@@ -287,7 +287,8 @@ public class UserService {
     response.setIconPath(targetUserSetting.getIconPath());
     response.setHeaderPath(targetUserSetting.getHeaderPath());
 
-    List<SocialAccountEntity> socialAccountEntities = socialAccountRepository.findByUserId(targetUserId);
+    List<SocialAccountEntity> socialAccountEntities =
+        socialAccountRepository.findByUserId(targetUserId);
     List<SocialAccount> socialAccounts = new ArrayList<>();
     for (SocialAccountEntity entity : socialAccountEntities) {
       String platformName = PlatformConstant.PLATFORM_LIST.get(entity.getPlatformId());
@@ -298,19 +299,27 @@ public class UserService {
     response.setSocialAccounts(socialAccounts);
 
     List<Post> posts = postRepository.findByCreatorId(targetUserId);
-    List<UUID> creatorIds = posts.stream().map(Post::getCreatorId).toList();
     List<OwnPost> ownPosts = new ArrayList<>();
-    List<ImageEntity> imageEntities = imageRepository.findByPostIds(posts.stream().map(Post::getId).toList());
-    List<Integer> likeCounts = likeRepository.countBypostIds(posts.stream().map(Post::getId).toList());
+    List<ImageEntity> imageEntities =
+        imageRepository.findByPostIds(posts.stream().map(Post::getId).toArray(UUID[]::new));
+    List<PostIdAndCount> likeCountList =
+        likeRepository.countBypostIds(posts.stream().map(Post::getId).toArray(UUID[]::new));
 
-    for (int i = 0; i < posts.size(); i++) {
-      UUID postId = posts.get(i).getId();
+    Map<UUID, Long> countMap =
+        likeCountList.stream()
+            .collect(Collectors.toMap(PostIdAndCount::postId, PostIdAndCount::count));
+    List<Post> sortedPosts = sortPostsByPostId(posts, posts.stream().map(Post::getId).toList());
+    Map<Post, ImageEntity> sortedImages = sortImageByPost(sortedPosts, imageEntities);
+
+    for (int i = 0; i < sortedPosts.size(); i++) {
+      UUID postId = sortedPosts.get(i).getId();
       String iconPath = targetUserSetting.getIconPath();
-      Content content = new Content(
-          posts.get(i).getDescription(),
-          imageEntities.get(i).getPath(),
-          imageEntities.get(i).getAlt());
-      int likeCount = likeCounts.get(i);
+      Content content =
+          new Content(
+              sortedPosts.get(i).getDescription(),
+              sortedImages.get(sortedPosts.get(i)).getPath(),
+              sortedImages.get(sortedPosts.get(i)).getAlt());
+      int likeCount = countMap.getOrDefault(postId, 0L).intValue();
       OwnPost ownPost = new OwnPost(postId, iconPath, content, likeCount);
       ownPosts.add(ownPost);
     }
@@ -319,29 +328,81 @@ public class UserService {
     if (userId != null && userId.equals(targetUserId)) {
       List<UUID> likedPostIds = likeRepository.findPostIdsByUserId(userId);
       List<Post> likedPostsEntity = postRepository.findAllById(likedPostIds);
-      List<UserSetting> likedUserSettings = userSettingRepository.findByUserIds(creatorIds);
+      List<UserSetting> likedUserSettings =
+          userSettingRepository.findByUserIds(
+              likedPostsEntity.stream().map(Post::getCreatorId).toArray(UUID[]::new));
       List<LikedPost> likedPosts = new ArrayList<>();
-      List<ImageEntity> likedImageEntities = imageRepository
-          .findByPostIds(likedPostsEntity.stream().map(Post::getId).toList());
+      List<ImageEntity> likedImageEntities =
+          imageRepository.findByPostIds(
+              likedPostsEntity.stream().map(Post::getId).toArray(UUID[]::new));
 
-      for (int i = 0; i < likedPostsEntity.size(); i++) {
-        UUID postId = likedPostsEntity.get(i).getId();
-        String iconPath = likedUserSettings.get(i).getIconPath();
-        Content content = new Content(
-            likedPostsEntity.get(i).getDescription(),
-            likedImageEntities.get(i).getPath(),
-            likedImageEntities.get(i).getAlt());
-        LikedPost likedPost = new LikedPost(
-            postId,
-            iconPath,
-            content,
-            likedUserSettings.get(i).getDisplayId(),
-            likedUserSettings.get(i).getName());
+      List<Post> sortedLikedPosts = sortPostsByPostId(likedPostsEntity, likedPostIds);
+      Map<Post, ImageEntity> sortedLikedImages =
+          sortImageByPost(sortedLikedPosts, likedImageEntities);
+      Map<Post, UserSetting> sortedLikedUserSettings =
+          sortUserSettingByPost(sortedLikedPosts, likedUserSettings);
+
+      System.out.println(
+          "sortedLikedUserSettings: " + sortedLikedUserSettings.get(sortedLikedPosts.get(0)));
+      for (int i = 0; i < sortedLikedPosts.size(); i++) {
+        UUID postId = sortedLikedPosts.get(i).getId();
+        String iconPath = sortedLikedUserSettings.get(sortedLikedPosts.get(i)).getIconPath();
+        Content content =
+            new Content(
+                sortedLikedPosts.get(i).getDescription(),
+                sortedLikedImages.get(sortedLikedPosts.get(i)).getPath(),
+                sortedLikedImages.get(sortedLikedPosts.get(i)).getAlt());
+        LikedPost likedPost =
+            new LikedPost(
+                postId,
+                iconPath,
+                content,
+                likedUserSettings.get(i).getDisplayId(),
+                likedUserSettings.get(i).getName());
         likedPosts.add(likedPost);
       }
       response.setLikedPosts(likedPosts);
     }
 
     return response;
+  }
+
+  public List<Post> sortPostsByPostId(List<Post> posts, List<UUID> postIds) {
+    Map<UUID, Post> postMap = posts.stream().collect(Collectors.toMap(Post::getId, post -> post));
+    List<Post> sortedPosts = new ArrayList<>();
+    for (UUID postId : postIds) {
+      Post post = postMap.get(postId);
+      if (post != null) {
+        sortedPosts.add(post);
+      }
+    }
+    return sortedPosts;
+  }
+
+  public Map<Post, ImageEntity> sortImageByPost(List<Post> posts, List<ImageEntity> images) {
+    Map<UUID, ImageEntity> imageMap =
+        images.stream().collect(Collectors.toMap(ImageEntity::getPostId, image -> image));
+    Map<Post, ImageEntity> sortedImages = new HashMap<>();
+    for (Post post : posts) {
+      ImageEntity image = imageMap.get(post.getId());
+      if (image != null) {
+        sortedImages.put(post, image);
+      }
+    }
+    return sortedImages;
+  }
+
+  public Map<Post, UserSetting> sortUserSettingByPost(
+      List<Post> posts, List<UserSetting> userSettings) {
+    Map<UUID, UserSetting> userSettingMap =
+        userSettings.stream().collect(Collectors.toMap(UserSetting::getUserId, setting -> setting));
+    Map<Post, UserSetting> sortedUserSettings = new HashMap<>();
+    for (Post post : posts) {
+      UserSetting setting = userSettingMap.get(post.getCreatorId());
+      if (setting != null) {
+        sortedUserSettings.put(post, setting);
+      }
+    }
+    return sortedUserSettings;
   }
 }

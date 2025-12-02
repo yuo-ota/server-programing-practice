@@ -21,9 +21,8 @@ public interface UserSettingRepository extends JpaRepository<UserSetting, UUID> 
           """
       SELECT *
       FROM user_settings
-      WHERE user_id = ANY(:creatorIds)
-      ORDER BY array_position(:creatorIds, user_id)
+      WHERE user_id IN (:creatorIds)
       """,
       nativeQuery = true)
-  List<UserSetting> findByUserIds(@Param("creatorIds") List<UUID> creatorIds);
+  List<UserSetting> findByUserIds(@Param("creatorIds") UUID[] creatorIds);
 }

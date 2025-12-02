@@ -1,7 +1,7 @@
 INSERT INTO posts (creator_id, description, is_sensitive, is_published)
 SELECT
   user_id AS creator_id,
-  CONCAT('user', ROW_NUMBER() OVER (ORDER BY user_id)) AS description,
+  CONCAT('user', ROW_NUMBER() OVER (ORDER BY email_address)) AS description,
   FALSE AS is_sensitive,
   TRUE AS is_published
 FROM users
