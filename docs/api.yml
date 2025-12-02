@@ -982,10 +982,14 @@ paths:
             type: string
           description: "Bearer トークンを入れる（例: Bearer <JWT>）"
       requestBody:
-        required: true
         content:
           application/json:
             schema:
+              required:
+                - type
+                - penalized_user_id
+                - duration_unit
+                - reason
               type: object
               properties:
                 type:
