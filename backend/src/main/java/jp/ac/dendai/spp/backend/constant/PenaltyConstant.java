@@ -6,11 +6,8 @@ public class PenaltyConstant {
   public static final String POSTING_SUSPENSION = "投稿停止";
   public static final String VIEWING_SUSPENSION = "閲覧停止";
   public static final String LIKE_SUSPENSION = "いいね停止";
-  public static final List<String> PLATFORM_LIST = List.of(
-      POSTING_SUSPENSION,
-      VIEWING_SUSPENSION,
-      LIKE_SUSPENSION
-  );
+  public static final List<String> PLATFORM_LIST =
+      List.of(POSTING_SUSPENSION, VIEWING_SUSPENSION, LIKE_SUSPENSION);
 
   public static final String DAYS = "days";
   public static final String WEEKS = "weeks";

@@ -1,7 +1,7 @@
 package jp.ac.dendai.spp.backend.form.request;
 
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 public class CreatePenaltyRequest {
   @NotBlank(message = "type is required")
