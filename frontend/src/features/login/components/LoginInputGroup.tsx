@@ -43,12 +43,12 @@ const LoginInputGroup = () => {
    * ログインボタンがクリックされたときの処理
    * @returns
    */
-  const handleLoginButtonClick = () => {
+  const handleLoginButtonClick = async() => {
     if (getLoginButtonStatus() === 'disabled-solid') {
       return;
     }
 
-    handleLogin(email, password);
+    await handleLogin(email, password);
     navigate('/home');
   };
 
