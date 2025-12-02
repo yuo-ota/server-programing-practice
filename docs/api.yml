@@ -942,15 +942,13 @@ paths:
                 items:
                   type: object
                   properties:
-                    type:
+                    category:
                       type: string
-                    penalized_user_id:
+                    detail:
                       type: string
                     duration:
-                      type: number
-                    duration_unit:
                       type: string
-                    reason:
+                    type:
                       type: string
         "401":
           description: ユーザーIDが不正の場合
@@ -990,13 +988,15 @@ paths:
             schema:
               type: object
               properties:
-                category:
+                type:
                   type: string
-                detail:
+                penalized_user_id:
                   type: string
                 duration:
+                  type: number
+                duration_unit:
                   type: string
-                type:
+                reason:
                   type: string
       responses:
         "201":

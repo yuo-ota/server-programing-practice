@@ -32,7 +32,7 @@ public class PenaltyController {
       @RequestHeader("Authorization") String token,
       @RequestBody @Valid CreatePenaltyRequest request) {
     try {
-      UUID userId = authService.auth(token);
+      UUID userId = authService.adminAuth(token);
       penaltyService.createPenalty(userId, request);
 
       return ResponseEntity.status(HttpStatus.CREATED).build();
