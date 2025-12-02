@@ -24,6 +24,7 @@ public interface LikeRepository extends JpaRepository<Like, UUID> {
 
   @Query("SELECT l.postId FROM Like l WHERE l.userId = :userId ORDER BY l.createdAt DESC")
   List<UUID> findPostIdsByUserId(@Param("userId") UUID userId);
+
   @Query("SELECT l FROM Like l WHERE l.userId = :userId AND l.postId = :postId")
   public Like findByUserIdAndPostId(@Param("userId") UUID userId, @Param("postId") UUID postId);
 }
