@@ -26,7 +26,7 @@ const LoginInputGroup = () => {
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
-  
+
   /**
    * メールアドレス入力欄からフォーカスが外れたときの処理
    * @param e
@@ -41,7 +41,7 @@ const LoginInputGroup = () => {
       setEmailError('メールアドレスの形式が正しくありません');
       return;
     }
-    
+
     setEmailError('');
   };
 
@@ -66,7 +66,7 @@ const LoginInputGroup = () => {
    * ログインボタンがクリックされたときの処理
    * @returns
    */
-  const handleLoginButtonClick = async() => {
+  const handleLoginButtonClick = async () => {
     if (getLoginButtonStatus() === 'disabled-solid') {
       return;
     }
