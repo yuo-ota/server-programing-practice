@@ -13,7 +13,7 @@ const ErrorDetail = ({ statusCode, message, detail }: ErrorDetailProps) => {
         </div>
         <div className="text-center">
           {detail.map((line, index) => (
-            <p key={index}>{line}</p>
+            <p key={`${line}-${index}`}>{line}</p>
           ))}
         </div>
       </div>
