@@ -71,7 +71,7 @@ const LoginInputGroup = () => {
       return;
     }
 
-    await handleLogin(email, password);
+    await login(email, password);
     navigate('/home');
   };
 
@@ -108,18 +108,6 @@ const LoginInputGroup = () => {
    */
   const checkPasswordFormat = (password: string): boolean => {
     return password.length >= 8;
-  };
-
-  /**
-   * ログイン処理を実行する
-   * @param email
-   * @param password
-   */
-  const handleLogin = async (
-    email: string,
-    password: string
-  ): Promise<void> => {
-    await login(email, password);
   };
 
   return (
