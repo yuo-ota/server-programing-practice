@@ -1,10 +1,10 @@
 interface ErrorDetailProps {
   statusCode: number;
   message: string;
-  detail: string[];
+  details: string[];
 }
 
-const ErrorDetail = ({ statusCode, message, detail }: ErrorDetailProps) => {
+const ErrorDetail = ({ statusCode, message, details }: ErrorDetailProps) => {
   return (
     <>
       <div className="flex flex-col items-center gap-6">
@@ -12,7 +12,7 @@ const ErrorDetail = ({ statusCode, message, detail }: ErrorDetailProps) => {
           <h1 className="text-4xl">{`${statusCode} ${message}`}</h1>
         </div>
         <div className="text-center">
-          {detail.map((line, index) => (
+          {details.map((line, index) => (
             <p key={`${line}-${index}`}>{line}</p>
           ))}
         </div>
