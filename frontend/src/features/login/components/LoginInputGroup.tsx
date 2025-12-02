@@ -18,6 +18,7 @@ const LoginInputGroup = () => {
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!checkEmailFormat(e.target.value)) {
       setEmailError('メールアドレスの形式が正しくありません');
+      return;
     }
 
     setEmail(e.target.value);
@@ -31,6 +32,7 @@ const LoginInputGroup = () => {
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!checkPasswordFormat(e.target.value)) {
       setPasswordError('パスワードは8文字以上で入力してください');
+      return;
     }
 
     setPassword(e.target.value);
