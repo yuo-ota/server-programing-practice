@@ -10,6 +10,8 @@ import jp.ac.dendai.spp.backend.repository.PenaltyRepository;
 import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.criteria.CriteriaBuilder.In;
+
 @Service
 public class PenaltyService {
   private final PenaltyRepository penaltyRepository;
@@ -48,5 +50,17 @@ public class PenaltyService {
             request.getReason());
 
     penaltyRepository.save(penalty);
+  }
+
+  public void validDuration(Integer duration, String durationUnit) {
+    if (duration == null && durationUnit.equals(PenaltyConstant.UNLIMITED)) {
+      return;
+    }
+
+    if (duration != null && !durationUnit.equals(PenaltyConstant.UNLIMITED)) {
+      return;
+    }
+
+    throw new InvalidParameterException("Invalid duration or duration unit");
   }
 }
