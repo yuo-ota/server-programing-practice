@@ -16,13 +16,7 @@ const LoginInputGroup = () => {
    * @param e
    */
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!checkEmailFormat(e.target.value)) {
-      setEmailError('メールアドレスの形式が正しくありません');
-      return;
-    }
-
     setEmail(e.target.value);
-    setEmailError('');
   };
 
   /**
@@ -30,12 +24,41 @@ const LoginInputGroup = () => {
    * @param e
    */
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+  
+  /**
+   * メールアドレス入力欄からフォーカスが外れたときの処理
+   * @param e
+   */
+  const handleEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    alert('メールアドレスの形式を確認します');
+    if (email === '') {
+      setEmailError('メールアドレスを入力してください');
+      return;
+    }
+    if (!checkEmailFormat(e.target.value)) {
+      setEmailError('メールアドレスの形式が正しくありません');
+      return;
+    }
+    
+    setEmailError('');
+  };
+
+  /**
+   * パスワード入力欄からフォーカスが外れたときの処理
+   * @param e
+   */
+  const handlePasswordBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (password === '') {
+      setPasswordError('パスワードを入力してください');
+      return;
+    }
     if (!checkPasswordFormat(e.target.value)) {
       setPasswordError('パスワードは8文字以上で入力してください');
       return;
     }
 
-    setPassword(e.target.value);
     setPasswordError('');
   };
 
@@ -109,6 +132,8 @@ const LoginInputGroup = () => {
           id="email-input"
           value={email}
           onChange={handleEmailChange}
+          onBlur={handleEmailBlur}
+          className="h-20"
         />
         <TextInput
           label="パスワード(8文字以上)"
@@ -117,6 +142,8 @@ const LoginInputGroup = () => {
           id="password-input"
           value={password}
           onChange={handlePasswordChange}
+          onBlur={handlePasswordBlur}
+          className="h-20"
         />
         <div className="mt-3.5 flex flex-col items-center gap-2.5">
           <TransitionButton
