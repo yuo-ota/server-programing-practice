@@ -4,6 +4,7 @@ import java.util.UUID;
 import jp.ac.dendai.spp.backend.constant.PenaltyConstant;
 import jp.ac.dendai.spp.backend.entity.Penalty;
 import jp.ac.dendai.spp.backend.entity.UserSetting;
+import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.request.CreatePenaltyRequest;
 import jp.ac.dendai.spp.backend.repository.PenaltyRepository;
 import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
@@ -29,12 +30,12 @@ public class PenaltyService {
   public void createPenalty(UUID userId, CreatePenaltyRequest request) {
     UserSetting penalizedUser = userSettingRepository.findByDisplayId(request.getPenalizedUserId());
     if (penalizedUser == null) {
-      throw new IllegalArgumentException("Penalized user not found");
+      throw new InvalidParameterException("Penalized user not found");
     }
 
     int penaltyStatusId = PenaltyConstant.PLATFORM_LIST.indexOf(request.getType());
     if (penaltyStatusId == -1) {
-      throw new IllegalArgumentException("Invalid penalty type");
+      throw new InvalidParameterException("Invalid penalty type");
     }
 
     Penalty penalty =
