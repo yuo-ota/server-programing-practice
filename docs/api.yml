@@ -942,13 +942,15 @@ paths:
                 items:
                   type: object
                   properties:
-                    category:
-                      type: string
-                    duration:
-                      type: string
                     type:
                       type: string
-                    end_date:
+                    penalized_user_id:
+                      type: string
+                    duration:
+                      type: number
+                    duration_unit:
+                      type: string
+                    reason:
                       type: string
         "401":
           description: ユーザーIDが不正の場合
