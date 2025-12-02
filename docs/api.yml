@@ -880,7 +880,9 @@ paths:
                 reportee_post:
                   type: string
                 report_type:
-                  type: string
+                  type: array
+                  items:
+                    type: string
                 detail:
                   type: string
       responses:

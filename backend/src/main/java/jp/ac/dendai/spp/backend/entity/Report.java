@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -30,7 +31,7 @@ public class Report {
   private UUID reportedPostId;
 
   @Column(name = "category_status_id", nullable = false)
-  private int categoryStatusId;
+  private List<Integer> categoryStatusId;
 
   @Column(name = "details")
   private String details;
@@ -54,13 +55,13 @@ public class Report {
       boolean isReportUser,
       UUID reportee,
       UUID reportedPostId,
-      int categoryStatusId,
+      List<Integer> categoryStatusId,
       String details) {
     this.reporter = reporter;
     this.isReportUser = isReportUser;
     this.reportee = reportee;
     this.reportedPostId = reportedPostId;
-    this.categoryStatusId = categoryStatusId;
+    this.categoryStatusId = categoryStatusId == null ? List.of() : List.copyOf(categoryStatusId);
     this.details = details;
   }
 
@@ -85,8 +86,8 @@ public class Report {
     return reportedPostId;
   }
 
-  public int getCategoryStatusId() {
-    return categoryStatusId;
+  public List<Integer> getCategoryStatusId() {
+    return List.copyOf(categoryStatusId);
   }
 
   public String getDetails() {

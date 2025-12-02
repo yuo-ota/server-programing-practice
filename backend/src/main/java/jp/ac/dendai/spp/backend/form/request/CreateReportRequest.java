@@ -1,11 +1,14 @@
 package jp.ac.dendai.spp.backend.form.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 public class CreateReportRequest {
   private String reporteeUser;
   private UUID reporteePost;
-  private String reportType;
+
+  @NotEmpty @NotBlank private String[] reportType;
   private String detail;
 
   // Getters and Setters
@@ -25,12 +28,12 @@ public class CreateReportRequest {
     this.reporteePost = reporteePost;
   }
 
-  public String getReportType() {
-    return reportType;
+  public String[] getReportType() {
+    return reportType == null ? null : reportType.clone();
   }
 
-  public void setReportType(String reportType) {
-    this.reportType = reportType;
+  public void setReportType(String[] reportType) {
+    this.reportType = (reportType == null) ? null : reportType.clone();
   }
 
   public String getDetail() {
