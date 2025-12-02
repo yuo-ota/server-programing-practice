@@ -15,7 +15,7 @@ public class CreatePenaltyRequest {
   @NotBlank(message = "durationUnit is required")
   @Pattern(
       regexp = "^(days|weeks|months|years|unlimited)$",
-      message = "durationUnit must be one of days, weeks, months, or years")
+      message = "durationUnit must be one of days, weeks, months, years, or unlimited")
   private String durationUnit;
 
   @NotBlank(message = "reason is required")
