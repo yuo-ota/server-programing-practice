@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import TransitionButton from '@/components/TransitionButton';
 import LoginInputGroup from './components/LoginInputGroup';
 
-import LogoImage from './assets/logo.png';
+import LogoImage from './assets/logo.jpg';
 
 const Root = () => {
   const navigate = useNavigate();
