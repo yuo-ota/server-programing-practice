@@ -1,5 +1,6 @@
 package jp.ac.dendai.spp.backend.repository;
 
+import java.util.List;
 import java.util.UUID;
 import jp.ac.dendai.spp.backend.entity.UserSetting;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,7 @@ public interface UserSettingRepository extends JpaRepository<UserSetting, UUID> 
 
   @Query("SELECT u FROM UserSetting u WHERE u.userId = :userId")
   UserSetting findByUserId(@Param("userId") UUID userId);
+
+  @Query("SELECT u FROM UserSetting u")
+  List<UserSetting> findAllUsers();
 }
