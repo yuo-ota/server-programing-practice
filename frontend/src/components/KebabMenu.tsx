@@ -12,10 +12,10 @@ interface KebabMenuProps {
   items: MenuItem[];
 }
 
-const KebabMenu = ({className = '',items,}: KebabMenuProps) => {
+const KebabMenu = ({ className = '', items }: KebabMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = () => setIsOpen(prev => !prev);
+  const toggleMenu = () => setIsOpen((prev) => !prev);
 
   const handleSelect = (item: MenuItem) => {
     item.onClick();
@@ -28,18 +28,20 @@ const KebabMenu = ({className = '',items,}: KebabMenuProps) => {
         {/* IconButtonの部分 */}
         <IconButton
           onClick={toggleMenu}
-          className={`w-full h-full`}
-          ButtonIcon={<DotsIcon className={"w-5/6, h-5/6"}/>}
+          className={`h-full w-full`}
+          ButtonIcon={<DotsIcon className={'w-5/6, h-5/6'} />}
         />
         {/* ドロップダウン */}
-        {isOpen &&(
+        {isOpen && (
           <div className="ml-[100%]">
-            <ul className={`bg-background absolute  -translate-x-full max-h-[calc(2.5rem*7)] rounded-lg shadow-lg`}>
-              {items.map((item) =>(
-                <li key = {item.label}>
+            <ul
+              className={`bg-background absolute max-h-[calc(2.5rem*7)] -translate-x-full rounded-lg shadow-lg`}
+            >
+              {items.map((item) => (
+                <li key={item.label}>
                   <button
                     onClick={() => handleSelect(item)}
-                    className="bg-background transition-brightness w-full block px-3 py-2 text-left duration-150 hover:brightness-(--hover-nega-brightness) active:brightness-(--active-nega-brightness)"
+                    className="bg-background transition-brightness block w-full px-3 py-2 text-left duration-150 hover:brightness-(--hover-nega-brightness) active:brightness-(--active-nega-brightness)"
                   >
                     {item.label}
                   </button>
