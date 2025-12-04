@@ -35,13 +35,14 @@ const KebabMenu = ({ className = '', items }: KebabMenuProps) => {
         {isOpen && (
           <div className="ml-[100%]">
             <ul
-              className={`bg-background absolute max-h-[calc(2.5rem*7)] -translate-x-full rounded-lg shadow-lg`}
+              className={`bg-background absolute max-h-[calc(2.5rem*7)] -translate-x-full rounded-lg shadow-lg overflow-y-auto`}
             >
               {items.map((item) => (
                 <li key={item.label}>
                   <button
                     onClick={() => handleSelect(item)}
                     className="bg-background transition-brightness block w-full px-3 py-2 text-left duration-150 hover:brightness-(--hover-nega-brightness) active:brightness-(--active-nega-brightness)"
+                    type="button"
                   >
                     {item.label}
                   </button>
