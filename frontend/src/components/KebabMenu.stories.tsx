@@ -11,8 +11,7 @@ export default {
             {label: "テキスト2", onClick: () => {}},
             {label: "テキスト3", onClick: () => {}},
         ],
-        buttonSize: 'w-12 h-12',
-        className: 'ml-12',
+        className: 'w-12 h-12 ml-12',
     },
 } satisfies Meta<T>;
 

@@ -9,11 +9,10 @@ interface MenuItem {
 
 interface KebabMenuProps {
   className?: string;
-  buttonSize?: string;
   items: MenuItem[];
 }
 
-const KebabMenu = ({className = '',buttonSize = '', items,}: KebabMenuProps) => {
+const KebabMenu = ({className = '',items,}: KebabMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(prev => !prev);
@@ -25,27 +24,29 @@ const KebabMenu = ({className = '',buttonSize = '', items,}: KebabMenuProps) => 
 
   return (
     <>
-      <div className={``}>
+      <div className={`${className}`}>
         {/* IconButtonの部分 */}
         <IconButton
           onClick={toggleMenu}
-          className={`${className} ${buttonSize} absolute`}
+          className={`w-full h-full`}
           ButtonIcon={<DotsIcon className={"w-5/6, h-5/6"}/>}
         />
         {/* ドロップダウン */}
         {isOpen &&(
-          <ul className={`${className} bg-background absolute -translate-x-full max-h-[calc(2.5rem*7)] rounded-lg shadow-lg`}>
-            {items.map((item) =>(
-              <li key = {item.label}>
-                <button
-                  onClick={() => handleSelect(item)}
-                  className="bg-background transition-brightness w-full block px-3 py-2 text-left duration-150 hover:brightness-(--hover-nega-brightness) active:brightness-(--active-nega-brightness)"
-                >
-                  {item.label}
-                </button>
-              </li>
-            ))}
-          </ul>
+          <div className="ml-[100%]">
+            <ul className={`bg-background absolute  -translate-x-full max-h-[calc(2.5rem*7)] rounded-lg shadow-lg`}>
+              {items.map((item) =>(
+                <li key = {item.label}>
+                  <button
+                    onClick={() => handleSelect(item)}
+                    className="bg-background transition-brightness w-full block px-3 py-2 text-left duration-150 hover:brightness-(--hover-nega-brightness) active:brightness-(--active-nega-brightness)"
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
       </div>
     </>
