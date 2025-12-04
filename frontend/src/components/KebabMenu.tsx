@@ -35,7 +35,7 @@ const KebabMenu = ({ className = '', items }: KebabMenuProps) => {
         {isOpen && (
           <div className="ml-[100%]">
             <ul
-              className={`bg-background absolute max-h-[calc(2.5rem*7)] -translate-x-full rounded-lg shadow-lg overflow-y-auto`}
+              className={`bg-background absolute max-h-[calc(2.5rem*7)] -translate-x-full overflow-y-auto rounded-lg shadow-lg`}
             >
               {items.map((item) => (
                 <li key={item.label}>
