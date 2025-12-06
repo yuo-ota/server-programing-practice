@@ -7,8 +7,6 @@ public class PostConstant {
   public static final LocalTime DATE_CHANGE_TIME = LocalTime.of(6, 0);
 
   public static final int DATE_CHANGE_BUFFER_MINUTES = 20;
-  public static final LocalTime DELIVER_POSTS_ALLOCATION_TIME =
-      DATE_CHANGE_TIME.minusMinutes(DATE_CHANGE_BUFFER_MINUTES);
 
   public static final int MAX_DELIVER_POSTS_PER_USER = 20;
 }
