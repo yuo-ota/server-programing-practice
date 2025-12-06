@@ -265,6 +265,12 @@ public class UserService {
         && showAdultContents;
   }
 
+  /**
+   * ユーザーを削除する
+   *
+   * @param userId 削除するユーザーのID
+   * @throws InvalidParameterException ユーザーが見つからない場合
+   */
   @Transactional
   public void delete(UUID userId) {
     User user = userRepository.findByUserId(userId);
