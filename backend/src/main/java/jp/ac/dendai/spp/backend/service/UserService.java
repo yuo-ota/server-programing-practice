@@ -265,6 +265,12 @@ public class UserService {
         && showAdultContents;
   }
 
+  /**
+   * 認証済みユーザーIDを指定してユーザー情報を削除する。
+   *
+   * @param userId 削除対象のユーザーID（認証済みユーザーのID）
+   * @throws InvalidParameterException 対象ユーザーが存在しない場合に送出
+   */
   @Transactional
   public void delete(UUID userId) {
     User user = userRepository.findByUserId(userId);
@@ -274,6 +280,14 @@ public class UserService {
     userRepository.deleteById(userId);
   }
 
+  /**
+   * 指定された表示IDのユーザープロフィールと投稿一覧を取得し、閲覧者情報（userId）が一致する場合は「いいね」済み投稿も含めて返す。
+   *
+   * @param userId 閲覧者のユーザーID（自身の場合は likedPosts も返す。null なら閲覧者なし）
+   * @param request 表示対象ユーザーを特定するリクエスト（displayId を含む）
+   * @return 表示対象ユーザーのプロフィール・投稿・（必要に応じて）いいね済み投稿をまとめたレスポンス
+   * @throws InvalidParameterException 表示対象ユーザーが存在しない場合に送出
+   */
   public UserDataResponse show(UUID userId, ShowUserRequest request) {
     String targetDisplayId = request.getUserId();
     UserSetting targetUserSetting = userSettingRepository.findByDisplayId(targetDisplayId);
@@ -303,7 +317,7 @@ public class UserService {
     List<ImageEntity> imageEntities =
         imageRepository.findByPostIds(posts.stream().map(Post::getId).toArray(UUID[]::new));
     List<PostIdAndCount> likeCountList =
-        likeRepository.countBypostIds(posts.stream().map(Post::getId).toArray(UUID[]::new));
+        likeRepository.countByPostIds(posts.stream().map(Post::getId).toArray(UUID[]::new));
 
     Map<UUID, Long> countMap =
         likeCountList.stream()
@@ -314,11 +328,10 @@ public class UserService {
     for (int i = 0; i < sortedPosts.size(); i++) {
       UUID postId = sortedPosts.get(i).getId();
       String iconPath = targetUserSetting.getIconPath();
-      Content content =
-          new Content(
-              sortedPosts.get(i).getDescription(),
-              sortedImages.get(sortedPosts.get(i)).getPath(),
-              sortedImages.get(sortedPosts.get(i)).getAlt());
+      ImageEntity image = sortedImages.get(sortedPosts.get(i));
+      String imagePath = (image != null) ? image.getPath() : "";
+      String imageAlt = (image != null) ? image.getAlt() : "";
+      Content content = new Content(sortedPosts.get(i).getDescription(), imagePath, imageAlt);
       int likeCount = countMap.getOrDefault(postId, 0L).intValue();
       OwnPost ownPost = new OwnPost(postId, iconPath, content, likeCount);
       ownPosts.add(ownPost);
@@ -342,23 +355,28 @@ public class UserService {
       Map<Post, UserSetting> sortedLikedUserSettings =
           sortUserSettingByPost(sortedLikedPosts, likedUserSettings);
 
-      System.out.println(
-          "sortedLikedUserSettings: " + sortedLikedUserSettings.get(sortedLikedPosts.get(0)));
+      if (!sortedLikedPosts.isEmpty()) {
+        System.out.println(
+            "sortedLikedUserSettings: " + sortedLikedUserSettings.get(sortedLikedPosts.get(0)));
+      } else {
+        System.out.println("sortedLikedUserSettings: (no liked posts)");
+      }
+
       for (int i = 0; i < sortedLikedPosts.size(); i++) {
         UUID postId = sortedLikedPosts.get(i).getId();
-        String iconPath = sortedLikedUserSettings.get(sortedLikedPosts.get(i)).getIconPath();
+        UserSetting userSetting = sortedLikedUserSettings.get(sortedLikedPosts.get(i));
+        if (userSetting == null) {
+          continue; // ユーザー設定が見つからない場合はスキップ
+        }
+        String iconPath = userSetting.getIconPath();
+        ImageEntity image = sortedLikedImages.get(sortedLikedPosts.get(i));
+        String imagePath = (image != null) ? image.getPath() : "";
+        String imageAlt = (image != null) ? image.getAlt() : "";
         Content content =
-            new Content(
-                sortedLikedPosts.get(i).getDescription(),
-                sortedLikedImages.get(sortedLikedPosts.get(i)).getPath(),
-                sortedLikedImages.get(sortedLikedPosts.get(i)).getAlt());
+            new Content(sortedLikedPosts.get(i).getDescription(), imagePath, imageAlt);
         LikedPost likedPost =
             new LikedPost(
-                postId,
-                iconPath,
-                content,
-                likedUserSettings.get(i).getDisplayId(),
-                likedUserSettings.get(i).getName());
+                postId, iconPath, content, userSetting.getDisplayId(), userSetting.getName());
         likedPosts.add(likedPost);
       }
       response.setLikedPosts(likedPosts);
@@ -367,6 +385,13 @@ public class UserService {
     return response;
   }
 
+  /**
+   * postIds で指定された順序に従って Post を並べ替える。
+   *
+   * @param posts 並べ替え対象の投稿リスト
+   * @param postIds 並べ替え順を定義する投稿IDリスト
+   * @return postIds の順序に整列した投稿リスト（postIds に存在しないIDは除外）
+   */
   public List<Post> sortPostsByPostId(List<Post> posts, List<UUID> postIds) {
     Map<UUID, Post> postMap = posts.stream().collect(Collectors.toMap(Post::getId, post -> post));
     List<Post> sortedPosts = new ArrayList<>();
@@ -379,6 +404,13 @@ public class UserService {
     return sortedPosts;
   }
 
+  /**
+   * postIds で指定された順序に合わせ、Post をキーに ImageEntity を対応付ける。
+   *
+   * @param posts 並べ替え済みの投稿リスト（postIds の順序）
+   * @param images 投稿に紐づく画像エンティティ一覧
+   * @return Post をキーに同じ順序で対応付けたマップ
+   */
   public Map<Post, ImageEntity> sortImageByPost(List<Post> posts, List<ImageEntity> images) {
     Map<UUID, ImageEntity> imageMap =
         images.stream().collect(Collectors.toMap(ImageEntity::getPostId, image -> image));
@@ -392,6 +424,13 @@ public class UserService {
     return sortedImages;
   }
 
+  /**
+   * postIds で指定された順序に合わせ、Post をキーに UserSetting を対応付ける。
+   *
+   * @param posts 並べ替え済みの投稿リスト（postIds の順序）
+   * @param userSettings 投稿作成者に対応するユーザー設定一覧
+   * @return Post をキーに同じ順序で対応付けたマップ
+   */
   public Map<Post, UserSetting> sortUserSettingByPost(
       List<Post> posts, List<UserSetting> userSettings) {
     Map<UUID, UserSetting> userSettingMap =

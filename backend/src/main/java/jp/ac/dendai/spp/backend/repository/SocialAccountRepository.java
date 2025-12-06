@@ -15,6 +15,6 @@ public interface SocialAccountRepository extends JpaRepository<SocialAccountEnti
   @Query("DELETE FROM SocialAccountEntity s WHERE s.userId = :userId")
   void deleteByUserId(@Param("userId") UUID userId);
 
-  @Query("SELECT s FROM  SocialAccountEntity s WHERE s.userId = :userId")
+  @Query("SELECT s FROM SocialAccountEntity s WHERE s.userId = :userId")
   List<SocialAccountEntity> findByUserId(@Param("userId") UUID userId);
 }

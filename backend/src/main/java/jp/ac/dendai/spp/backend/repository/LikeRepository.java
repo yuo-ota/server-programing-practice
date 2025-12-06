@@ -20,7 +20,7 @@ public interface LikeRepository extends JpaRepository<Like, UUID> {
       GROUP BY post_id
       """,
       nativeQuery = true)
-  List<PostIdAndCount> countBypostIds(@Param("postIds") UUID[] postIds);
+  List<PostIdAndCount> countByPostIds(@Param("postIds") UUID[] postIds);
 
   @Query("SELECT l.postId FROM Like l WHERE l.userId = :userId ORDER BY l.createdAt DESC")
   List<UUID> findPostIdsByUserId(@Param("userId") UUID userId);

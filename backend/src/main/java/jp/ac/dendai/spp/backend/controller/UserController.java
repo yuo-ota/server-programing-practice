@@ -128,12 +128,13 @@ public class UserController {
     }
   }
 
-  @GetMapping("/{userId}")
+  @GetMapping("/{displayId}")
   public ResponseEntity<?> show(
-      @RequestHeader("Authorization") String token, @PathVariable("userId") String displayId) {
+      @RequestHeader("Authorization") String token,
+      @PathVariable("displayId") String targetDisplayId) {
     try {
       ShowUserRequest request = new ShowUserRequest();
-      request.setUserId(displayId);
+      request.setUserId(targetDisplayId);
 
       UUID userId = authService.auth(token);
 
@@ -158,7 +159,6 @@ public class UserController {
       ErrorResponse errorResponse = new ErrorResponse();
 
       errorResponse.setCode("SERVICE_ERROR");
-      e.printStackTrace();
       errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
