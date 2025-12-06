@@ -23,8 +23,6 @@ import jp.ac.dendai.spp.backend.form.request.CreateUserRequest;
 import jp.ac.dendai.spp.backend.form.request.ShowUserRequest;
 import jp.ac.dendai.spp.backend.form.request.UpdateUserRequest;
 import jp.ac.dendai.spp.backend.form.response.UserDataResponse;
-import jp.ac.dendai.spp.backend.repository.ImageRepository;
-import jp.ac.dendai.spp.backend.repository.LikeRepository;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
 import jp.ac.dendai.spp.backend.repository.PreRegisterTokenRepository;
 import jp.ac.dendai.spp.backend.repository.SocialAccountRepository;
@@ -47,8 +45,6 @@ public class UserService {
   private final SocialAccountRepository socialAccountRepository;
   private final DisplayIdService displayIdService;
   private final PreRegisterTokenRepository preRegisterTokenRepository;
-  private final ImageRepository imageRepository;
-  private final LikeRepository likeRepository;
 
   public UserService(
       AuthService authService,
@@ -58,9 +54,7 @@ public class UserService {
       SocialAccountRepository socialAccountRepository,
       DisplayIdService displayIdService,
       PreRegisterTokenRepository preRegisterTokenRepository,
-      PostRepository postRepository,
-      ImageRepository imageRepository,
-      LikeRepository likeRepository) {
+      PostRepository postRepository) {
     this.authService = authService;
     this.tokenService = tokenService;
     this.userRepository = userRepository;
@@ -69,8 +63,6 @@ public class UserService {
     this.displayIdService = displayIdService;
     this.preRegisterTokenRepository = preRegisterTokenRepository;
     this.postRepository = postRepository;
-    this.imageRepository = imageRepository;
-    this.likeRepository = likeRepository;
   }
 
   @Transactional
