@@ -11,6 +11,8 @@ import jp.ac.dendai.spp.backend.entity.UserSetting;
 import jp.ac.dendai.spp.backend.repository.ElectedPostRepository;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
 import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
+
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -63,6 +65,7 @@ public class ElectedPostService {
    *
    * @return
    */
+  @Async
   public void allocateDeliverPostsTemporary(UserSetting user) {
     ZonedDateTime todayDeliverDateTime = getTodayDeliverDateTime();
     ZonedDateTime[] deliverDateTimes = {
