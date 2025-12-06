@@ -40,15 +40,22 @@ public class ElectedPostService {
     List<UUID> allPostIdsByNotSensitive =
         postRepository.findPostIdsByCreatedAtBetweenAndNotSensitive(
             deliverDateTime.minusDays(1), deliverDateTime);
-    List<UserSetting> allUsers = userSettingRepository.findAll();
-    List<ElectedPost> electedPosts = new ArrayList<>();
 
-    for (UserSetting user : allUsers) {
-      electedPosts.addAll(
-          allocateDeliverPosts(user, allPostIds, allPostIdsByNotSensitive, deliverDateTime));
+    int pageSize = 500;
+    int page = 0;
+    List<UserSetting> usersBatch = userSettingRepository.findUsersByPage(page, pageSize);
+    while (!usersBatch.isEmpty()) {
+      List<ElectedPost> electedPostsBatch = new ArrayList<>();
+      for (UserSetting user : usersBatch) {
+        electedPostsBatch.addAll(
+            allocateDeliverPosts(user, allPostIds, allPostIdsByNotSensitive, deliverDateTime));
+      }
+      if (!electedPostsBatch.isEmpty()) {
+        electedPostsRepository.saveAll(electedPostsBatch);
+      }
+      page++;
+      usersBatch = userSettingRepository.findUsersByPage(page, pageSize);
     }
-
-    electedPostsRepository.saveAll(electedPosts);
   }
 
   /**
