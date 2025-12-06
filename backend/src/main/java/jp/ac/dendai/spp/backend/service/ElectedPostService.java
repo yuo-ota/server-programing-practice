@@ -148,13 +148,4 @@ public class ElectedPostService {
       return todayDeliverTime;
     }
   }
-
-  /**
-   * ElectedPostを一括保存する
-   *
-   * @param electedPosts
-   */
-  public void saveAll(List<ElectedPost> electedPosts) {
-    electedPostsRepository.saveAll(electedPosts);
-  }
 }
