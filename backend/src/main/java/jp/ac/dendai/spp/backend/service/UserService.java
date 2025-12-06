@@ -268,7 +268,7 @@ public class UserService {
   /**
    * ユーザーを削除する
    *
-   * @param userId 削除するユーザーのID
+   * @param userId
    * @throws InvalidParameterException ユーザーが見つからない場合
    */
   @Transactional
