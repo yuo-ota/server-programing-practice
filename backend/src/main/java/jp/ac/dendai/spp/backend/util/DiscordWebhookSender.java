@@ -24,7 +24,7 @@ public class DiscordWebhookSender {
     if (webhookUrl == null || webhookUrl.isEmpty()) {
       return;
     }
-    
+
     URL url = new URI(webhookUrl).toURL();
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
@@ -33,12 +33,15 @@ public class DiscordWebhookSender {
     con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
     try (OutputStream os = con.getOutputStream()) {
-            // --- payload_json ---
-            String payloadPart = "--" + boundary + "\r\n" +
-                    "Content-Disposition: form-data; name=\"payload_json\"\r\n" +
-                    "Content-Type: application/json\r\n\r\n" +
-                    String.format(
-                    """
+      // --- payload_json ---
+      String payloadPart =
+          "--"
+              + boundary
+              + "\r\n"
+              + "Content-Disposition: form-data; name=\"payload_json\"\r\n"
+              + "Content-Type: application/json\r\n\r\n"
+              + String.format(
+                  """
                     {
                       "content": "%s",
                       "embeds": [
@@ -52,21 +55,31 @@ public class DiscordWebhookSender {
                         }
                       ]
                     }
-                    """, String.join("", roleIds), System.getenv("SPRING_PROFILES_ACTIVE"), escapeJson(title), java.time.Instant.now().toString()) + "\r\n";
-            os.write(payloadPart.getBytes(StandardCharsets.UTF_8));
+                    """,
+                  String.join("", roleIds),
+                  System.getenv("SPRING_PROFILES_ACTIVE"),
+                  escapeJson(title),
+                  java.time.Instant.now().toString())
+              + "\r\n";
+      os.write(payloadPart.getBytes(StandardCharsets.UTF_8));
 
-            // --- file ---
-            String fileHeader = "--" + boundary + "\r\n" +
-                    "Content-Disposition: form-data; name=\"file\"; filename=\"" + filename + "\"\r\n" +
-                    "Content-Type: text/plain\r\n\r\n";
-            os.write(fileHeader.getBytes(StandardCharsets.UTF_8));
+      // --- file ---
+      String fileHeader =
+          "--"
+              + boundary
+              + "\r\n"
+              + "Content-Disposition: form-data; name=\"file\"; filename=\""
+              + filename
+              + "\"\r\n"
+              + "Content-Type: text/plain\r\n\r\n";
+      os.write(fileHeader.getBytes(StandardCharsets.UTF_8));
 
-            os.write(log.getBytes(StandardCharsets.UTF_8));
-            os.write("\r\n".getBytes(StandardCharsets.UTF_8));
+      os.write(log.getBytes(StandardCharsets.UTF_8));
+      os.write("\r\n".getBytes(StandardCharsets.UTF_8));
 
-            // --- end boundary ---
-            os.write(("--" + boundary + "--").getBytes(StandardCharsets.UTF_8));
-        }
+      // --- end boundary ---
+      os.write(("--" + boundary + "--").getBytes(StandardCharsets.UTF_8));
+    }
 
     int responseCode = con.getResponseCode();
     System.out.println("Response Code: " + responseCode);
@@ -88,7 +101,6 @@ public class DiscordWebhookSender {
         .replace("\r", "\\r")
         .replace("\t", "\\t");
   }
-  
 
   public static String expandException(Exception e) {
     StringBuilder sb = new StringBuilder();
