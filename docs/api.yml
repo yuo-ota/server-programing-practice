@@ -944,11 +944,11 @@ paths:
                   properties:
                     category:
                       type: string
+                    detail:
+                      type: string
                     duration:
                       type: string
                     type:
-                      type: string
-                    end_date:
                       type: string
         "401":
           description: ユーザーIDが不正の場合
@@ -982,19 +982,25 @@ paths:
             type: string
           description: "Bearer トークンを入れる（例: Bearer <JWT>）"
       requestBody:
-        required: true
         content:
           application/json:
             schema:
+              required:
+                - type
+                - penalized_user_id
+                - duration_unit
+                - reason
               type: object
               properties:
-                category:
+                type:
                   type: string
-                detail:
+                penalized_user_id:
                   type: string
                 duration:
+                  type: number
+                duration_unit:
                   type: string
-                type:
+                reason:
                   type: string
       responses:
         "201":
