@@ -44,7 +44,7 @@ public class DiscordWebhookSender {
                       "embeds": [
                         {
                           "author": {
-                            "name": "Dev環境"
+                            "name": "%s環境"
                           },
                           "title": "%s",
                           "color": 16722520,
@@ -52,7 +52,7 @@ public class DiscordWebhookSender {
                         }
                       ]
                     }
-                    """, String.join("", roleIds), escapeJson(title), java.time.Instant.now().toString()) + "\r\n";
+                    """, String.join("", roleIds), System.getenv("SPRING_PROFILES_ACTIVE"), escapeJson(title), java.time.Instant.now().toString()) + "\r\n";
             os.write(payloadPart.getBytes(StandardCharsets.UTF_8));
 
             // --- file ---
