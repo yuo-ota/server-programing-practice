@@ -95,7 +95,7 @@ public class AuthController {
   }
 
   @PostMapping("/auth/token")
-  public ResponseEntity<?> auth(@RequestBody AuthRequest request) {
+  public ResponseEntity<?> authToken(@RequestBody AuthRequest request) {
     try {
       tokenService.isAvailable(request);
 
