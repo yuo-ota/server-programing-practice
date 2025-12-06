@@ -83,14 +83,14 @@ public class ElectedPostService {
    * @param user
    * @param allPostIds
    * @param allPostIdsByNotSensitive
-   * @param deliveredDateTime
+   * @param deliveryDateTime
    * @return
    */
   public List<ElectedPost> allocateDeliverPosts(
       UserSetting user,
       List<UUID> allPostIds,
       List<UUID> allPostIdsByNotSensitive,
-      ZonedDateTime deliveredDateTime) {
+      ZonedDateTime deliveryDateTime) {
     List<UUID> pickedPostIds = new ArrayList<>();
 
     if (user.isShowAdultContent()) {
@@ -110,7 +110,7 @@ public class ElectedPostService {
 
     for (int i = 0; i < pickedPostIds.size(); i++) {
       electedPosts.add(
-          new ElectedPost(user.getUserId(), pickedPostIds.get(i), i, deliveredDateTime));
+          new ElectedPost(user.getUserId(), pickedPostIds.get(i), i, deliveryDateTime));
     }
 
     return electedPosts;
