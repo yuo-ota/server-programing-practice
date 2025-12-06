@@ -15,7 +15,4 @@ public interface UserSettingRepository extends JpaRepository<UserSetting, UUID> 
 
   @Query("SELECT u FROM UserSetting u WHERE u.userId = :userId")
   UserSetting findByUserId(@Param("userId") UUID userId);
-
-  @Query("SELECT u FROM UserSetting u")
-  List<UserSetting> findAllUsers();
 }

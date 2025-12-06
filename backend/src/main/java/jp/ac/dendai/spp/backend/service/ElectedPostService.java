@@ -40,7 +40,7 @@ public class ElectedPostService {
     List<UUID> allPostIdsByNotSensitive =
         postRepository.findPostIdsByCreatedAtBetweenAndNotSensitive(
             deliverDateTime.minusDays(1), deliverDateTime);
-    List<UserSetting> allUsers = userSettingRepository.findAllUsers();
+    List<UserSetting> allUsers = userSettingRepository.findAll();
     List<ElectedPost> electedPosts = new ArrayList<>();
 
     for (UserSetting user : allUsers) {
