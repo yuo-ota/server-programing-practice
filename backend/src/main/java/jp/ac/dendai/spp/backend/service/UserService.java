@@ -2,11 +2,8 @@ package jp.ac.dendai.spp.backend.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import jp.ac.dendai.spp.backend.constant.CommonConstant;
 import jp.ac.dendai.spp.backend.constant.ImageConstant;
 import jp.ac.dendai.spp.backend.constant.PlatformConstant;
@@ -14,10 +11,9 @@ import jp.ac.dendai.spp.backend.constant.TokenConstant;
 import jp.ac.dendai.spp.backend.dto.Content;
 import jp.ac.dendai.spp.backend.dto.LikedPost;
 import jp.ac.dendai.spp.backend.dto.OwnPost;
-import jp.ac.dendai.spp.backend.dto.PostIdAndCount;
 import jp.ac.dendai.spp.backend.dto.SocialAccount;
-import jp.ac.dendai.spp.backend.entity.ImageEntity;
-import jp.ac.dendai.spp.backend.entity.Post;
+import jp.ac.dendai.spp.backend.entity.LikedPostEntity;
+import jp.ac.dendai.spp.backend.entity.OwnPostEntity;
 import jp.ac.dendai.spp.backend.entity.PreRegisterToken;
 import jp.ac.dendai.spp.backend.entity.SocialAccountEntity;
 import jp.ac.dendai.spp.backend.entity.User;
@@ -301,6 +297,77 @@ public class UserService {
     response.setIconPath(targetUserSetting.getIconPath());
     response.setHeaderPath(targetUserSetting.getHeaderPath());
 
+    List<SocialAccount> socialAccounts = getSocialAccounts(targetUserId);
+    response.setSocialAccounts(socialAccounts);
+
+    List<OwnPost> ownPosts = getOwnPosts(targetUserId, targetUserSetting.getIconPath());
+    response.setPosts(ownPosts);
+
+    if (userId != null && userId.equals(targetUserId)) {
+      List<LikedPost> likedPosts = getLikedPosts(targetUserId);
+      response.setLikedPosts(likedPosts);
+    }
+
+    return response;
+  }
+
+  /**
+   * 指定されたユーザーIDの投稿一覧を取得する。
+   *
+   * @param userId 投稿所有者のユーザーID
+   * @param iconPath 投稿所有者のアイコンパス
+   * @return 指定ユーザーの投稿一覧
+   */
+  public List<OwnPost> getOwnPosts(UUID userId, String iconPath) {
+    List<OwnPost> ownPosts = new ArrayList<>();
+    List<OwnPostEntity> ownPostEntities = postRepository.findByOwnPost(userId);
+
+    for (OwnPostEntity ownPostEntity : ownPostEntities) {
+      Content content =
+          new Content(
+              ownPostEntity.getDescription(), ownPostEntity.getImagePath(), ownPostEntity.getAlt());
+      OwnPost ownPost =
+          new OwnPost(ownPostEntity.getPostId(), iconPath, content, ownPostEntity.getLikeCount());
+      ownPosts.add(ownPost);
+    }
+    return ownPosts;
+  }
+
+  /**
+   * 指定されたユーザーIDの「いいね」済み投稿一覧を取得する。
+   *
+   * @param userId 投稿所有者のユーザーID
+   * @return 指定ユーザーの「いいね」済み投稿一覧
+   */
+  public List<LikedPost> getLikedPosts(UUID userId) {
+    List<LikedPost> likedPosts = new ArrayList<>();
+    List<LikedPostEntity> likedPostEntities = postRepository.findByLikedPost(userId);
+
+    for (LikedPostEntity likedPostEntity : likedPostEntities) {
+      Content content =
+          new Content(
+              likedPostEntity.getDescription(),
+              likedPostEntity.getImagePath(),
+              likedPostEntity.getAlt());
+      LikedPost likedPost =
+          new LikedPost(
+              likedPostEntity.getPostId(),
+              likedPostEntity.getIconPath(),
+              content,
+              likedPostEntity.getUserId(),
+              likedPostEntity.getName());
+      likedPosts.add(likedPost);
+    }
+    return likedPosts;
+  }
+
+  /**
+   * 指定されたユーザーIDのソーシャルアカウント一覧を取得する。
+   *
+   * @param targetUserId ソーシャルアカウントを取得する対象ユーザーのID
+   * @return 指定ユーザーのソーシャルアカウント一覧
+   */
+  public List<SocialAccount> getSocialAccounts(UUID targetUserId) {
     List<SocialAccountEntity> socialAccountEntities =
         socialAccountRepository.findByUserId(targetUserId);
     List<SocialAccount> socialAccounts = new ArrayList<>();
@@ -310,138 +377,6 @@ public class UserService {
       SocialAccount account = new SocialAccount(platformName, identifier);
       socialAccounts.add(account);
     }
-    response.setSocialAccounts(socialAccounts);
-
-    List<Post> posts = postRepository.findByCreatorId(targetUserId);
-    List<OwnPost> ownPosts = new ArrayList<>();
-    List<ImageEntity> imageEntities =
-        imageRepository.findByPostIds(posts.stream().map(Post::getId).toArray(UUID[]::new));
-    List<PostIdAndCount> likeCountList =
-        likeRepository.countByPostIds(posts.stream().map(Post::getId).toArray(UUID[]::new));
-
-    Map<UUID, Long> countMap =
-        likeCountList.stream()
-            .collect(Collectors.toMap(PostIdAndCount::postId, PostIdAndCount::count));
-    List<Post> sortedPosts = sortPostsByPostId(posts, posts.stream().map(Post::getId).toList());
-    Map<Post, ImageEntity> sortedImages = sortImageByPost(sortedPosts, imageEntities);
-
-    for (int i = 0; i < sortedPosts.size(); i++) {
-      UUID postId = sortedPosts.get(i).getId();
-      String iconPath = targetUserSetting.getIconPath();
-      ImageEntity image = sortedImages.get(sortedPosts.get(i));
-      String imagePath = (image != null) ? image.getPath() : "";
-      String imageAlt = (image != null) ? image.getAlt() : "";
-      Content content = new Content(sortedPosts.get(i).getDescription(), imagePath, imageAlt);
-      int likeCount = countMap.getOrDefault(postId, 0L).intValue();
-      OwnPost ownPost = new OwnPost(postId, iconPath, content, likeCount);
-      ownPosts.add(ownPost);
-    }
-    response.setPosts(ownPosts);
-
-    if (userId != null && userId.equals(targetUserId)) {
-      List<UUID> likedPostIds = likeRepository.findPostIdsByUserId(userId);
-      List<Post> likedPostsEntity = postRepository.findAllById(likedPostIds);
-      List<UserSetting> likedUserSettings =
-          userSettingRepository.findByUserIds(
-              likedPostsEntity.stream().map(Post::getCreatorId).toArray(UUID[]::new));
-      List<LikedPost> likedPosts = new ArrayList<>();
-      List<ImageEntity> likedImageEntities =
-          imageRepository.findByPostIds(
-              likedPostsEntity.stream().map(Post::getId).toArray(UUID[]::new));
-
-      List<Post> sortedLikedPosts = sortPostsByPostId(likedPostsEntity, likedPostIds);
-      Map<Post, ImageEntity> sortedLikedImages =
-          sortImageByPost(sortedLikedPosts, likedImageEntities);
-      Map<Post, UserSetting> sortedLikedUserSettings =
-          sortUserSettingByPost(sortedLikedPosts, likedUserSettings);
-
-      if (!sortedLikedPosts.isEmpty()) {
-        System.out.println(
-            "sortedLikedUserSettings: " + sortedLikedUserSettings.get(sortedLikedPosts.get(0)));
-      } else {
-        System.out.println("sortedLikedUserSettings: (no liked posts)");
-      }
-
-      for (int i = 0; i < sortedLikedPosts.size(); i++) {
-        UUID postId = sortedLikedPosts.get(i).getId();
-        UserSetting userSetting = sortedLikedUserSettings.get(sortedLikedPosts.get(i));
-        if (userSetting == null) {
-          continue; // ユーザー設定が見つからない場合はスキップ
-        }
-        String iconPath = userSetting.getIconPath();
-        ImageEntity image = sortedLikedImages.get(sortedLikedPosts.get(i));
-        String imagePath = (image != null) ? image.getPath() : "";
-        String imageAlt = (image != null) ? image.getAlt() : "";
-        Content content =
-            new Content(sortedLikedPosts.get(i).getDescription(), imagePath, imageAlt);
-        LikedPost likedPost =
-            new LikedPost(
-                postId, iconPath, content, userSetting.getDisplayId(), userSetting.getName());
-        likedPosts.add(likedPost);
-      }
-      response.setLikedPosts(likedPosts);
-    }
-
-    return response;
-  }
-
-  /**
-   * postIds で指定された順序に従って Post を並べ替える。
-   *
-   * @param posts 並べ替え対象の投稿リスト
-   * @param postIds 並べ替え順を定義する投稿IDリスト
-   * @return postIds の順序に整列した投稿リスト（postIds に存在しないIDは除外）
-   */
-  public List<Post> sortPostsByPostId(List<Post> posts, List<UUID> postIds) {
-    Map<UUID, Post> postMap = posts.stream().collect(Collectors.toMap(Post::getId, post -> post));
-    List<Post> sortedPosts = new ArrayList<>();
-    for (UUID postId : postIds) {
-      Post post = postMap.get(postId);
-      if (post != null) {
-        sortedPosts.add(post);
-      }
-    }
-    return sortedPosts;
-  }
-
-  /**
-   * postIds で指定された順序に合わせ、Post をキーに ImageEntity を対応付ける。
-   *
-   * @param posts 並べ替え済みの投稿リスト（postIds の順序）
-   * @param images 投稿に紐づく画像エンティティ一覧
-   * @return Post をキーに同じ順序で対応付けたマップ
-   */
-  public Map<Post, ImageEntity> sortImageByPost(List<Post> posts, List<ImageEntity> images) {
-    Map<UUID, ImageEntity> imageMap =
-        images.stream().collect(Collectors.toMap(ImageEntity::getPostId, image -> image));
-    Map<Post, ImageEntity> sortedImages = new HashMap<>();
-    for (Post post : posts) {
-      ImageEntity image = imageMap.get(post.getId());
-      if (image != null) {
-        sortedImages.put(post, image);
-      }
-    }
-    return sortedImages;
-  }
-
-  /**
-   * postIds で指定された順序に合わせ、Post をキーに UserSetting を対応付ける。
-   *
-   * @param posts 並べ替え済みの投稿リスト（postIds の順序）
-   * @param userSettings 投稿作成者に対応するユーザー設定一覧
-   * @return Post をキーに同じ順序で対応付けたマップ
-   */
-  public Map<Post, UserSetting> sortUserSettingByPost(
-      List<Post> posts, List<UserSetting> userSettings) {
-    Map<UUID, UserSetting> userSettingMap =
-        userSettings.stream().collect(Collectors.toMap(UserSetting::getUserId, setting -> setting));
-    Map<Post, UserSetting> sortedUserSettings = new HashMap<>();
-    for (Post post : posts) {
-      UserSetting setting = userSettingMap.get(post.getCreatorId());
-      if (setting != null) {
-        sortedUserSettings.put(post, setting);
-      }
-    }
-    return sortedUserSettings;
+    return socialAccounts;
   }
 }
