@@ -20,10 +20,10 @@ public class ElectedPostService {
   private final ElectedPostRepository electedPostsRepository;
 
   public ElectedPostService(
-      UserSettingRepository userSettingsRepository,
+      UserSettingRepository userSettingRepository,
       PostRepository postRepository,
       ElectedPostRepository electedPostsRepository) {
-    this.userSettingRepository = userSettingsRepository;
+    this.userSettingRepository = userSettingRepository;
     this.postRepository = postRepository;
     this.electedPostsRepository = electedPostsRepository;
   }
