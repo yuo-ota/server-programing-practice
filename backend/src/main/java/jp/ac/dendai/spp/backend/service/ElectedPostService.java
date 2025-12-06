@@ -106,14 +106,14 @@ public class ElectedPostService {
     if (user.isShowAdultContent()) {
       Collections.shuffle(allPostIds);
       pickedPostIds =
-          allPostIds.subList(
-              0, Math.min(PostConstant.MAX_DELIVER_POSTS_PER_USER, allPostIds.size()));
+          new ArrayList<>(allPostIds.subList(
+              0, Math.min(PostConstant.MAX_DELIVER_POSTS_PER_USER, allPostIds.size())));
     } else {
       Collections.shuffle(allPostIdsByNotSensitive);
       pickedPostIds =
-          allPostIdsByNotSensitive.subList(
+          new ArrayList<>(allPostIdsByNotSensitive.subList(
               0,
-              Math.min(PostConstant.MAX_DELIVER_POSTS_PER_USER, allPostIdsByNotSensitive.size()));
+              Math.min(PostConstant.MAX_DELIVER_POSTS_PER_USER, allPostIdsByNotSensitive.size())));
     }
 
     List<ElectedPost> electedPosts = new ArrayList<>();

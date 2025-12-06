@@ -6,7 +6,5 @@ public class PostConstant {
   public static final int DAYS_VIEWABLE_TRACEBACK = 1;
   public static final LocalTime DATE_CHANGE_TIME = LocalTime.of(6, 0);
 
-  public static final int DATE_CHANGE_BUFFER_MINUTES = 20;
-
   public static final int MAX_DELIVER_POSTS_PER_USER = 20;
 }
