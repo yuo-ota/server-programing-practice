@@ -126,7 +126,7 @@ public class AuthController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
   }
-  
+
   @PostMapping("/auth")
   public ResponseEntity<?> auth(@RequestHeader("Authorization") String token) {
     try {
