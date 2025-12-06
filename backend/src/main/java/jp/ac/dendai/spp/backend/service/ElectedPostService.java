@@ -11,7 +11,6 @@ import jp.ac.dendai.spp.backend.entity.UserSetting;
 import jp.ac.dendai.spp.backend.repository.ElectedPostRepository;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
 import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
-
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +42,7 @@ public class ElectedPostService {
         postRepository.findPostIdsByCreatedAtBetweenAndNotSensitive(
             deliverDateTime.minusDays(1), deliverDateTime);
 
-    int pageSize = 500;
+    int pageSize = PostConstant.REGISTER_POSTS_BATCH_SIZE;
     int page = 0;
     List<UserSetting> usersBatch = userSettingRepository.findUsersByPage(page, pageSize);
     while (!usersBatch.isEmpty()) {
@@ -106,14 +105,17 @@ public class ElectedPostService {
     if (user.isShowAdultContent()) {
       Collections.shuffle(allPostIds);
       pickedPostIds =
-          new ArrayList<>(allPostIds.subList(
-              0, Math.min(PostConstant.MAX_DELIVER_POSTS_PER_USER, allPostIds.size())));
+          new ArrayList<>(
+              allPostIds.subList(
+                  0, Math.min(PostConstant.MAX_DELIVER_POSTS_PER_USER, allPostIds.size())));
     } else {
       Collections.shuffle(allPostIdsByNotSensitive);
       pickedPostIds =
-          new ArrayList<>(allPostIdsByNotSensitive.subList(
-              0,
-              Math.min(PostConstant.MAX_DELIVER_POSTS_PER_USER, allPostIdsByNotSensitive.size())));
+          new ArrayList<>(
+              allPostIdsByNotSensitive.subList(
+                  0,
+                  Math.min(
+                      PostConstant.MAX_DELIVER_POSTS_PER_USER, allPostIdsByNotSensitive.size())));
     }
 
     List<ElectedPost> electedPosts = new ArrayList<>();

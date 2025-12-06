@@ -13,7 +13,7 @@ public class ManageSchedule {
     this.electedPostService = electedPostService;
   }
 
-  @Scheduled(cron = "0 40 6 * * *")
+  @Scheduled(cron = "0 40 6 * * *", zone = "${TIMEZONE}")
   @Transactional
   public void runElectedPostsAllocation() {
     electedPostService.allocateDeliverPostsEnduring();

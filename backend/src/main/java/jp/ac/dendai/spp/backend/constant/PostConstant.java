@@ -7,4 +7,6 @@ public class PostConstant {
   public static final LocalTime DATE_CHANGE_TIME = LocalTime.of(6, 0);
 
   public static final int MAX_DELIVER_POSTS_PER_USER = 20;
+
+  public static final int REGISTER_POSTS_BATCH_SIZE = 500;
 }

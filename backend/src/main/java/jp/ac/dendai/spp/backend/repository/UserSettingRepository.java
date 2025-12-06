@@ -16,6 +16,14 @@ public interface UserSettingRepository extends JpaRepository<UserSetting, UUID> 
   @Query("SELECT u FROM UserSetting u WHERE u.userId = :userId")
   UserSetting findByUserId(@Param("userId") UUID userId);
 
-  @Query("SELECT u FROM UserSetting u ORDER BY u.userId ASC LIMIT :size OFFSET :page * :size")
+  @Query(
+      value =
+          """
+    SELECT * FROM user_settings
+    ORDER BY user_id ASC
+    LIMIT :size
+    OFFSET :page * :size
+    """,
+      nativeQuery = true)
   List<UserSetting> findUsersByPage(@Param("page") int page, @Param("size") int size);
 }
