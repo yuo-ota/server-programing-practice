@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import SNSLinkInputGroup from './SNSLinkInputGroup';
 import type { SNSInputOption } from '../interfaces/app/SNSInputOption';
+import { useState, type ComponentProps } from 'react';
 
 type T = typeof SNSLinkInputGroup;
 const SNSInputOptions: SNSInputOption[] = [
@@ -42,6 +43,17 @@ export default {
     SNSInputOptions: SNSInputOptions,
     value: '',
     className: 'w-9/10 h-8',
+  },
+  render: function Comp(args: ComponentProps<typeof SNSLinkInputGroup>) {
+    const [value, setValue] = useState(args.value ?? '');
+
+    return (
+      <SNSLinkInputGroup
+        {...args}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      ></SNSLinkInputGroup>
+    );
   },
 } satisfies Meta<T>;
 
