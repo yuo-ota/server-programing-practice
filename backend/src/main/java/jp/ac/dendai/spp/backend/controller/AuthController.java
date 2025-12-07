@@ -54,7 +54,7 @@ public class AuthController {
     } catch (Exception e) {
       ErrorResponse errorResponse = new ErrorResponse();
 
-      errorResponse.setCode("SERVICE_ERROR");
+      errorResponse.setCode("INTERNAL_SERVER_ERROR");
       errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
 
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
@@ -87,19 +87,19 @@ public class AuthController {
     } catch (Exception e) {
       ErrorResponse errorResponse = new ErrorResponse();
 
-      errorResponse.setCode("SERVICE_ERROR");
+      errorResponse.setCode("INTERNAL_SERVER_ERROR");
       errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
 
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
   }
 
-  @PostMapping("/auth")
-  public ResponseEntity<?> auth(@RequestBody AuthRequest request) {
+  @PostMapping("/auth/token")
+  public ResponseEntity<?> authToken(@RequestBody AuthRequest request) {
     try {
       tokenService.isAvailable(request);
 
-      return ResponseEntity.ok().build();
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     } catch (InvalidParameterException e) {
       ErrorResponse errorResponse = new ErrorResponse();
@@ -120,19 +120,19 @@ public class AuthController {
     } catch (Exception e) {
       ErrorResponse errorResponse = new ErrorResponse();
 
-      errorResponse.setCode("SERVICE_ERROR");
+      errorResponse.setCode("INTERNAL_SERVER_ERROR");
       errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
 
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
   }
 
-  @PostMapping("/admin/auth")
+  @PostMapping("/auth")
   public ResponseEntity<?> auth(@RequestHeader("Authorization") String token) {
     try {
-      authService.adminAuth(token);
+      authService.auth(token);
 
-      return ResponseEntity.ok().build();
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     } catch (AuthenticationFailedException e) {
       ErrorResponse errorResponse = new ErrorResponse();
@@ -145,7 +145,32 @@ public class AuthController {
     } catch (Exception e) {
       ErrorResponse errorResponse = new ErrorResponse();
 
-      errorResponse.setCode("SERVICE_ERROR");
+      errorResponse.setCode("INTERNAL_SERVER_ERROR");
+      errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
+
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+  }
+
+  @PostMapping("/admin/auth")
+  public ResponseEntity<?> authAdmin(@RequestHeader("Authorization") String token) {
+    try {
+      authService.adminAuth(token);
+
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    } catch (AuthenticationFailedException e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("AUTHENTICATION_FAILED");
+      errorResponse.setMessage("ユーザー認証に失敗しました。");
+
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+
+    } catch (Exception e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("INTERNAL_SERVER_ERROR");
       errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
 
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);

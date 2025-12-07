@@ -2,6 +2,7 @@ package jp.ac.dendai.spp.backend.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Optional;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
 import jp.ac.dendai.spp.backend.repository.ReportRepository;
@@ -53,7 +54,7 @@ public class ReportEntityTest {
             true,
             savedReportee.getUserId(),
             null,
-            1,
+            List.of(1),
             "Inappropriate content");
     Report savedReport = reportRepository.save(report);
 
@@ -79,7 +80,12 @@ public class ReportEntityTest {
 
     Report report =
         new Report(
-            savedReporter.getUserId(), true, null, savedPost.getId(), 1, "Inappropriate content");
+            savedReporter.getUserId(),
+            false,
+            null,
+            savedPost.getId(),
+            List.of(1),
+            "Inappropriate content");
     Report savedReport = reportRepository.save(report);
 
     // UUIDが自動生成されていることを確認

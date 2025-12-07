@@ -4,7 +4,9 @@ SELECT
   TRUE AS is_report_user,
   reported_users.user_id AS reportee,
   NULL AS reported_post_id,
-  FLOOR(RANDOM() * 7) AS category_status_id,
+  ARRAY[
+    FLOOR(RANDOM() * 7)::int
+  ] AS category_status_id,
   CONCAT('Report details for user ', reported_users.user_id) AS details
 FROM users AS users
 CROSS JOIN users AS reported_users
@@ -17,7 +19,9 @@ SELECT
   FALSE AS is_report_user,
   NULL AS reportee,
   posts.id AS reported_post_id,
-  FLOOR(RANDOM() * 4) AS category_status_id,
+  ARRAY[
+    FLOOR(RANDOM() * 7)::int
+  ] AS category_status_id,
   CONCAT('Report details for post ', posts.id) AS details
 FROM users
 CROSS JOIN posts
