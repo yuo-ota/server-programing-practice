@@ -7,10 +7,10 @@ type T = typeof TextInput;
 export default {
   component: TextInput,
   args: {
-    displayStatus: 'unrounded-left',
+    displayStatus: 'normal',
     label: 'テキスト',
     placeholder: 'テキスト',
-    prefix: 'unchi',
+    prefix: '',
     error: 'テキスト',
     id: 'テキスト',
     value: '',

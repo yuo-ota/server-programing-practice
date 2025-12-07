@@ -1,9 +1,10 @@
 interface TextInputProps {
-  displayStatus: 'normal' | 'unrounded-left';
+  displayStatus: 'normal' | 'disabled';
   label: string;
   placeholder: string;
   prefix: string;
   error?: string;
+  isUnroundedLeft: boolean;
   id: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -17,6 +18,7 @@ const TextInput = ({
   placeholder,
   prefix,
   error,
+  isUnroundedLeft,
   id,
   value,
   onChange,
@@ -33,7 +35,7 @@ const TextInput = ({
           error
             ? 'border-error focus:border-error'
             : 'border-foreground focus:border-theme hover:border-foreground/(--hover-nega-opacity)'
-        } ${displayStatus === 'unrounded-left' ? 'rounded-r-lg' : 'rounded-lg'}`}
+        } ${isUnroundedLeft ? 'rounded-r-lg' : 'rounded-lg'}`}
       >
         <label
           className="text-foreground text-body flex-none cursor-pointer"
@@ -43,10 +45,10 @@ const TextInput = ({
         </label>
         <input
           id={id}
-          className="placeholder:text-placeholder text-foreground text-subtitle ease flex-1 outline-none"
+          className={`placeholder:text-placeholder text-foreground text-subtitle ease flex-1 outline-none ${displayStatus == 'disabled' && `pointer-events-none cursor-not-allowed`}`}
           value={value}
-          onChange={onChange}
-          onBlur={onBlur}
+          onChange={displayStatus == 'disabled' ? () => {} : onChange}
+          onBlur={displayStatus == 'disabled' ? () => {} : onBlur}
           placeholder={placeholder}
         />
       </div>
