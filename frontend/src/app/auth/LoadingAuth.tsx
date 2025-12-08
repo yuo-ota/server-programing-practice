@@ -3,8 +3,8 @@ import LoadingIcon from '@/assets/loading.svg?react';
 const LoadingAuth = () => {
   return (
     <>
-      <div className="w-dvw h-dvh flex justify-center items-center">
-        <LoadingIcon className="w-16 h-16 animate-spin" />
+      <div className="flex h-dvh w-dvw items-center justify-center">
+        <LoadingIcon className="h-16 w-16 animate-spin" />
       </div>
     </>
   );

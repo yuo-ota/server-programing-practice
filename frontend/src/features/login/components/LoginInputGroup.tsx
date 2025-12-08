@@ -113,7 +113,7 @@ const LoginInputGroup = () => {
     <>
       <div className="flex w-full flex-col gap-3.5">
         <TextInput
-          type='email'
+          type="email"
           label="メールアドレス"
           placeholder="xxx@example.com"
           error={emailError}
@@ -127,7 +127,7 @@ const LoginInputGroup = () => {
           isUnroundedLeft={false}
         />
         <TextInput
-          type='password'
+          type="password"
           label="パスワード(8文字以上)"
           placeholder="********"
           error={passwordError}
@@ -135,7 +135,7 @@ const LoginInputGroup = () => {
           value={password}
           onChange={handlePasswordChange}
           onBlur={handlePasswordBlur}
-          className="h-5 mt-15"
+          className="mt-15 h-5"
           displayStatus={'normal'}
           prefix={''}
           isUnroundedLeft={false}
@@ -145,7 +145,7 @@ const LoginInputGroup = () => {
             displayStatus={getLoginButtonStatus()}
             label={'ログイン'}
             onClick={handleLoginButtonClick}
-            className="h-11 w-full mt-15"
+            className="mt-15 h-11 w-full"
           />
           <Link
             className="text-annotation text-subparagraph"

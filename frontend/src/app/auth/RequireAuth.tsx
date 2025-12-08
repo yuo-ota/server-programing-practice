@@ -1,18 +1,17 @@
 import { API_URL } from '@/config';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Navigate, Outlet } from 'react-router';
 import LoadingAuth from './LoadingAuth';
 
-
 const RequireAuth = () => {
-  let didInit = false;
+  const didInit = useRef(false);
   const [checking, setChecking] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    if (!didInit) {
+    if (!didInit.current) {
       verifyToken();
-      didInit = true;
+      didInit.current = true;
     }
   }, []);
 
