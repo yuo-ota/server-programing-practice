@@ -61,8 +61,7 @@ public class UserController {
 
   @PatchMapping
   public ResponseEntity<?> update(
-      @CookieValue("token") String token,
-      @Valid @ModelAttribute UpdateUserRequest request) {
+      @CookieValue("token") String token, @Valid @ModelAttribute UpdateUserRequest request) {
     try {
       userService.update(token, request);
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

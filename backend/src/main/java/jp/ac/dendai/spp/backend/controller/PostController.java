@@ -36,8 +36,7 @@ public class PostController {
 
   @PostMapping
   public ResponseEntity<?> create(
-      @CookieValue("token") String token,
-      @ModelAttribute @Valid CreatePostRequest request) {
+      @CookieValue("token") String token, @ModelAttribute @Valid CreatePostRequest request) {
     try {
       UUID userId = authService.auth(token);
       postService.createPost(userId, request);

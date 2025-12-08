@@ -29,8 +29,7 @@ public class ReportController {
 
   @PostMapping
   public ResponseEntity<?> createReport(
-      @CookieValue("token") String token,
-      @RequestBody @Valid CreateReportRequest request) {
+      @CookieValue("token") String token, @RequestBody @Valid CreateReportRequest request) {
     try {
       UUID userId = authService.auth(token);
       reportService.createReport(userId, request);

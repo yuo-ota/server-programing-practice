@@ -28,8 +28,7 @@ public class LikeController {
   }
 
   @PostMapping("/{postId}")
-  public ResponseEntity<?> create(
-      @CookieValue("token") String token, @Valid LikeRequest request) {
+  public ResponseEntity<?> create(@CookieValue("token") String token, @Valid LikeRequest request) {
     try {
       UUID userId = authService.auth(token);
       likeService.createLike(userId, request);
@@ -59,8 +58,7 @@ public class LikeController {
   }
 
   @DeleteMapping("/{postId}")
-  public ResponseEntity<?> delete(
-      @CookieValue("token") String token, @Valid LikeRequest request) {
+  public ResponseEntity<?> delete(@CookieValue("token") String token, @Valid LikeRequest request) {
     try {
       UUID userId = authService.auth(token);
       likeService.deleteLike(userId, request);

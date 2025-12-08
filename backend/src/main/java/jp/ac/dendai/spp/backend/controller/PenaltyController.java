@@ -29,8 +29,7 @@ public class PenaltyController {
 
   @PostMapping
   public ResponseEntity<?> createPenalty(
-      @CookieValue("token") String token,
-      @RequestBody @Valid CreatePenaltyRequest request) {
+      @CookieValue("token") String token, @RequestBody @Valid CreatePenaltyRequest request) {
     try {
       UUID userId = authService.adminAuth(token);
       penaltyService.createPenalty(userId, request);
