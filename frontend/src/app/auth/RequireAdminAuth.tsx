@@ -1,3 +1,4 @@
+import { API_URL } from '@/config';
 import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router';
 
@@ -8,7 +9,7 @@ const RequireAdminAuth = () => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await fetch('/api/admin/auth', {
+        const response = await fetch(`${API_URL}/api/admin/auth`, {
           method: 'POST',
           credentials: 'include',
         });

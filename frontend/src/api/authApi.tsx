@@ -5,5 +5,6 @@ export const login = async (email_address: string, password: string): Promise<vo
   await axios.post<void>(`${API_URL}/api/login`, {
     email_address,
     password,
-  });
+  },
+  { withCredentials: true });
 };
