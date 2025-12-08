@@ -113,6 +113,7 @@ const LoginInputGroup = () => {
     <>
       <div className="flex w-full flex-col gap-3.5">
         <TextInput
+          type='email'
           label="メールアドレス"
           placeholder="xxx@example.com"
           error={emailError}

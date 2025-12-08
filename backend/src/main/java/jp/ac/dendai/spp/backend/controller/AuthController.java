@@ -49,6 +49,8 @@ public class AuthController {
       errorResponse.setCode("AUTHENTICATION_FAILED");
       errorResponse.setMessage("ユーザー認証に失敗しました。");
 
+      e.printStackTrace();
+
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
 
     } catch (Exception e) {

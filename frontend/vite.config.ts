@@ -23,6 +23,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  envDir: path.resolve(__dirname, '..'),
   test: {
     projects: [{
       extends: true,
