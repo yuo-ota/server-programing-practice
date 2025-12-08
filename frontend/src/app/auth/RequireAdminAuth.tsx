@@ -1,6 +1,7 @@
 import { API_URL } from '@/config';
 import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router';
+import LoadingAuth from './LoadingAuth';
 
 let didInit = false;
 
@@ -36,7 +37,7 @@ const RequireAdminAuth = () => {
     }
   };
 
-  if (checking) return <div>認証中...</div>;
+  if (checking) return <LoadingAuth />;
 
   if (!authenticated) return <Navigate to="/unauthorized" replace />;
 

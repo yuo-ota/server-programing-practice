@@ -1,15 +1,15 @@
 import { API_URL } from '@/config';
 import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router';
+import LoadingAuth from './LoadingAuth';
 
-let didInit = false;
 
 const RequireAuth = () => {
+  let didInit = false;
   const [checking, setChecking] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    console.log("aa");
     if (!didInit) {
       verifyToken();
       didInit = true;
@@ -25,10 +25,8 @@ const RequireAuth = () => {
 
       if (response.ok) {
         setAuthenticated(true);
-        setChecking(false);
       } else {
         setAuthenticated(false);
-        setChecking(false);
       }
     } catch {
       setAuthenticated(false);
@@ -37,7 +35,7 @@ const RequireAuth = () => {
     }
   };
 
-  if (checking) return <div>認証中...</div>;
+  if (checking) return <LoadingAuth />;
 
   if (!authenticated) return <Navigate to="/unauthorized" replace />;
 
