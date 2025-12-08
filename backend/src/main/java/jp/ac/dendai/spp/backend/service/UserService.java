@@ -8,14 +8,22 @@ import jp.ac.dendai.spp.backend.constant.CommonConstant;
 import jp.ac.dendai.spp.backend.constant.ImageConstant;
 import jp.ac.dendai.spp.backend.constant.PlatformConstant;
 import jp.ac.dendai.spp.backend.constant.TokenConstant;
+import jp.ac.dendai.spp.backend.dto.Content;
+import jp.ac.dendai.spp.backend.dto.LikedPost;
+import jp.ac.dendai.spp.backend.dto.OwnPost;
 import jp.ac.dendai.spp.backend.dto.SocialAccount;
+import jp.ac.dendai.spp.backend.entity.LikedPostEntity;
+import jp.ac.dendai.spp.backend.entity.OwnPostEntity;
 import jp.ac.dendai.spp.backend.entity.PreRegisterToken;
 import jp.ac.dendai.spp.backend.entity.SocialAccountEntity;
 import jp.ac.dendai.spp.backend.entity.User;
 import jp.ac.dendai.spp.backend.entity.UserSetting;
 import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.request.CreateUserRequest;
+import jp.ac.dendai.spp.backend.form.request.ShowUserRequest;
 import jp.ac.dendai.spp.backend.form.request.UpdateUserRequest;
+import jp.ac.dendai.spp.backend.form.response.UserDataResponse;
+import jp.ac.dendai.spp.backend.repository.PostRepository;
 import jp.ac.dendai.spp.backend.repository.PreRegisterTokenRepository;
 import jp.ac.dendai.spp.backend.repository.SocialAccountRepository;
 import jp.ac.dendai.spp.backend.repository.UserRepository;
@@ -28,6 +36,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
+
+  private final PostRepository postRepository;
   private final AuthService authService;
   private final TokenService tokenService;
   private final UserRepository userRepository;
@@ -44,8 +54,9 @@ public class UserService {
       UserSettingRepository userSettingRepository,
       SocialAccountRepository socialAccountRepository,
       DisplayIdService displayIdService,
-      ElectedPostService electedPostService,
-      PreRegisterTokenRepository preRegisterTokenRepository) {
+      PreRegisterTokenRepository preRegisterTokenRepository,
+      PostRepository postRepository,
+      ElectedPostService electedPostService) {
     this.authService = authService;
     this.tokenService = tokenService;
     this.userRepository = userRepository;
@@ -54,6 +65,7 @@ public class UserService {
     this.displayIdService = displayIdService;
     this.electedPostService = electedPostService;
     this.preRegisterTokenRepository = preRegisterTokenRepository;
+    this.postRepository = postRepository;
   }
 
   @Transactional
@@ -141,7 +153,7 @@ public class UserService {
    */
   @Transactional
   public void update(String token, UpdateUserRequest request) {
-    UUID userId = authService.authByJwt(token);
+    UUID userId = authService.auth(token);
     UserSetting userSetting = userSettingRepository.findByUserId(userId);
     if (userSetting == null) {
       throw new InvalidParameterException("User not found");
@@ -244,5 +256,124 @@ public class UserService {
   public boolean isShowAdultContents(LocalDate birthday, boolean showAdultContents) {
     return !birthday.plusYears(CommonConstant.ADULT_AGE).isAfter(LocalDate.now())
         && showAdultContents;
+  }
+
+  /**
+   * 認証済みユーザーIDを指定してユーザー情報を削除する。
+   *
+   * @param userId 削除対象のユーザーID（認証済みユーザーのID）
+   * @throws InvalidParameterException 対象ユーザーが存在しない場合に送出
+   */
+  @Transactional
+  public void delete(UUID userId) {
+    User user = userRepository.findByUserId(userId);
+    if (user == null) {
+      throw new InvalidParameterException("User data not found for authenticated ID.");
+    }
+    userRepository.deleteById(userId);
+  }
+
+  /**
+   * 指定された表示IDのユーザープロフィールと投稿一覧を取得し、閲覧者情報（userId）が一致する場合は「いいね」済み投稿も含めて返す。
+   *
+   * @param userId 閲覧者のユーザーID（自身の場合は likedPosts も返す。null なら閲覧者なし）
+   * @param request 表示対象ユーザーを特定するリクエスト（displayId を含む）
+   * @return 表示対象ユーザーのプロフィール・投稿・（必要に応じて）いいね済み投稿をまとめたレスポンス
+   * @throws InvalidParameterException 表示対象ユーザーが存在しない場合に送出
+   */
+  public UserDataResponse show(UUID userId, ShowUserRequest request) {
+    String displayId = request.getUserId();
+    UserSetting targetUserSetting = userSettingRepository.findByDisplayId(displayId);
+    if (targetUserSetting == null) {
+      throw new InvalidParameterException("Target user not found with ID: " + displayId);
+    }
+    UUID targetUserId = targetUserSetting.getUserId();
+
+    UserDataResponse response = new UserDataResponse();
+    response.setName(targetUserSetting.getName());
+    response.setIconPath(targetUserSetting.getIconPath());
+    response.setHeaderPath(targetUserSetting.getHeaderPath());
+
+    List<SocialAccount> socialAccounts = getSocialAccounts(targetUserId);
+    response.setSocialAccounts(socialAccounts);
+
+    List<OwnPost> ownPosts = getOwnPosts(targetUserId, targetUserSetting.getIconPath());
+    response.setPosts(ownPosts);
+
+    if (userId != null && userId.equals(targetUserId)) {
+      List<LikedPost> likedPosts = getLikedPosts(targetUserId);
+      response.setLikedPosts(likedPosts);
+    }
+
+    return response;
+  }
+
+  /**
+   * 指定されたユーザーIDの投稿一覧を取得する。
+   *
+   * @param userId 投稿所有者のユーザーID
+   * @param iconPath 投稿所有者のアイコンパス
+   * @return 指定ユーザーの投稿一覧
+   */
+  public List<OwnPost> getOwnPosts(UUID userId, String iconPath) {
+    List<OwnPost> ownPosts = new ArrayList<>();
+    List<OwnPostEntity> ownPostEntities = postRepository.findByOwnPost(userId);
+
+    for (OwnPostEntity ownPostEntity : ownPostEntities) {
+      Content content =
+          new Content(
+              ownPostEntity.getDescription(), ownPostEntity.getImagePath(), ownPostEntity.getAlt());
+      OwnPost ownPost =
+          new OwnPost(ownPostEntity.getPostId(), iconPath, content, ownPostEntity.getLikeCount());
+      ownPosts.add(ownPost);
+    }
+    return ownPosts;
+  }
+
+  /**
+   * 指定されたユーザーIDの「いいね」済み投稿一覧を取得する。
+   *
+   * @param userId いいねした投稿を取得する対象ユーザーのID
+   * @return 指定ユーザーの「いいね」済み投稿一覧
+   */
+  public List<LikedPost> getLikedPosts(UUID userId) {
+    List<LikedPost> likedPosts = new ArrayList<>();
+    List<LikedPostEntity> likedPostEntities = postRepository.findByLikedPost(userId);
+
+    for (LikedPostEntity likedPostEntity : likedPostEntities) {
+      Content content =
+          new Content(
+              likedPostEntity.getDescription(),
+              likedPostEntity.getImagePath(),
+              likedPostEntity.getAlt());
+      LikedPost likedPost =
+          new LikedPost(
+              likedPostEntity.getPostId(),
+              likedPostEntity.getIconPath(),
+              content,
+              likedPostEntity.getUserId(),
+              likedPostEntity.getName());
+      likedPosts.add(likedPost);
+    }
+    return likedPosts;
+  }
+
+  /**
+   * 指定されたユーザーIDのソーシャルアカウント一覧を取得する。
+   *
+   * @param targetUserId ソーシャルアカウントを取得する対象ユーザーのID
+   * @return 指定ユーザーのソーシャルアカウント一覧
+   */
+  public List<SocialAccount> getSocialAccounts(UUID targetUserId) {
+    List<SocialAccountEntity> socialAccountEntities =
+        socialAccountRepository.findByUserId(targetUserId);
+    List<SocialAccount> socialAccounts = new ArrayList<>();
+    for (SocialAccountEntity entity : socialAccountEntities) {
+      String platformName = PlatformConstant.PLATFORM_LIST.get(entity.getPlatformId());
+      String identifier = entity.getLink();
+      SocialAccount account = new SocialAccount(platformName, identifier);
+      socialAccounts.add(account);
+    }
+    return socialAccounts;
   }
 }

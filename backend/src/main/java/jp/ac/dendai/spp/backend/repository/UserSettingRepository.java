@@ -19,11 +19,21 @@ public interface UserSettingRepository extends JpaRepository<UserSetting, UUID> 
   @Query(
       value =
           """
-    SELECT * FROM user_settings
-    ORDER BY user_id ASC
-    LIMIT :size
-    OFFSET :page * :size
-    """,
+      SELECT *
+      FROM user_settings
+      WHERE user_id IN (:creatorIds)
+      """,
+      nativeQuery = true)
+  List<UserSetting> findByUserIds(@Param("creatorIds") UUID[] creatorIds);
+
+  @Query(
+      value =
+          """
+      SELECT * FROM user_settings
+      ORDER BY user_id ASC
+      LIMIT :size
+      OFFSET :page * :size
+      """,
       nativeQuery = true)
   List<UserSetting> findUsersByPage(@Param("page") int page, @Param("size") int size);
 }
