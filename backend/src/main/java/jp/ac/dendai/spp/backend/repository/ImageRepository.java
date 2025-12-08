@@ -12,4 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface ImageRepository extends JpaRepository<ImageEntity, UUID> {
   @Query("SELECT i FROM ImageEntity i WHERE i.postId = :postId ORDER BY i.index ASC")
   List<ImageEntity> findByPostId(@Param("postId") UUID postId);
+
+  @Query("SELECT i FROM ImageEntity i WHERE i.postId IN :postIds AND i.index = 1")
+  List<ImageEntity> findByPostIds(@Param("postIds") UUID[] postIds);
 }
