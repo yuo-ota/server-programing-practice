@@ -34,6 +34,7 @@ public class UserService {
   private final UserSettingRepository userSettingRepository;
   private final SocialAccountRepository socialAccountRepository;
   private final DisplayIdService displayIdService;
+  private final ElectedPostService electedPostService;
   private final PreRegisterTokenRepository preRegisterTokenRepository;
 
   public UserService(
@@ -43,6 +44,7 @@ public class UserService {
       UserSettingRepository userSettingRepository,
       SocialAccountRepository socialAccountRepository,
       DisplayIdService displayIdService,
+      ElectedPostService electedPostService,
       PreRegisterTokenRepository preRegisterTokenRepository) {
     this.authService = authService;
     this.tokenService = tokenService;
@@ -50,6 +52,7 @@ public class UserService {
     this.userSettingRepository = userSettingRepository;
     this.socialAccountRepository = socialAccountRepository;
     this.displayIdService = displayIdService;
+    this.electedPostService = electedPostService;
     this.preRegisterTokenRepository = preRegisterTokenRepository;
   }
 
@@ -84,6 +87,8 @@ public class UserService {
     createSocialAccounts(request.getSocialAccounts(), user.getUserId());
 
     preRegisterTokenRepository.delete(preRegisterToken);
+
+    electedPostService.allocateDeliverPostsTemporary(setting);
 
     return authService.buildCookie(user.getUserId());
   }
