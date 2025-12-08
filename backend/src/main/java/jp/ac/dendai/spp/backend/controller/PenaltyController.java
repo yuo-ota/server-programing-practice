@@ -1,54 +1,49 @@
 package jp.ac.dendai.spp.backend.controller;
 
+import jakarta.validation.Valid;
+import java.util.UUID;
 import jp.ac.dendai.spp.backend.error.AuthenticationFailedException;
 import jp.ac.dendai.spp.backend.error.InvalidParameterException;
-import jp.ac.dendai.spp.backend.form.request.CreatePasswordResetEmailRequest;
-import jp.ac.dendai.spp.backend.form.request.PasswordResetRequest;
+import jp.ac.dendai.spp.backend.form.request.CreatePenaltyRequest;
 import jp.ac.dendai.spp.backend.form.response.ErrorResponse;
-import jp.ac.dendai.spp.backend.service.PasswordResetService;
+import jp.ac.dendai.spp.backend.service.AuthService;
+import jp.ac.dendai.spp.backend.service.PenaltyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/password-reset")
-public class PasswordResetController {
-  private final PasswordResetService passwordResetService;
+@RequestMapping("api/penalty")
+public class PenaltyController {
+  private final PenaltyService penaltyService;
+  private final AuthService authService;
 
-  public PasswordResetController(PasswordResetService passwordResetService) {
-    this.passwordResetService = passwordResetService;
+  public PenaltyController(PenaltyService penaltyService, AuthService authService) {
+    this.penaltyService = penaltyService;
+    this.authService = authService;
   }
 
   @PostMapping
-  public ResponseEntity<?> create(@RequestBody CreatePasswordResetEmailRequest request) {
+  public ResponseEntity<?> createPenalty(
+      @RequestHeader("Authorization") String token,
+      @RequestBody @Valid CreatePenaltyRequest request) {
     try {
-      passwordResetService.registerProcess(request);
-    } catch (AuthenticationFailedException e) {
-    } catch (Exception e) {
-    }
+      UUID userId = authService.adminAuth(token);
+      penaltyService.createPenalty(userId, request);
 
-    return ResponseEntity.status(HttpStatus.CREATED).build();
-  }
-
-  @PatchMapping
-  public ResponseEntity<?> update(@RequestBody PasswordResetRequest request) {
-    try {
-      passwordResetService.resetPassword(request);
-
-      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+      return ResponseEntity.status(HttpStatus.CREATED).build();
 
     } catch (InvalidParameterException e) {
       ErrorResponse errorResponse = new ErrorResponse();
 
-      errorResponse.setCode("INVALID_PARAMETER");
-      errorResponse.setMessage("無効なパラメータが指定されました。");
+      errorResponse.setCode("BAD_REQUEST_PARAM");
+      errorResponse.setMessage(e.getMessage());
 
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-
     } catch (AuthenticationFailedException e) {
       ErrorResponse errorResponse = new ErrorResponse();
 
@@ -56,13 +51,13 @@ public class PasswordResetController {
       errorResponse.setMessage("ユーザー認証に失敗しました。");
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-
     } catch (Exception e) {
       ErrorResponse errorResponse = new ErrorResponse();
 
       errorResponse.setCode("INTERNAL_SERVER_ERROR");
-      errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
+      errorResponse.setMessage("サーバー内部でエラーが発生しました。");
 
+      e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
   }

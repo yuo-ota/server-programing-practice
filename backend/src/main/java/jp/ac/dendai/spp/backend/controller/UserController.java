@@ -53,7 +53,7 @@ public class UserController {
     } catch (Exception e) {
       ErrorResponse errorResponse = new ErrorResponse();
 
-      errorResponse.setCode("SERVICE_ERROR");
+      errorResponse.setCode("INTERNAL_SERVER_ERROR");
       errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
@@ -83,7 +83,7 @@ public class UserController {
     } catch (Exception e) {
       ErrorResponse errorResponse = new ErrorResponse();
 
-      errorResponse.setCode("SERVICE_ERROR");
+      errorResponse.setCode("INTERNAL_SERVER_ERROR");
       errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
