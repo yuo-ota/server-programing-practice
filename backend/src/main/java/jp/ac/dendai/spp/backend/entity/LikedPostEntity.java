@@ -11,8 +11,8 @@ public class LikedPostEntity extends BasePostEntity {
 
   public LikedPostEntity(
       UUID postId,
-      String imagePath,
       String description,
+      String imagePath,
       String alt,
       String userId,
       String name,

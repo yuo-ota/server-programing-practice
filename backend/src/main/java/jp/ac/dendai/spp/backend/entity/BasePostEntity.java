@@ -30,8 +30,8 @@ public class BasePostEntity {
     return imagePath;
   }
 
-  public void setImagePath(String iconPath) {
-    this.imagePath = iconPath;
+  public void setImagePath(String imagePath) {
+    this.imagePath = imagePath;
   }
 
   public String getDescription() {

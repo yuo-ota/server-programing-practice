@@ -277,10 +277,10 @@ public class UserService {
    * @throws InvalidParameterException 表示対象ユーザーが存在しない場合に送出
    */
   public UserDataResponse show(UUID userId, ShowUserRequest request) {
-    String targetDisplayId = request.getUserId();
-    UserSetting targetUserSetting = userSettingRepository.findByDisplayId(targetDisplayId);
+    String displayId = request.getUserId();
+    UserSetting targetUserSetting = userSettingRepository.findByDisplayId(displayId);
     if (targetUserSetting == null) {
-      throw new InvalidParameterException("Target user not found with ID: " + targetDisplayId);
+      throw new InvalidParameterException("Target user not found with ID: " + displayId);
     }
     UUID targetUserId = targetUserSetting.getUserId();
 
@@ -328,7 +328,7 @@ public class UserService {
   /**
    * 指定されたユーザーIDの「いいね」済み投稿一覧を取得する。
    *
-   * @param userId 投稿所有者のユーザーID
+   * @param userId いいねした投稿を取得する対象ユーザーのID
    * @return 指定ユーザーの「いいね」済み投稿一覧
    */
   public List<LikedPost> getLikedPosts(UUID userId) {
