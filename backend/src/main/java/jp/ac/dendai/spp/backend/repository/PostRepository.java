@@ -13,16 +13,21 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, UUID> {
-    @Query(value = """
+  @Query(
+      value =
+          """
             SELECT * FROM posts WHERE creator_id = :creatorId
             AND EXTRACT(HOUR FROM created_at) >= :hour LIMIT 1
-            """, nativeQuery = true)
-    Post findByCreatorIdInToday(@Param("creatorId") UUID creatorId, @Param("hour") int hour);
+            """,
+      nativeQuery = true)
+  Post findByCreatorIdInToday(@Param("creatorId") UUID creatorId, @Param("hour") int hour);
 
-    @Query("SELECT p FROM Post p WHERE p.creatorId = :creatorId")
-    List<Post> findByCreatorId(@Param("creatorId") UUID creatorId);
+  @Query("SELECT p FROM Post p WHERE p.creatorId = :creatorId")
+  List<Post> findByCreatorId(@Param("creatorId") UUID creatorId);
 
-    @Query(value = """
+  @Query(
+      value =
+          """
             SELECT p.id, i.path AS image_path, p.description, i.alt, l.like_count
             FROM posts AS p
             LEFT JOIN (
@@ -38,18 +43,24 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
             ) AS l
             ON p.id = l.post_id
             WHERE p.creator_id = :creatorId
-            """, nativeQuery = true)
-    List<OwnPostEntity> findByOwnPost(@Param("creatorId") UUID creatorId);
+            """,
+      nativeQuery = true)
+  List<OwnPostEntity> findByOwnPost(@Param("creatorId") UUID creatorId);
 
-    @Query(value = """
+  @Query(
+      value =
+          """
             SELECT id FROM posts
             WHERE created_at BETWEEN :startDateTime AND :endDateTime
-            """, nativeQuery = true)
-    List<UUID> findPostIdsByCreatedAtBetween(
-            @Param("startDateTime") ZonedDateTime startDateTime,
-            @Param("endDateTime") ZonedDateTime endDateTime);
+            """,
+      nativeQuery = true)
+  List<UUID> findPostIdsByCreatedAtBetween(
+      @Param("startDateTime") ZonedDateTime startDateTime,
+      @Param("endDateTime") ZonedDateTime endDateTime);
 
-    @Query(value = """
+  @Query(
+      value =
+          """
             SELECT p.id, p.description, i.path, i.alt, us.display_id AS user_id,
             us.name, us.icon_path
             FROM likes AS l
@@ -67,15 +78,19 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
             LEFT JOIN user_settings AS us
             ON l.user_id = us.user_id
             WHERE l.user_id = :userId
-            """, nativeQuery = true)
-    List<LikedPostEntity> findByLikedPost(@Param("userId") UUID userId);
+            """,
+      nativeQuery = true)
+  List<LikedPostEntity> findByLikedPost(@Param("userId") UUID userId);
 
-    @Query(value = """
+  @Query(
+      value =
+          """
             SELECT id FROM posts
             WHERE created_at BETWEEN :startDateTime AND :endDateTime
             AND is_sensitive = false
-            """, nativeQuery = true)
-    List<UUID> findPostIdsByCreatedAtBetweenAndNotSensitive(
-            @Param("startDateTime") ZonedDateTime startDateTime,
-            @Param("endDateTime") ZonedDateTime endDateTime);
+            """,
+      nativeQuery = true)
+  List<UUID> findPostIdsByCreatedAtBetweenAndNotSensitive(
+      @Param("startDateTime") ZonedDateTime startDateTime,
+      @Param("endDateTime") ZonedDateTime endDateTime);
 }
