@@ -32,7 +32,6 @@ const LoginInputGroup = () => {
    * @param e
    */
   const handleEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    alert('メールアドレスの形式を確認します');
     if (email === '') {
       setEmailError('メールアドレスを入力してください');
       return;
@@ -121,9 +120,13 @@ const LoginInputGroup = () => {
           value={email}
           onChange={handleEmailChange}
           onBlur={handleEmailBlur}
-          className="h-20"
+          className="h-5"
+          displayStatus={'normal'}
+          prefix={''}
+          isUnroundedLeft={false}
         />
         <TextInput
+          type='password'
           label="パスワード(8文字以上)"
           placeholder="********"
           error={passwordError}
@@ -131,14 +134,17 @@ const LoginInputGroup = () => {
           value={password}
           onChange={handlePasswordChange}
           onBlur={handlePasswordBlur}
-          className="h-20"
+          className="h-5 mt-15"
+          displayStatus={'normal'}
+          prefix={''}
+          isUnroundedLeft={false}
         />
         <div className="mt-3.5 flex flex-col items-center gap-2.5">
           <TransitionButton
             displayStatus={getLoginButtonStatus()}
             label={'ログイン'}
             onClick={handleLoginButtonClick}
-            className="h-11 w-full"
+            className="h-11 w-full mt-15"
           />
           <Link
             className="text-annotation text-subparagraph"
