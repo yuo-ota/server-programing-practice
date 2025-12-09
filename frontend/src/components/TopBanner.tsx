@@ -23,32 +23,31 @@ const TopBanner = ({
 }: TopBannerProps) => {
   return (
     <div
-      className={`${className} flex w-full items-center justify-between shadow-md`}
+      className={`${className} relative flex w-full items-center justify-between px-2 shadow-md`}
     >
-      <div className="pl-2">
-        {displayStatus === 'normal'
-          ? isAbleReturn && (
-              <IconButton
-                onClick={onClick}
-                ButtonIcon={<SettingIcon className={`h-5 w-5`} />}
-                className=""
-              />
-            )
-          : displayStatus === 'new_tab' && (
-              <BannerButton
-                displayStatus="cancel"
-                label="キャンセル"
-                onClick={onClick}
-                className=""
-              />
-            )}
+      <div>
+        {displayStatus === 'new_tab' && (
+          <BannerButton
+            displayStatus="cancel"
+            label="キャンセル"
+            onClick={onClick}
+            className=""
+          />
+        )}
       </div>
-      <div className="">
+      {displayStatus !== 'new_tab' && isAbleReturn && (
+        <IconButton
+          onClick={onClick}
+          ButtonIcon={<SettingIcon className={`h-5 w-5`} />}
+          className="absolute left-2"
+        />
+      )}
+      <div>
         {displayStatus === 'normal' && (
           <label className="text-subtitle">{label}</label>
         )}
       </div>
-      <div className="pr-2">
+      <div>
         {displayStatus === 'new_tab' && (
           <BannerButton
             displayStatus={bannerButoonStatus}
