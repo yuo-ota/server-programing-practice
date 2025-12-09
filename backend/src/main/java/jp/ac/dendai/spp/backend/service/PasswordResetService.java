@@ -62,7 +62,7 @@ public class PasswordResetService {
     String passwordResetMailBody =
         "以下のリンクからパスワードの再設定を行ってください。\n"
             + frontendUrl
-            + "/password-reset?token="
+            + "/password-reset/verify?token="
             + token
             + "\n\n"
             + "※このメールに心当たりがない場合は、破棄してください。";
