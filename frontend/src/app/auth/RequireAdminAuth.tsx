@@ -1,34 +1,43 @@
+import { API_URL } from '@/config';
 import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router';
+import LoadingAuth from './LoadingAuth';
+
+let didInit = false;
 
 const RequireAdminAuth = () => {
   const [checking, setChecking] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    const verifyToken = async () => {
-      try {
-        const response = await fetch('/api/admin/auth', {
-          method: 'POST',
-          credentials: 'include',
-        });
-
-        if (response.ok) {
-          setAuthenticated(true);
-        } else {
-          setAuthenticated(false);
-        }
-      } catch {
-        setAuthenticated(false);
-      } finally {
-        setChecking(false);
-      }
-    };
-
-    verifyToken();
+    if (!didInit) {
+      verifyToken();
+      didInit = true;
+    }
   }, []);
 
-  if (checking) return <div>認証中...</div>;
+  const verifyToken = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/admin/auth`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        setAuthenticated(true);
+        setChecking(false);
+      } else {
+        setAuthenticated(false);
+        setChecking(false);
+      }
+    } catch {
+      setAuthenticated(false);
+    } finally {
+      setChecking(false);
+    }
+  };
+
+  if (checking) return <LoadingAuth />;
 
   if (!authenticated) return <Navigate to="/unauthorized" replace />;
 

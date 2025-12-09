@@ -10,9 +10,9 @@ import jp.ac.dendai.spp.backend.service.AuthService;
 import jp.ac.dendai.spp.backend.service.LikeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,8 +28,7 @@ public class LikeController {
   }
 
   @PostMapping("/{postId}")
-  public ResponseEntity<?> create(
-      @RequestHeader("Authorization") String token, @Valid LikeRequest request) {
+  public ResponseEntity<?> create(@CookieValue("token") String token, @Valid LikeRequest request) {
     try {
       UUID userId = authService.auth(token);
       likeService.createLike(userId, request);
@@ -59,8 +58,7 @@ public class LikeController {
   }
 
   @DeleteMapping("/{postId}")
-  public ResponseEntity<?> delete(
-      @RequestHeader("Authorization") String token, @Valid LikeRequest request) {
+  public ResponseEntity<?> delete(@CookieValue("token") String token, @Valid LikeRequest request) {
     try {
       UUID userId = authService.auth(token);
       likeService.deleteLike(userId, request);

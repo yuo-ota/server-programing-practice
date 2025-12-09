@@ -13,12 +13,12 @@ import jp.ac.dendai.spp.backend.service.AuthService;
 import jp.ac.dendai.spp.backend.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,8 +36,7 @@ public class PostController {
 
   @PostMapping
   public ResponseEntity<?> create(
-      @RequestHeader("Authorization") String token,
-      @ModelAttribute @Valid CreatePostRequest request) {
+      @CookieValue("token") String token, @ModelAttribute @Valid CreatePostRequest request) {
     try {
       UUID userId = authService.auth(token);
       postService.createPost(userId, request);
@@ -69,7 +68,7 @@ public class PostController {
 
   @GetMapping
   public ResponseEntity<?> show(
-      @RequestHeader("Authorization") String token, @RequestParam("date") LocalDate date) {
+      @CookieValue("token") String token, @RequestParam("date") LocalDate date) {
     try {
       UUID userId = authService.auth(token);
       List<ShowPostResponse> responses = postService.showPost(userId, date);
@@ -101,7 +100,7 @@ public class PostController {
 
   @GetMapping("/{postId}")
   public ResponseEntity<?> show(
-      @RequestHeader("Authorization") String token, @PathVariable("postId") UUID postId) {
+      @CookieValue("token") String token, @PathVariable("postId") UUID postId) {
     try {
       UUID userId = authService.auth(token);
       ShowPostResponse response = postService.showSinglePost(userId, postId);
@@ -133,7 +132,7 @@ public class PostController {
 
   @DeleteMapping("/{postId}")
   public ResponseEntity<?> delete(
-      @RequestHeader("Authorization") String token, @PathVariable("postId") UUID postId) {
+      @CookieValue("token") String token, @PathVariable("postId") UUID postId) {
     try {
       UUID userId = authService.auth(token);
       postService.deletePost(userId, postId);
