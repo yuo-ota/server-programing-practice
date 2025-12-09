@@ -1,4 +1,4 @@
-import Root from '../../../features/error/server/Root';
+import Root from '@/features/error/server/Root';
 
 export const Server = () => {
   return (

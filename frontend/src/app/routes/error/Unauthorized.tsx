@@ -1,4 +1,4 @@
-import Root from '../../../features/error/unauthorized/Root';
+import Root from '@/features/error/unauthorized/Root';
 
 export const Unauthorized = () => {
   return (

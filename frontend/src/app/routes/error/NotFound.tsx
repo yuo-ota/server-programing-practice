@@ -1,4 +1,4 @@
-import Root from '../../../features/error/not-found/Root';
+import Root from '@/features/error/not-found/Root';
 
 export const NotFound = () => {
   return (
