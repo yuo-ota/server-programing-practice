@@ -6,17 +6,15 @@ public class PenaltyNotificateContent extends NotificateContent {
   private String category;
   private String detail;
   private String duration;
-  private String type;
   private LocalDate endDate;
 
   public PenaltyNotificateContent() {}
 
   public PenaltyNotificateContent(
-      String category, String detail, String duration, String type, LocalDate endDate) {
+      String category, String detail, String duration, LocalDate endDate) {
     this.category = category;
     this.detail = detail;
     this.duration = duration;
-    this.type = type;
     this.endDate = endDate;
   }
 
@@ -43,14 +41,6 @@ public class PenaltyNotificateContent extends NotificateContent {
 
   public void setDuration(String duration) {
     this.duration = duration;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
   }
 
   public LocalDate getEndDate() {
