@@ -33,21 +33,21 @@ const TextInput = ({
         {label}
       </label>
       <div
-        className={`flex h-full w-full cursor-pointer items-center justify-start border bg-transparent px-3 py-2 transition duration-150 focus:shadow focus:outline-none ${
+        className={`flex h-full w-full cursor-pointer items-center justify-start border bg-transparent transition duration-150 focus:shadow focus:outline-none ${
           error
             ? 'border-error focus:border-error'
             : 'border-foreground focus:border-theme hover:border-foreground/(--hover-nega-opacity)'
         } ${isUnroundedLeft ? 'rounded-r-lg' : 'rounded-lg'}`}
       >
         <label
-          className="text-foreground text-body flex-none cursor-pointer"
+          className="text-foreground text-body flex-none cursor-pointer pl-3 block"
           htmlFor={id}
         >
           {prefix}
         </label>
         <input
           id={id}
-          className={`placeholder:text-placeholder text-foreground text-subtitle ease flex-1 outline-none ${displayStatus == 'disabled' && `pointer-events-none cursor-not-allowed`}`}
+          className={`placeholder:text-placeholder h-full -ml-3 pl-3 text-foreground text-subtitle ease flex-1 outline-none ${displayStatus == 'disabled' && `pointer-events-none cursor-not-allowed`}`}
           value={value}
           onChange={displayStatus == 'disabled' ? () => {} : onChange}
           onBlur={displayStatus == 'disabled' ? () => {} : onBlur}
