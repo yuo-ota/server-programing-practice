@@ -4,6 +4,8 @@ import TransitionButton from '@/components/TransitionButton';
 import { EMAIL_RESEND_INTERVAL_MS } from '@/constants/ResetPasswordConstants';
 import { useState } from 'react';
 
+let globalIntervalId: NodeJS.Timeout | null = null;
+
 const PasswordInputGroup = () => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -91,16 +93,24 @@ const PasswordInputGroup = () => {
    * メール再送信のカウントダウン処理
    */
   const countDownResendEmail = () => {
+    if (globalIntervalId) {
+      clearInterval(globalIntervalId);
+    }
+
     let remainingTime = EMAIL_RESEND_INTERVAL_MS / 1000;
     setPasswordResetButtonLabel(`再送可能まであと ${remainingTime} 秒`);
 
-    const intervalId = setInterval(() => {
+    globalIntervalId = setInterval(() => {
       remainingTime -= 1;
       if (remainingTime > 0) {
         setPasswordResetButtonLabel(`再送可能まであと ${remainingTime} 秒`);
       } else {
         setPasswordResetButtonLabel('パスワードリセット');
-        clearInterval(intervalId);
+
+        if (globalIntervalId !== null) {
+          clearInterval(globalIntervalId);
+          globalIntervalId = null;
+        }
       }
     }, 1000);
   };
