@@ -40,14 +40,14 @@ const TextInput = ({
         } ${isUnroundedLeft ? 'rounded-r-lg' : 'rounded-lg'}`}
       >
         <label
-          className="text-foreground text-body flex-none cursor-pointer pl-3 block"
+          className="text-foreground text-body block flex-none cursor-pointer pl-3"
           htmlFor={id}
         >
           {prefix}
         </label>
         <input
           id={id}
-          className={`placeholder:text-placeholder h-full -ml-3 pl-3 text-foreground text-subtitle ease flex-1 outline-none ${displayStatus == 'disabled' && `pointer-events-none cursor-not-allowed`}`}
+          className={`placeholder:text-placeholder text-foreground text-subtitle ease -ml-3 h-full flex-1 pl-3 outline-none ${displayStatus == 'disabled' && `pointer-events-none cursor-not-allowed`}`}
           value={value}
           onChange={displayStatus == 'disabled' ? () => {} : onChange}
           onBlur={displayStatus == 'disabled' ? () => {} : onBlur}

@@ -1,14 +1,15 @@
-import { passwordReset } from "@/api/PasswordResetApi";
-import TextInput from "@/components/TextInput";
-import TransitionButton from "@/components/TransitionButton";
-import { EMAIL_RESEND_INTERVAL_MS } from "@/constants/ResetPasswordConstants";
-import { useState } from "react";
+import { passwordReset } from '@/api/PasswordResetApi';
+import TextInput from '@/components/TextInput';
+import TransitionButton from '@/components/TransitionButton';
+import { EMAIL_RESEND_INTERVAL_MS } from '@/constants/ResetPasswordConstants';
+import { useState } from 'react';
 
 const PasswordInputGroup = () => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [emailSentTime, setEmailSentTime] = useState<Date | null>(null);
-  const [passwordResetButtonLabel, setPasswordResetButtonLabel] = useState('パスワードリセット');
+  const [passwordResetButtonLabel, setPasswordResetButtonLabel] =
+    useState('パスワードリセット');
 
   /**
    * メールアドレス入力欄の値が変更されたときの処理
@@ -16,7 +17,7 @@ const PasswordInputGroup = () => {
    */
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-  }
+  };
 
   /**
    * メールアドレス入力欄からフォーカスが外れたときの処理
@@ -34,7 +35,7 @@ const PasswordInputGroup = () => {
     }
 
     setEmailError('');
-  }
+  };
 
   /**
    * ボタンの状態の取得
@@ -44,8 +45,7 @@ const PasswordInputGroup = () => {
     if (
       email === '' ||
       emailError !== '' ||
-      (emailSentTime !== null &&
-      !canResendEmail(emailSentTime))
+      (emailSentTime !== null && !canResendEmail(emailSentTime))
     ) {
       return 'disabled-solid';
     }
@@ -58,7 +58,9 @@ const PasswordInputGroup = () => {
    * @returns メール再送信可能かどうか
    */
   const canResendEmail = (emailSentTime: Date): boolean => {
-    return (new Date().getTime() - emailSentTime.getTime()) >= EMAIL_RESEND_INTERVAL_MS;
+    return (
+      new Date().getTime() - emailSentTime.getTime() >= EMAIL_RESEND_INTERVAL_MS
+    );
   };
 
   /**
@@ -101,7 +103,7 @@ const PasswordInputGroup = () => {
         clearInterval(intervalId);
       }
     }, 1000);
-  }
+  };
 
   return (
     <>
