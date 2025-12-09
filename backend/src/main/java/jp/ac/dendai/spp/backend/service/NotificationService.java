@@ -15,35 +15,23 @@ import jp.ac.dendai.spp.backend.entity.Penalty;
 import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.response.NotificationResponse;
 import jp.ac.dendai.spp.backend.repository.LikeNotificationRepository;
-import jp.ac.dendai.spp.backend.repository.LikeRepository;
 import jp.ac.dendai.spp.backend.repository.NotificationRepository;
 import jp.ac.dendai.spp.backend.repository.PenaltyNotificationRepository;
-import jp.ac.dendai.spp.backend.repository.PenaltyRepository;
-import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationService {
   private final NotificationRepository notificationRepository;
   private final LikeNotificationRepository likeNotificationRepository;
-  private final LikeRepository likeRepository;
-  private final UserSettingRepository userSettingRepository;
   private final PenaltyNotificationRepository penaltyNotificationRepository;
-  private final PenaltyRepository penaltyRepository;
 
   public NotificationService(
       NotificationRepository notificationRepository,
       LikeNotificationRepository likeNotificationRepository,
-      LikeRepository likeRepository,
-      UserSettingRepository userSettingRepository,
-      PenaltyNotificationRepository penaltyNotificationRepository,
-      PenaltyRepository penaltyRepository) {
+      PenaltyNotificationRepository penaltyNotificationRepository) {
     this.notificationRepository = notificationRepository;
     this.likeNotificationRepository = likeNotificationRepository;
-    this.likeRepository = likeRepository;
-    this.userSettingRepository = userSettingRepository;
     this.penaltyNotificationRepository = penaltyNotificationRepository;
-    this.penaltyRepository = penaltyRepository;
   }
 
   /**
