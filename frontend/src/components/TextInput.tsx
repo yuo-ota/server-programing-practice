@@ -1,5 +1,6 @@
 interface TextInputProps {
   displayStatus: 'normal' | 'disabled';
+  type?: string;
   label: string;
   placeholder: string;
   prefix: string;
@@ -14,6 +15,7 @@ interface TextInputProps {
 
 const TextInput = ({
   displayStatus,
+  type = 'text',
   label,
   placeholder,
   prefix,
@@ -50,6 +52,7 @@ const TextInput = ({
           onChange={displayStatus == 'disabled' ? () => {} : onChange}
           onBlur={displayStatus == 'disabled' ? () => {} : onBlur}
           placeholder={placeholder}
+          type={type}
         />
       </div>
       <p className="text-subparagraph mx-2 min-h-5 break-all">

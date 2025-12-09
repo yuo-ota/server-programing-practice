@@ -11,9 +11,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,6 +48,8 @@ public class AuthController {
 
       errorResponse.setCode("AUTHENTICATION_FAILED");
       errorResponse.setMessage("ユーザー認証に失敗しました。");
+
+      e.printStackTrace();
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
 
@@ -128,7 +130,7 @@ public class AuthController {
   }
 
   @PostMapping("/auth")
-  public ResponseEntity<?> auth(@RequestHeader("Authorization") String token) {
+  public ResponseEntity<?> auth(@CookieValue("token") String token) {
     try {
       authService.auth(token);
 
@@ -153,7 +155,7 @@ public class AuthController {
   }
 
   @PostMapping("/admin/auth")
-  public ResponseEntity<?> authAdmin(@RequestHeader("Authorization") String token) {
+  public ResponseEntity<?> authAdmin(@CookieValue("token") String token) {
     try {
       authService.adminAuth(token);
 

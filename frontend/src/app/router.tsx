@@ -66,7 +66,7 @@ export const AppRoutes = () => {
               <Route path=":userId/report" element={<HomeProfileReport />} />
             </Route>
           </Route>
-          <Route path="posts/new" element={<PostNew />} />
+          <Route path="/posts/new" element={<PostNew />} />
           <Route path="/setting" element={<Setting />}></Route>
         </Route>
 
