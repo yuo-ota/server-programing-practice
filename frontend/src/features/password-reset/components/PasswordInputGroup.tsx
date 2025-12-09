@@ -66,7 +66,7 @@ const PasswordInputGroup = () => {
   };
 
   /**
-   * ログインボタンがクリックされたときの処理
+   * パスワードリセットボタンがクリックされたときの処理
    * @returns
    */
   const handlePasswordResetButtonClick = async () => {
