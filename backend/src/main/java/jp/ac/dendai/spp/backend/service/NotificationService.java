@@ -137,7 +137,8 @@ public class NotificationService {
       // いいね通知の詳細情報を取得
       LikeNotificateContent content =
           likeNotificationRepository.findByNotificationId(notification.getId());
-      response.setContent(content);
+
+      if (content != null) response.setContent(content);
 
     } else if (categoryStatusId == NotificationConstant.NOTIFICATION_CATEGORY_MAP.get("処分通知")) {
       response.setNotificateType("処分通知");
@@ -155,6 +156,8 @@ public class NotificationService {
             new PenaltyNotificateContent(category, detail, duration, endDate);
         response.setContent(content);
       }
+    } else {
+      return null;
     }
 
     return response;

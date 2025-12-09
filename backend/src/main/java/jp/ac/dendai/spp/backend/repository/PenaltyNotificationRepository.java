@@ -20,12 +20,9 @@ public interface PenaltyNotificationRepository extends JpaRepository<PenaltyNoti
       value =
           """
             SELECT p.*
-            FROM penalty_notifications
-            AS pn
-            LEFT JOIN
-            penalties AS
-            p ON pn.penalty_id=
-            p.id WHERE pn.notification_id=:notificationId
+            FROM penalty_notifications AS pn
+            LEFT JOIN penalties AS p ON pn.penalty_id= p.id
+            WHERE pn.notification_id=:notificationId
             LIMIT 1
             """,
       nativeQuery = true)
