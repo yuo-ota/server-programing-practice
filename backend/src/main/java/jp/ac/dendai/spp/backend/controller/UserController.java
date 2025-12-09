@@ -129,8 +129,7 @@ public class UserController {
 
   @GetMapping("/{displayId}")
   public ResponseEntity<?> show(
-      @CookieValue("token") String token,
-      @PathVariable("displayId") String targetDisplayId) {
+      @CookieValue("token") String token, @PathVariable("displayId") String targetDisplayId) {
     try {
       ShowUserRequest request = new ShowUserRequest();
       request.setUserId(targetDisplayId);
