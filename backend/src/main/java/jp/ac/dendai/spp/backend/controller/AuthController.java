@@ -11,9 +11,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,6 +48,8 @@ public class AuthController {
 
       errorResponse.setCode("AUTHENTICATION_FAILED");
       errorResponse.setMessage("ユーザー認証に失敗しました。");
+
+      e.printStackTrace();
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
 
@@ -94,12 +96,12 @@ public class AuthController {
     }
   }
 
-  @PostMapping("/auth")
-  public ResponseEntity<?> auth(@RequestBody AuthRequest request) {
+  @PostMapping("/auth/token")
+  public ResponseEntity<?> authToken(@RequestBody AuthRequest request) {
     try {
       tokenService.isAvailable(request);
 
-      return ResponseEntity.ok().build();
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     } catch (InvalidParameterException e) {
       ErrorResponse errorResponse = new ErrorResponse();
@@ -127,12 +129,37 @@ public class AuthController {
     }
   }
 
+  @PostMapping("/auth")
+  public ResponseEntity<?> auth(@CookieValue("token") String token) {
+    try {
+      authService.auth(token);
+
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    } catch (AuthenticationFailedException e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("AUTHENTICATION_FAILED");
+      errorResponse.setMessage("ユーザー認証に失敗しました。");
+
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+
+    } catch (Exception e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("INTERNAL_SERVER_ERROR");
+      errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
+
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+  }
+
   @PostMapping("/admin/auth")
-  public ResponseEntity<?> auth(@RequestHeader("Authorization") String token) {
+  public ResponseEntity<?> authAdmin(@CookieValue("token") String token) {
     try {
       authService.adminAuth(token);
 
-      return ResponseEntity.ok().build();
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     } catch (AuthenticationFailedException e) {
       ErrorResponse errorResponse = new ErrorResponse();

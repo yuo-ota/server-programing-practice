@@ -21,15 +21,8 @@ paths:
                 password:
                   type: string
       responses:
-        "200":
+        "204":
           description: ログインできた場合
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
         "400":
           description: パラメーターが不正の場合
           content:
@@ -266,7 +259,7 @@ paths:
             type: string
           description: "Bearer トークンを入れる（例: Bearer <JWT>）"
       responses:
-        "200":
+        "204":
           description: 削除できた場合
         "400":
           description: パラメーターが不正の場合
@@ -944,11 +937,11 @@ paths:
                   properties:
                     category:
                       type: string
+                    detail:
+                      type: string
                     duration:
                       type: string
                     type:
-                      type: string
-                    end_date:
                       type: string
         "401":
           description: ユーザーIDが不正の場合
@@ -982,19 +975,25 @@ paths:
             type: string
           description: "Bearer トークンを入れる（例: Bearer <JWT>）"
       requestBody:
-        required: true
         content:
           application/json:
             schema:
+              required:
+                - type
+                - penalized_user_id
+                - duration_unit
+                - reason
               type: object
               properties:
-                category:
+                type:
                   type: string
-                detail:
+                penalized_user_id:
                   type: string
                 duration:
+                  type: number
+                duration_unit:
                   type: string
-                type:
+                reason:
                   type: string
       responses:
         "201":
@@ -1194,7 +1193,43 @@ paths:
             type: string
           description: "Bearer トークンを入れる（例: Bearer <JWT>）"
       responses:
-        "200":
+        "204":
+          description: 認証できた場合
+        "401":
+          description: ユーザーIDが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: SQLエラー等の全般的なエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
+  /api/auth:
+    post:
+      summary: 認証
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: "Bearer トークンを入れる（例: Bearer <JWT>）"
+      responses:
+        "204":
           description: 認証できた場合
         "401":
           description: ユーザーIDが不正の場合
@@ -1294,7 +1329,7 @@ paths:
                     type: string
                   message:
                     type: string
-  /api/auth:
+  /api/auth/token:
     post:
       summary: トークン認証
       requestBody:
@@ -1309,7 +1344,7 @@ paths:
                 path_type:
                   type: string
       responses:
-        "200":
+        "204":
           description: 利用できた場合
         "400":
           description: パラメーターが不正の場合

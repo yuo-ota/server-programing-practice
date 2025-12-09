@@ -181,7 +181,7 @@ public class PostService {
    */
   public void overwritePost(UUID userId) {
     Post existingPosts =
-        postRepository.findByCreatorId(userId, PostConstant.DATE_CHANGE_TIME.getHour());
+        postRepository.findByCreatorIdInToday(userId, PostConstant.DATE_CHANGE_TIME.getHour());
 
     if (existingPosts == null) {
       return;

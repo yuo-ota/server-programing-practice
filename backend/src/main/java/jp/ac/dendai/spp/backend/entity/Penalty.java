@@ -27,7 +27,7 @@ public class Penalty {
   private UUID adminUserId;
 
   @Column(name = "duration_value")
-  private int durationValue;
+  private Integer durationValue;
 
   @Column(name = "duration_unit", nullable = false)
   private String durationUnit;
@@ -50,7 +50,7 @@ public class Penalty {
       int penaltyStatusId,
       UUID penalizedUserId,
       UUID adminUserId,
-      int durationValue,
+      Integer durationValue,
       String durationUnit,
       String reason) {
     this.penaltyStatusId = penaltyStatusId;
@@ -78,7 +78,7 @@ public class Penalty {
     return adminUserId;
   }
 
-  public int getDurationValue() {
+  public Integer getDurationValue() {
     return durationValue;
   }
 
