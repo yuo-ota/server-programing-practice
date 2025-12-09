@@ -47,7 +47,7 @@ const TextInput = ({
         </label>
         <input
           id={id}
-          className={`placeholder:text-placeholder text-foreground text-subtitle ease -ml-3 h-full flex-1 pl-3 outline-none ${displayStatus == 'disabled' && `pointer-events-none cursor-not-allowed`}`}
+          className={`placeholder:text-placeholder text-foreground text-subtitle ease -ml-3 h-full flex-1 pl-3 outline-none ${displayStatus == 'disabled' && `pointer-events-none cursor-not-allowed`} ${isUnroundedLeft ? 'rounded-r-lg' : 'rounded-lg'}`}
           value={value}
           onChange={displayStatus == 'disabled' ? () => {} : onChange}
           onBlur={displayStatus == 'disabled' ? () => {} : onBlur}
