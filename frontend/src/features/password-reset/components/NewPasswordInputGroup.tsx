@@ -40,7 +40,7 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
       return;
     }
     if (!checkPasswordFormat(e.target.value)) {
-      setPasswordError('パスワードは8文字以上で入力してください');
+      setPasswordError('パスワードは英字・数字・記号を含めた8文字以上で入力してください');
       return;
     }
 
@@ -70,8 +70,8 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
    * @returns
    */
   const checkPasswordFormat = (password: string): boolean => {
-    return true;
-    return password.length >= 8;
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).+$/;
+    return passwordRegex.test(password);
   };
 
   /**
@@ -125,7 +125,7 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
       <div className="flex w-full flex-col gap-3.5">
         <TextInput
           type="password"
-          label="新規パスワード(半角英数字8文字以上)"
+          label="新規パスワード(英字数字記号含む8文字以上)"
           placeholder="********"
           error={passwordError}
           id="password-input"

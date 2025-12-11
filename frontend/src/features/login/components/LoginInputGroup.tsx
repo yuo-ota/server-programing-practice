@@ -54,7 +54,7 @@ const LoginInputGroup = () => {
       return;
     }
     if (!checkPasswordFormat(e.target.value)) {
-      setPasswordError('パスワードは8文字以上で入力してください');
+      setPasswordError('パスワードは英字・数字・記号を含めた8文字以上のものです');
       return;
     }
 
@@ -106,7 +106,8 @@ const LoginInputGroup = () => {
    * @returns
    */
   const checkPasswordFormat = (password: string): boolean => {
-    return password.length >= 8;
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).+$/;
+    return passwordRegex.test(password);
   };
 
   return (
