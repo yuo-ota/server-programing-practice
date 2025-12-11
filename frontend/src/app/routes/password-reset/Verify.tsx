@@ -19,6 +19,10 @@ export const Verify = () => {
     }
   }, []);
 
+  /**
+   * トークンの検証ロジック
+   * @return void
+   */
   const verifyToken = async () => {
     try {
       if (!token) {
@@ -40,12 +44,12 @@ export const Verify = () => {
 
   if (checking) return <LoadingAuth />;
 
-  if (!authenticated) return <Navigate to="/not-found" replace />;
+  if (!authenticated || !token) return <Navigate to="/not-found" replace />;
 
   return (
     <>
       <div className="flex h-dvh w-dvw items-center justify-center">
-        <PasswordResetVerify />
+        <PasswordResetVerify token={token} />
       </div>
     </>
   );

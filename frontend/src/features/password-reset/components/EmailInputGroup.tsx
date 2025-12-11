@@ -1,4 +1,4 @@
-import { passwordReset } from '@/api/PasswordResetApi';
+import { sendPasswordResetMail } from '@/api/PasswordResetApi';
 import TextInput from '@/components/TextInput';
 import TransitionButton from '@/components/TransitionButton';
 import { EMAIL_RESEND_INTERVAL_MS } from '@/constants/ResetPasswordConstants';
@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 let globalIntervalId: NodeJS.Timeout | null = null;
 
-const PasswordInputGroup = () => {
+const EmailInputGroup = () => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [emailSentTime, setEmailSentTime] = useState<Date | null>(null);
@@ -76,7 +76,7 @@ const PasswordInputGroup = () => {
     setEmailSentTime(new Date());
     countDownResendEmail();
 
-    await passwordReset(email);
+    await sendPasswordResetMail(email);
   };
 
   /**
@@ -143,4 +143,4 @@ const PasswordInputGroup = () => {
   );
 };
 
-export default PasswordInputGroup;
+export default EmailInputGroup;
