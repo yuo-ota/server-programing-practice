@@ -9,15 +9,17 @@ interface MenuTabProps {
   displayStatus: 'normal' | 'admin';
 }
 
-const MenuTab = ({ className = '', displayStatus}: MenuTabProps) => {
+const MenuTab = ({ className = '', displayStatus }: MenuTabProps) => {
+  const menuItems =
+    displayStatus === 'admin'
+      ? [reportIcon] // admin の場合
+      : [HomeIcon, NotificationIcon, UserIcon]; // normal の場合
 
-const menuItems = displayStatus === 'admin'
-  ? [reportIcon]         // admin の場合
-  : [HomeIcon, NotificationIcon, UserIcon]; // normal の場合
-
-  return(
+  return (
     <>
-      <div className={`${className} h-17 w-full flex items-center justify-around`}>
+      <div
+        className={`${className} flex h-17 w-full items-center justify-around`}
+      >
         {menuItems.map((Icon, i) => (
           <IconButton
             key={i}
@@ -31,4 +33,4 @@ const menuItems = displayStatus === 'admin'
   );
 };
 
-export default MenuTab
+export default MenuTab;

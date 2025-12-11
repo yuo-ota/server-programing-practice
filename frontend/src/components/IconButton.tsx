@@ -11,11 +11,11 @@ const IconButton = ({
   ButtonIcon,
   className = '',
 }: IconButtonProps) => {
-
   const hasIconClass =
-  isValidElement(ButtonIcon) &&
-  typeof (ButtonIcon.props as {className?: string }).className === "string" &&
-  (ButtonIcon.props as { className?: string }).className!.trim() !== "";
+    isValidElement(ButtonIcon) &&
+    typeof (ButtonIcon.props as { className?: string }).className ===
+      'string' &&
+    (ButtonIcon.props as { className?: string }).className!.trim() !== '';
 
   return (
     <>
@@ -25,8 +25,10 @@ const IconButton = ({
         type="button"
       >
         <div
-        className={`flex items-center justify-center ${
-          hasIconClass ? "" : "w-[80%] h-[80%]"}`}>
+          className={`flex items-center justify-center ${
+            hasIconClass ? '' : 'h-[80%] w-[80%]'
+          }`}
+        >
           {ButtonIcon}
         </div>
       </button>
