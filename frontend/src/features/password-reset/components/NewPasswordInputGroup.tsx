@@ -140,7 +140,7 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
         />
         <TextInput
           type="password"
-          label="新規パスワード確認"
+          label="新規パスワード確認(英数字・記号を含む8文字以上)"
           placeholder="********"
           error={passwordCheckError}
           id="password-input-check"

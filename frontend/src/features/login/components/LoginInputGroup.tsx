@@ -133,7 +133,7 @@ const LoginInputGroup = () => {
         />
         <TextInput
           type="password"
-          label="パスワード(8文字以上)"
+          label="パスワード(英数字・記号を含む8文字以上)"
           placeholder="********"
           error={passwordError}
           id="password-input"
