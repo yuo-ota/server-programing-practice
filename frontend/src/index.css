@@ -10,12 +10,26 @@
   --color-disabled: #a4a4a4;
   --color-placeholder: #b9b9b9;
   --color-error: #ff5858;
+  --color-success: #00ba4d;
   --color-hover: #f0f0f0;
   --text-title: 20px;
   --text-subtitle: 15px;
   --text-paragraph: 14px;
   --text-subparagraph: 12px;
   --text-body: 10px;
+
+  --animate-fade-in-out: fade 3s ease-in-out infinite;
+  @keyframes fade {
+    0%,
+    100% {
+      margin-top: 0px;
+      opacity: 0;
+    }
+    10%, 90% {
+      margin-top: 2px;
+      opacity: 1;
+    }
+  }
 }
 
 :root {

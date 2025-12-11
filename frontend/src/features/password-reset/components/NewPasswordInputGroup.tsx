@@ -1,7 +1,8 @@
 import { resetPassword } from "@/api/PasswordResetApi";
 import TextInput from "@/components/TextInput";
 import TransitionButton from "@/components/TransitionButton";
-import { useState } from "react";
+import { NotificationContext } from "@/providers/NotificationContext";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 
 interface NewPasswordInputGroupProps {
@@ -10,6 +11,7 @@ interface NewPasswordInputGroupProps {
 
 const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
   const navigate = useNavigate();
+  const { showMessage } = useContext(NotificationContext);
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
@@ -68,6 +70,7 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
    * @returns
    */
   const checkPasswordFormat = (password: string): boolean => {
+    return true;
     return password.length >= 8;
   };
 
@@ -106,12 +109,13 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
       const response = await resetPassword(token, password);
 
       if (response.status === 204) {
+        showMessage(["パスワードリセットに成功しました。"], "--color-success");
         navigate('/login');
       } else {
         throw new Error('パスワードリセットに失敗しました');
       }
     } catch (error) {
-      // ここに通知表示のロジック
+      showMessage(["パスワードリセットに失敗しました。", "再度時間を空けてお試しください。"], "--color-error");
     } finally {
       setIsResetting(false);
     }
@@ -138,7 +142,7 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
           label="新規パスワード確認"
           placeholder="********"
           error={passwordCheckError}
-          id="password-input"
+          id="password-input-check"
           value={passwordCheck}
           onChange={handlePasswordCheckChange}
           onBlur={handlePasswordCheckBlur}

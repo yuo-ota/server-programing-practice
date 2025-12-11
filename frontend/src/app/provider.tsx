@@ -1,3 +1,5 @@
+import NotificationBar from '@/components/NotificationBar';
+import { NotificationProvider } from '@/providers/NotificationContext';
 import type { ReactNode } from 'react';
 import { BrowserRouter as Router } from 'react-router';
 
@@ -6,5 +8,12 @@ interface AppProviderProps {
 }
 
 export const AppProvider = ({ children }: AppProviderProps) => {
-  return <Router>{children}</Router>;
+  return (
+    <NotificationProvider>
+      <NotificationBar />
+      <Router>
+        {children}
+      </Router>
+    </NotificationProvider>
+  );
 };
