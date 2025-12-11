@@ -9,7 +9,7 @@ export const Root = () => {
 
   const handleReturnButtonClick = () => {
     navigate(-1);
-  }
+  };
 
   return (
     <>
@@ -19,11 +19,11 @@ export const Root = () => {
             <IconButton
               onClick={handleReturnButtonClick}
               ButtonIcon={<SettingIcon className={`h-8 w-8`} />}
-              className="w-10 h-10"
+              className="h-10 w-10"
             />
           }
           label="パスワード再設定"
-          className="w-full h-16"
+          className="h-16 w-full"
         />
         <div className="flex h-full w-full max-w-[500px] flex-col items-center px-8 py-14">
           <PasswordInputGroup />

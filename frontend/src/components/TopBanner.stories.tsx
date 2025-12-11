@@ -7,18 +7,22 @@ type T = typeof TopBanner;
 export default {
   component: TopBanner,
   args: {
-    leftElement: <BannerButton
-                    displayStatus="cancel"
-                    label="キャンセル"
-                    onClick={() => {console.log("Pressed cancel");}}
-                    className=""
-                  />,
-    rightElement: <BannerButton
-                      displayStatus="solid"
-                      label="保存"
-                      onClick={() => {console.log("Pressed save");}}
-                      className=""
-                    />,
+    leftElement: (
+      <BannerButton
+        displayStatus="cancel"
+        label="キャンセル"
+        onClick={() => {}}
+        className=""
+      />
+    ),
+    rightElement: (
+      <BannerButton
+        displayStatus="solid"
+        label="保存"
+        onClick={() => {}}
+        className=""
+      />
+    ),
     label: '初期登録',
     className: 'w-full h-16',
   },

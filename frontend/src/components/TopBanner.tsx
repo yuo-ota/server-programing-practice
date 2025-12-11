@@ -14,16 +14,10 @@ const TopBanner = ({
   className = '',
 }: TopBannerProps) => {
   return (
-    <div
-      className={`${className} bg-background shadow-md flex justify-center`}
-    >
-      <div className="max-w-[800px] h-full relative flex w-full items-center justify-center px-2">
+    <div className={`${className} bg-background flex justify-center shadow-md`}>
+      <div className="relative flex h-full w-full max-w-[800px] items-center justify-center px-2">
         <div className="absolute left-2">{leftElement}</div>
-        <div>
-          {label && (
-            <label className="text-subtitle">{label}</label>
-          )}
-        </div>
+        <div>{label && <label className="text-subtitle">{label}</label>}</div>
         <div className="absolute right-2">{rightElement}</div>
       </div>
     </div>
