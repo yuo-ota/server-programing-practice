@@ -6,8 +6,7 @@ import jakarta.validation.constraints.Size;
 
 public class PasswordResetRequest {
   private String token;
-  
-  
+
   @NotBlank
   @Size(min = 8)
   @Pattern(
