@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ExpansionIcon from '../assets/expansion.svg?react';
 
 interface SelectBoxProps {
   displayStatus: 'normal' | 'unrounded-right';
   label: string;
   options: string[];
+  defaultOption?: string;
   onSelect: (value: string) => void;
   className?: string;
 }
@@ -13,11 +14,18 @@ const SelectBox = ({
   displayStatus,
   label,
   options,
+  defaultOption,
   onSelect,
   className = '',
 }: SelectBoxProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(label);
+  const [selected, setSelected] = useState(defaultOption || label);
+
+  useEffect(() => {
+    if (defaultOption && defaultOption !== label) {
+      onSelect(defaultOption);
+    }
+  },[])
 
   const handleSelect = (value: string) => {
     setSelected(value);
