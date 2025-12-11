@@ -1,10 +1,9 @@
-import { resetPassword } from "@/api/PasswordResetApi";
-import TextInput from "@/components/TextInput";
-import TransitionButton from "@/components/TransitionButton";
-import { isErrorResponse } from "@/interfaces/api/error";
-import { NotificationContext } from "@/providers/NotificationContext";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router";
+import { resetPassword } from '@/api/PasswordResetApi';
+import TextInput from '@/components/TextInput';
+import TransitionButton from '@/components/TransitionButton';
+import NotificationContext from '@/providers/Notification/NotificationContext';
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 interface NewPasswordInputGroupProps {
   token: string;
@@ -27,7 +26,9 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
     setPassword(e.target.value);
   };
 
-  const handlePasswordCheckChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordCheckChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setPasswordCheck(e.target.value);
   };
 
@@ -67,7 +68,7 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
     }
 
     setPasswordCheckError('');
-  }
+  };
 
   /**
    * パスワードの形式チェック
@@ -113,54 +114,60 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
     try {
       await resetPassword(token, password);
 
-      showMessage(["パスワードリセットに成功しました。"], "--color-success");
+      showMessage(['パスワードリセットに成功しました。'], '--color-success');
       navigate('/login');
-    } catch (error) {
-      showMessage(["パスワードリセットに失敗しました。", "再度時間を空けてお試しください。"], "--color-error");
+    } catch {
+      showMessage(
+        [
+          'パスワードリセットに失敗しました。',
+          '再度時間を空けてお試しください。',
+        ],
+        '--color-error'
+      );
     } finally {
       setIsResetting(false);
     }
-  }
+  };
 
   return (
-      <div className="flex w-full flex-col gap-3.5">
-        <TextInput
-          type="password"
-          label="新規パスワード(英字数字記号含む8文字以上)"
-          placeholder="********"
-          error={passwordError}
-          id="password-input"
-          value={password}
-          onChange={handlePasswordChange}
-          onBlur={handlePasswordBlur}
-          displayStatus={'normal'}
-          prefix={''}
-          isUnroundedLeft={false}
-          className="h-5"
+    <div className="flex w-full flex-col gap-3.5">
+      <TextInput
+        type="password"
+        label="新規パスワード(英字数字記号含む8文字以上)"
+        placeholder="********"
+        error={passwordError}
+        id="password-input"
+        value={password}
+        onChange={handlePasswordChange}
+        onBlur={handlePasswordBlur}
+        displayStatus={'normal'}
+        prefix={''}
+        isUnroundedLeft={false}
+        className="h-5"
+      />
+      <TextInput
+        type="password"
+        label="新規パスワード確認(英数字・記号を含む8文字以上)"
+        placeholder="********"
+        error={passwordCheckError}
+        id="password-input-check"
+        value={passwordCheck}
+        onChange={handlePasswordCheckChange}
+        onBlur={handlePasswordCheckBlur}
+        displayStatus={'normal'}
+        prefix={''}
+        isUnroundedLeft={false}
+        className="mt-15 h-5"
+      />
+      <div className="mt-3.5 flex flex-col items-center gap-2.5">
+        <TransitionButton
+          displayStatus={getPasswordResetButtonStatus()}
+          label="パスワードリセット"
+          onClick={handlePasswordResetButtonClick}
+          className="mt-15 h-11 w-full"
         />
-        <TextInput
-          type="password"
-          label="新規パスワード確認(英数字・記号を含む8文字以上)"
-          placeholder="********"
-          error={passwordCheckError}
-          id="password-input-check"
-          value={passwordCheck}
-          onChange={handlePasswordCheckChange}
-          onBlur={handlePasswordCheckBlur}
-          displayStatus={'normal'}
-          prefix={''}
-          isUnroundedLeft={false}
-          className="h-5 mt-15"
-        />
-        <div className="mt-3.5 flex flex-col items-center gap-2.5">
-          <TransitionButton
-            displayStatus={getPasswordResetButtonStatus()}
-            label="パスワードリセット"
-            onClick={handlePasswordResetButtonClick}
-            className="mt-15 h-11 w-full"
-          />
-        </div>
       </div>
+    </div>
   );
 };
 

@@ -25,7 +25,8 @@
       margin-top: 0px;
       opacity: 0;
     }
-    10%, 90% {
+    10%,
+    90% {
       margin-top: 2px;
       opacity: 1;
     }

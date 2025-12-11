@@ -8,7 +8,10 @@ export const sendPasswordResetMail = async (email: string): Promise<void> => {
   });
 };
 
-export const resetPassword = async (token: string, password: string): Promise<AxiosResponse<void | ErrorResponse>> => {
+export const resetPassword = async (
+  token: string,
+  password: string
+): Promise<AxiosResponse<void | ErrorResponse>> => {
   const response = await axios.patch<void>(`${API_URL}/api/password-reset`, {
     token: token,
     password: password,

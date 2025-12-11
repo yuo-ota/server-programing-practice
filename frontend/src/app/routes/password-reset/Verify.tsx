@@ -13,17 +13,17 @@ export const Verify = () => {
   const token = searchParams.get('token');
 
   useEffect(() => {
-    if (!didInit.current) {
-      verifyToken();
+    if (!didInit.current && token) {
+      verifyToken(token);
       didInit.current = true;
     }
-  }, []);
+  }, [token]);
 
   /**
    * トークンの検証ロジック
    * @return void
    */
-  const verifyToken = async () => {
+  const verifyToken = async (token: string) => {
     try {
       if (!token) {
         throw new Error('No token provided');

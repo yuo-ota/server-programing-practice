@@ -1,5 +1,5 @@
 import NotificationBar from '@/components/NotificationBar';
-import { NotificationProvider } from '@/providers/NotificationContext';
+import NotificationProvider from '@/providers/Notification/NotificationProvider';
 import type { ReactNode } from 'react';
 import { BrowserRouter as Router } from 'react-router';
 
@@ -11,9 +11,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   return (
     <NotificationProvider>
       <NotificationBar />
-      <Router>
-        {children}
-      </Router>
+      <Router>{children}</Router>
     </NotificationProvider>
   );
 };
