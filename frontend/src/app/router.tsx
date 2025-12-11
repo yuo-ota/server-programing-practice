@@ -67,7 +67,7 @@ export const AppRoutes = () => {
             </Route>
           </Route>
           <Route path="/posts/new" element={<PostNew />} />
-          <Route path="/setting" element={<Setting />}></Route>
+          <Route path="/setting" element={<Setting />} />
         </Route>
 
         {/* Admin Auth Required */}
