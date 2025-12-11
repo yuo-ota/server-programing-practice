@@ -54,7 +54,11 @@ const LoginInputGroup = () => {
       return;
     }
     if (!checkPasswordFormat(e.target.value)) {
-      setPasswordError('パスワードは英字・数字・記号を含めた8文字以上のものです');
+      setPasswordError('パスワードは英字・数字・記号を含めてください');
+      return;
+    }
+    if (password.length < 8) {
+      setPasswordError('パスワードは8文字以上で入力してください');
       return;
     }
 

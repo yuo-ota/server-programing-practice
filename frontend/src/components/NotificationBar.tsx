@@ -1,10 +1,8 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { NotificationContext } from "@/providers/NotificationContext";
 
 export default function NotificationBar() {
   const { notifications } = useContext(NotificationContext);
-
-  useEffect(() => { console.log(notifications); }, [notifications]);
 
   if (!notifications) return null;
 

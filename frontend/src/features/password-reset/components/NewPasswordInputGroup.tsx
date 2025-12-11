@@ -1,6 +1,7 @@
 import { resetPassword } from "@/api/PasswordResetApi";
 import TextInput from "@/components/TextInput";
 import TransitionButton from "@/components/TransitionButton";
+import { isErrorResponse } from "@/interfaces/api/error";
 import { NotificationContext } from "@/providers/NotificationContext";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
@@ -40,7 +41,11 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
       return;
     }
     if (!checkPasswordFormat(e.target.value)) {
-      setPasswordError('パスワードは英字・数字・記号を含めた8文字以上で入力してください');
+      setPasswordError('パスワードは英字・数字・記号を含めてください');
+      return;
+    }
+    if (password.length < 8) {
+      setPasswordError('パスワードは8文字以上で入力してください');
       return;
     }
 
@@ -106,14 +111,10 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
   const callResetPasswordApi = async () => {
     setIsResetting(true);
     try {
-      const response = await resetPassword(token, password);
+      await resetPassword(token, password);
 
-      if (response.status === 204) {
-        showMessage(["パスワードリセットに成功しました。"], "--color-success");
-        navigate('/login');
-      } else {
-        throw new Error('パスワードリセットに失敗しました');
-      }
+      showMessage(["パスワードリセットに成功しました。"], "--color-success");
+      navigate('/login');
     } catch (error) {
       showMessage(["パスワードリセットに失敗しました。", "再度時間を空けてお試しください。"], "--color-error");
     } finally {

@@ -1,5 +1,5 @@
 export interface ErrorResponse {
-  code: number;
+  code: string;
   message: string;
 }
 
@@ -8,7 +8,7 @@ export const isErrorResponse = (data: unknown): data is ErrorResponse => {
     typeof data === 'object' &&
     data !== null &&
     'code' in data &&
-    typeof data.code === 'number' &&
+    typeof data.code === 'string' &&
     'message' in data &&
     typeof data.message === 'string'
   );
