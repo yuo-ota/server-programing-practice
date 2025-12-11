@@ -20,9 +20,9 @@ const MenuTab = ({ className = '', displayStatus }: MenuTabProps) => {
       <div
         className={`${className} flex h-17 w-full items-center justify-around`}
       >
-        {menuItems.map((Icon, i) => (
+        {menuItems.map((Icon, MenuTabIndex) => (
           <IconButton
-            key={i}
+            key={MenuTabIndex}
             onClick={() => {}}
             className="h-12 w-12"
             ButtonIcon={<Icon />}
