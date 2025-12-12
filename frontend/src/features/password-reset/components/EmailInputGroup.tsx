@@ -28,7 +28,7 @@ const EmailInputGroup = () => {
         }
       }
     }
-    
+
     return () => {
       if (timer.current) {
         clearInterval(timer.current);
