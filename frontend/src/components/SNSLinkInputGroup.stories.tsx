@@ -51,6 +51,7 @@ export default {
       <SNSLinkInputGroup
         {...args}
         value={value}
+        defaultSelectedLabel="Bluesky"
         onChange={(e) => setValue(e.target.value)}
       ></SNSLinkInputGroup>
     );

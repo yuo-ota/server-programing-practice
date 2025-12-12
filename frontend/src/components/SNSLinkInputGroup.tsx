@@ -6,6 +6,7 @@ import TextInput from './TextInput';
 interface SNSLinkInputGroupProps {
   SNSInputOptions: SNSInputOption[];
   value: string;
+  defaultSelectedLabel?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
 }
@@ -13,16 +14,18 @@ interface SNSLinkInputGroupProps {
 const SNSLinkInputGroup = ({
   SNSInputOptions,
   value,
+  defaultSelectedLabel,
   onChange,
   className = '',
 }: SNSLinkInputGroupProps) => {
-  const [activeIndex, setActiveIndex] = useState(-1);
+  const [selectedLabel, setSelectedLabel] = useState(defaultSelectedLabel || '');
 
-  const handleSelect = (value: string) => {
-    const selectedIndex: number = SNSInputOptions.findIndex(
-      (option) => option.label === value
-    );
-    setActiveIndex(selectedIndex !== -1 ? selectedIndex : 0);
+  const activeIndex = selectedLabel
+    ? SNSInputOptions.findIndex(option => option.label === selectedLabel)
+    : -1;
+
+  const handleSelect = (newLabel: string) => {
+    setSelectedLabel(newLabel);
   };
 
   const isOptionSelected = activeIndex !== -1;
@@ -42,6 +45,7 @@ const SNSLinkInputGroup = ({
         displayStatus="unrounded-right"
         label=""
         options={SNSInputOptions.map((option) => option.label)}
+        value={selectedLabel}
         onSelect={handleSelect}
         className="h-full w-24"
       />
