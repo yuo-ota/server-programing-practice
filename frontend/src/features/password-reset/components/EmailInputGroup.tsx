@@ -2,12 +2,14 @@ import { sendPasswordResetMail } from '@/api/PasswordResetApi';
 import TextInput from '@/components/TextInput';
 import TransitionButton from '@/components/TransitionButton';
 import { EMAIL_RESEND_INTERVAL_MS } from '@/constants/ResetPasswordConstants';
+import NotificationContext from '@/providers/Notification/NotificationContext';
 import { checkEmailFormat } from '@/utils/validation';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 let globalIntervalId: NodeJS.Timeout | null = null;
 
 const EmailInputGroup = () => {
+  const { showMessage } = useContext(NotificationContext);
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [emailSentTime, setEmailSentTime] = useState<Date | null>(null);
@@ -74,10 +76,24 @@ const EmailInputGroup = () => {
     if (getPasswordResetButtonStatus() === 'disabled-solid') {
       return;
     }
+
     setEmailSentTime(new Date());
     countDownResendEmail();
 
-    await sendPasswordResetMail(email);
+    try {
+      await sendPasswordResetMail(email);
+      showMessage(['メールの送信に成功しました。'], '--color-success');
+    } catch (error) {
+      setEmailSentTime(null);
+      resetCountDown();
+      showMessage(
+        [
+          'メールの送信に失敗しました。',
+          '再度時間を空けてお試しください。',
+        ],
+        '--color-error'
+      );
+    }
   };
 
   /**
@@ -104,6 +120,14 @@ const EmailInputGroup = () => {
         }
       }
     }, 1000);
+  };
+
+  const resetCountDown = () => {
+    if (globalIntervalId) {
+      clearInterval(globalIntervalId);
+      globalIntervalId = null;
+    }
+    setPasswordResetButtonLabel('パスワードリセット');
   };
 
   return (
