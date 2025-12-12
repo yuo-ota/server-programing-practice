@@ -1,5 +1,5 @@
 import NotificationBar from '@/components/NotificationBar';
-import NotificationProvider from '@/providers/Notification/NotificationProvider';
+import NotificationProvider from '@/providers/NotificationProvider';
 import type { ReactNode } from 'react';
 import { BrowserRouter as Router } from 'react-router';
 

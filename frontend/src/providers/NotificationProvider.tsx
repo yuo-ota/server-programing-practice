@@ -1,6 +1,6 @@
 import type { NotificationProps } from '@/interfaces/app/NotificationBar';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import NotificationContext from '../../contexts/NotificationContext';
+import NotificationContext from '../contexts/NotificationContext';
 
 const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [notifications, setNotifications] = useState<NotificationProps | null>(
@@ -28,7 +28,7 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
     timer.current = null;
     setNotifications(null);
   };
-  
+
   useEffect(() => {
     return () => {
       if (timer.current) clearTimeout(timer.current);
