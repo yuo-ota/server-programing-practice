@@ -48,23 +48,23 @@ public class ReportEntityTest {
     User reportee = new User("test6@example.com", "password6");
     User savedReportee = userRepository.save(reportee);
 
-    Report report =
-        new Report(
+    ReportEntity report =
+        new ReportEntity(
             savedReporter.getUserId(),
             true,
             savedReportee.getUserId(),
             null,
             List.of(1),
             "Inappropriate content");
-    Report savedReport = reportRepository.save(report);
+    ReportEntity savedReport = reportRepository.save(report);
 
     // UUIDが自動生成されていることを確認
     assertThat(savedReport.getId()).isNotNull();
     // データベースから取得
-    Optional<Report> retrievedReportOpt = reportRepository.findById(savedReport.getId());
+    Optional<ReportEntity> retrievedReportOpt = reportRepository.findById(savedReport.getId());
     assertThat(retrievedReportOpt).isPresent();
 
-    Report retrievedReport = retrievedReportOpt.get();
+    ReportEntity retrievedReport = retrievedReportOpt.get();
     assertThat(retrievedReport.getReporter()).isEqualTo(savedReporter.getUserId());
     assertThat(retrievedReport.getCreatedAt()).isNotNull();
   }
@@ -78,23 +78,23 @@ public class ReportEntityTest {
     Post post = new Post(savedReporter.getUserId(), "Test Post", false, true);
     Post savedPost = postRepository.save(post);
 
-    Report report =
-        new Report(
+    ReportEntity report =
+        new ReportEntity(
             savedReporter.getUserId(),
             false,
             null,
             savedPost.getId(),
             List.of(1),
             "Inappropriate content");
-    Report savedReport = reportRepository.save(report);
+    ReportEntity savedReport = reportRepository.save(report);
 
     // UUIDが自動生成されていることを確認
     assertThat(savedReport.getId()).isNotNull();
     // データベースから取得
-    Optional<Report> retrievedReportOpt = reportRepository.findById(savedReport.getId());
+    Optional<ReportEntity> retrievedReportOpt = reportRepository.findById(savedReport.getId());
     assertThat(retrievedReportOpt).isPresent();
 
-    Report retrievedReport = retrievedReportOpt.get();
+    ReportEntity retrievedReport = retrievedReportOpt.get();
     assertThat(retrievedReport.getReporter()).isEqualTo(savedReporter.getUserId());
     assertThat(retrievedReport.getCreatedAt()).isNotNull();
   }
