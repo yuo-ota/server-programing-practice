@@ -42,7 +42,7 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
       return;
     }
     if (!checkPasswordFormat(e.target.value)) {
-      setPasswordError('パスワードは英字・数字・記号を含めてください');
+      setPasswordError('パスワードは英数字・記号を含めてください');
       return;
     }
     if (password.length < 8) {
@@ -133,7 +133,7 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
     <div className="flex w-full flex-col gap-3.5">
       <TextInput
         type="password"
-        label="新規パスワード(英字数字記号含む8文字以上)"
+        label="新規パスワード(英数字・記号含む8文字以上)"
         placeholder="********"
         error={passwordError}
         id="password-input"
