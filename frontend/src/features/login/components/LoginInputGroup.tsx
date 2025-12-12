@@ -3,6 +3,7 @@ import TextInput from '@/components/TextInput';
 import TransitionButton from '@/components/TransitionButton';
 import { useState } from 'react';
 import { login } from '@/api/AuthApi';
+import { checkEmailFormat, checkPasswordFormat } from '@/utils/validation';
 
 const LoginInputGroup = () => {
   const navigate = useNavigate();
@@ -92,26 +93,6 @@ const LoginInputGroup = () => {
       return 'disabled-solid';
     }
     return 'solid';
-  };
-
-  /**
-   * メールアドレスの形式チェック
-   * @param email
-   * @returns
-   */
-  const checkEmailFormat = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  /**
-   * パスワードの形式チェック
-   * @param password
-   * @returns
-   */
-  const checkPasswordFormat = (password: string): boolean => {
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).+$/;
-    return passwordRegex.test(password);
   };
 
   return (

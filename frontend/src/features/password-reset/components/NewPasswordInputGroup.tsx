@@ -2,6 +2,7 @@ import { resetPassword } from '@/api/PasswordResetApi';
 import TextInput from '@/components/TextInput';
 import TransitionButton from '@/components/TransitionButton';
 import NotificationContext from '@/providers/Notification/NotificationContext';
+import { checkPasswordFormat } from '@/utils/validation';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -68,16 +69,6 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
     }
 
     setPasswordCheckError('');
-  };
-
-  /**
-   * パスワードの形式チェック
-   * @param password
-   * @returns
-   */
-  const checkPasswordFormat = (password: string): boolean => {
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).+$/;
-    return passwordRegex.test(password);
   };
 
   /**

@@ -2,6 +2,7 @@ import { sendPasswordResetMail } from '@/api/PasswordResetApi';
 import TextInput from '@/components/TextInput';
 import TransitionButton from '@/components/TransitionButton';
 import { EMAIL_RESEND_INTERVAL_MS } from '@/constants/ResetPasswordConstants';
+import { checkEmailFormat } from '@/utils/validation';
 import { useState } from 'react';
 
 let globalIntervalId: NodeJS.Timeout | null = null;
@@ -77,16 +78,6 @@ const EmailInputGroup = () => {
     countDownResendEmail();
 
     await sendPasswordResetMail(email);
-  };
-
-  /**
-   * メールアドレスの形式チェック
-   * @param email
-   * @returns
-   */
-  const checkEmailFormat = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
   };
 
   /**
