@@ -1,7 +1,9 @@
 import RadioButtonGroup from "@/components/RadioButtonGroup";
 import SelectBox from "@/components/SelectBox";
+import SNSLinkInputGroup from "@/components/SNSLinkInputGroup";
 import TextInput from "@/components/TextInput";
-import { useCallback, useMemo, useState } from "react";
+import type { SNSInputOption } from "@/interfaces/app/SNSInputOption";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 const SettingItemGroup = () => {
 
@@ -61,6 +63,24 @@ const SettingItemGroup = () => {
   const [date, setDate] = useState('');
 
   const [isAdult, setIsAdult] = useState(false);
+  const [adultContentSetting, setAdultContentSetting] = useState('表示しない');
+
+  /**
+   * isAdultの状態を監視し、falseになったら強制的に「表示しない」に設定
+   */
+  useEffect(() => {
+    if (!isAdult) {
+      setAdultContentSetting('表示しない');
+    }
+  }, [isAdult]);
+
+  /**
+   * ラジオボタンが選択されたときのハンドラ
+   * @param value
+   */
+  const handleAdultContentChange = (value: string) => {
+    setAdultContentSetting(value);
+  };
   
     /**
    * 成人判定を行う処理
@@ -74,13 +94,13 @@ const SettingItemGroup = () => {
         const today = new Date();
         const birthDate = new Date(
             parseInt(selectedYear),
-            parseInt(selectedMonth) - 1, 
+            parseInt(selectedMonth) - 1,
             parseInt(selectedDate)
         );
 
         const eighteenYearsAgo = new Date(
-            today.getFullYear() - 18, 
-            today.getMonth(), 
+            today.getFullYear() - 18,
+            today.getMonth(),
             today.getDate()
         );
 
@@ -142,6 +162,39 @@ const SettingItemGroup = () => {
   const monthOptions = useMemo(() => Array.from({ length: 12 }, (_, i) => (i + 1).toString()), []);
   const dateOptions = useMemo(() => Array.from({ length: 31 }, (_, i) => (i + 1).toString()), []);
 
+  const SNSInputOptions: SNSInputOption[] = [
+    {
+      label: 'X',
+      placeholder: 'example',
+      prefix: 'https://x.com/',
+      id: 'x',
+    },
+    {
+      label: 'Instagram',
+      placeholder: 'example',
+      prefix: 'https://www.instagram.com/',
+      id: 'instagram',
+    },
+    {
+      label: 'pixiv',
+      placeholder: 'https://www.pixiv.net/users/example',
+      prefix: '',
+      id: 'pixiv',
+    },
+    {
+      label: 'skeb',
+      placeholder: 'example',
+      prefix: 'https://skeb.jp/@',
+      id: 'skeb',
+    },
+    {
+      label: 'Bluesky',
+      placeholder: 'example',
+      prefix: 'https://bsky.app/profile/',
+      id: 'bluesky',
+    },
+  ];
+
   return (
     <>
       <div className="flex w-full flex-col">
@@ -176,36 +229,41 @@ const SettingItemGroup = () => {
         <div className="mt-15">
           <label className="text-foreground text-subtitle">生年月日</label>
           <div className="flex">
-            <SelectBox 
+            <SelectBox
               displayStatus={"normal"}
-              label={"年"} 
+              label={"年"}
               options= {yearOptions}
               onSelect={handleYearSelect}
               className="w-1/3"
             />
-            <SelectBox 
+            <SelectBox
               displayStatus={"normal"}
-              label={"月"} 
+              label={"月"}
               options= {monthOptions}
               onSelect={handleMonthSelect}
               className="w-1/3"
             />
-            <SelectBox 
+            <SelectBox
               displayStatus={"normal"}
-              label={"日"} 
+              label={"日"}
               options= {dateOptions}
               onSelect={handleDateSelect}
               className="w-1/3"
             />
           </div>
         </div>
-        <div className="mt-15">
+        <div className={`mt-15 ${isAdult ? '' : 'opacity-50'}`}>
           <label className="text-foreground text-subtitle">成人向けコンテンツ</label>
           <RadioButtonGroup
             groupName={"AdultContentSetting"}
             options={['表示する', '表示しない']}
-            initialValue={"表示しない"}
+            value={adultContentSetting}
+            onSelect={handleAdultContentChange}
+            disabled={isAdult ? false : true}
+            className="gap-20"
           />
+        </div>
+        <div className="mt-15">
         </div>
       </div>
     </>
