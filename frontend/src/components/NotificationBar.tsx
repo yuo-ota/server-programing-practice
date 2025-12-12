@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import NotificationContext from '@/providers/Notification/NotificationContext';
+import NotificationContext from '@/contexts/NotificationContext';
 
 export default function NotificationBar() {
   const { notifications } = useContext(NotificationContext);
