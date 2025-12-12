@@ -28,6 +28,13 @@ const EmailInputGroup = () => {
         }
       }
     }
+    
+    return () => {
+      if (timer.current) {
+        clearInterval(timer.current);
+        timer.current = null;
+      }
+    };
   }, []);
 
   /**
