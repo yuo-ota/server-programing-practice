@@ -1,8 +1,8 @@
-import RadioButtonGroup from "@/components/RadioButtonGroup";
-import SelectBox from "@/components/SelectBox";
-import TextInput from "@/components/TextInput";
-import type { SNSInputOption } from "@/interfaces/app/SNSInputOption";
-import { useCallback, useEffect, useMemo } from "react";
+import RadioButtonGroup from '@/components/RadioButtonGroup';
+import SelectBox from '@/components/SelectBox';
+import TextInput from '@/components/TextInput';
+import type { SNSInputOption } from '@/interfaces/app/SNSInputOption';
+import { useMemo } from 'react';
 
 interface SettingItemGroupProps {
   displayName: string;
@@ -13,14 +13,8 @@ interface SettingItemGroupProps {
   setUserId: (userId: string) => void;
   userIdError: string;
   setUserIdError: (userIdError: string) => void;
-  year: string;
-  setYear: (year: string) => void;
-  month: string;
-  setMonth: (month: string) => void;
-  date: string;
-  setDate: (date: string) => void;
-  isAdult: boolean;
-  setIsAdult: (isAdult: boolean) => void;
+  birthday: Date | null;
+  setBirthday: (birthday: Date) => void;
   adultContentSetting: string;
   setAdultContentSetting: (adultContentSetting: string) => void;
 }
@@ -34,18 +28,11 @@ const SettingItemGroup = ({
   setUserId,
   userIdError,
   setUserIdError,
-  year,
-  setYear,
-  month,
-  setMonth,
-  date,
-  setDate,
-  isAdult,
-  setIsAdult,
+  birthday,
+  setBirthday,
   adultContentSetting,
   setAdultContentSetting,
 }: SettingItemGroupProps) => {
-
   /**
    * 表示名入力時の処理
    * @param e
@@ -66,7 +53,7 @@ const SettingItemGroup = ({
    * 表示名入力欄からフォーカスが外れたときの処理
    * @param e
    */
-  const handleDisplayNameBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleDisplayNameBlur = () => {
     if (displayName === '') {
       setDisplayNameError('表示名を入力してください');
       return;
@@ -78,7 +65,7 @@ const SettingItemGroup = ({
    * ユーザーID入力欄からフォーカスが外れたときの処理
    * @param e
    */
-  const handleUserIdBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleUserIdBlur = () => {
     if (userId === '') {
       setUserIdError('ユーザーIDを入力してください');
       return;
@@ -93,139 +80,108 @@ const SettingItemGroup = ({
   const currentYear = new Date().getFullYear();
 
   /**
-   * isAdultの状態を監視し、falseになったら強制的に「表示しない」に設定
-   */
-  useEffect(() => {
-    if (!isAdult) {
-      setAdultContentSetting('表示しない');
-    }
-  }, [isAdult]);
-
-  /**
    * ラジオボタンが選択されたときのハンドラ
    * @param value
    */
   const handleAdultContentChange = (value: string) => {
     setAdultContentSetting(value);
   };
-  
-    /**
-   * 成人判定を行う処理
-   * @param selectedYear
-   * @param selectedMonth
-   * @param selectedDate
-   * @returns boolean
-   */
-  const checkIsAdult = useCallback((selectedYear: string, selectedMonth: string, selectedDate: string): boolean => {
-        if (!selectedYear || !selectedMonth || !selectedDate) {
-            return false;
-        }
 
-        const today = new Date();
-        const birthDate = new Date(
-            parseInt(selectedYear),
-            parseInt(selectedMonth) - 1,
-            parseInt(selectedDate)
-        );
+  const getEighteenYearsAgo = (date: Date) => {
+    return new Date(date.getFullYear() - 18, date.getMonth(), date.getDate());
+  };
 
-        const eighteenYearsAgo = new Date(
-            today.getFullYear() - 18,
-            today.getMonth(),
-            today.getDate()
-        );
+  const updateIsAdult = (birthday: Date) => {
+    if (birthday >= getEighteenYearsAgo(new Date())) {
+      setAdultContentSetting('表示しない');
+    }
+  };
 
-        return birthDate <= eighteenYearsAgo;
-    }, []);
-
-    /**
-   * 誕生日設定を行う処理
-   * @param y 年
-   * @param m 月
-   * @param d 日
-   */
-    const handleBirthDay = useCallback((y: string, m: string, d: string) => {
-        const finalYear = y || year;
-        const finalMonth = m || month;
-        const finalDate = d || date;
-
-        if (finalYear && finalMonth && finalDate) {
-            const adultStatus = checkIsAdult(finalYear, finalMonth, finalDate);
-            setIsAdult(adultStatus);
-        } else {
-            setIsAdult(false);
-        }
-    }, [year, month, date, checkIsAdult]);
-
-
-    /**
+  /**
    * 年が選択されたときの処理
    * @param value
    */
   const handleYearSelect = (value: string) => {
-    setYear(value);
-    handleBirthDay(value, month, date);
-  }
+    let newBirthday: Date;
+    if (!birthday) {
+      newBirthday = new Date(parseInt(value), 0, 1);
+      setBirthday(newBirthday);
+      updateIsAdult(newBirthday);
+      return;
+    }
+    newBirthday = new Date(
+      parseInt(value),
+      birthday.getMonth(),
+      birthday.getDate()
+    );
+    setBirthday(newBirthday);
+    updateIsAdult(newBirthday);
+  };
 
   /**
    * 月が選択されたときの処理
    * @param value
    */
   const handleMonthSelect = (value: string) => {
-    setMonth(value);
-    handleBirthDay(year, value, date);
-  }
+    let newBirthday: Date;
+    if (!birthday) {
+      newBirthday = new Date(currentYear, parseInt(value), 1);
+      setBirthday(newBirthday);
+      updateIsAdult(newBirthday);
+      return;
+    }
+    newBirthday = new Date(
+      birthday.getFullYear(),
+      parseInt(value) - 1,
+      birthday.getDate()
+    );
+    setBirthday(newBirthday);
+    updateIsAdult(newBirthday);
+  };
 
   /**
    * 日が選択されたときの処理
    * @param value
    */
   const handleDateSelect = (value: string) => {
-    setDate(value);
-    handleBirthDay(year, month, value);
-  }
+    let newBirthday: Date;
+    if (!birthday) {
+      newBirthday = new Date(currentYear, 0, parseInt(value));
+      setBirthday(newBirthday);
+      updateIsAdult(newBirthday);
+      return;
+    }
+    newBirthday = new Date(
+      birthday.getFullYear(),
+      birthday.getMonth(),
+      parseInt(value)
+    );
+    setBirthday(newBirthday);
+    updateIsAdult(newBirthday);
+  };
+
+  const isAdult = (birthday: Date | null) => {
+    if (!birthday) {
+      return false;
+    }
+    return birthday <= getEighteenYearsAgo(new Date());
+  };
 
   const yearOptions = useMemo(() => {
-        const startYear = currentYear - 150;
-        return Array.from({ length: currentYear - startYear + 1 }, (_, i) =>
-            (currentYear - i).toString()
-        );
-    }, [currentYear]);
+    const startYear = currentYear - 150;
+    return Array.from({ length: currentYear - startYear + 1 }, (_, i) =>
+      (currentYear - i).toString()
+    );
+  }, [currentYear]);
 
-  const monthOptions = useMemo(() => Array.from({ length: 12 }, (_, i) => (i + 1).toString()), []);
-  const dateOptions = useMemo(() => Array.from({ length: 31 }, (_, i) => (i + 1).toString()), []);
-
-  const SNSInputOptions: SNSInputOption[] = [
-    {
-      label: 'X',
-      placeholder: 'example',
-      prefix: 'https://x.com/',
-      id: 'x',
-    },
-    {
-      label: 'Instagram',
-      placeholder: 'example',
-      prefix: 'https://www.instagram.com/',
-      id: 'instagram',
-    },
-    {
-      label: 'pixiv',
-      placeholder: 'https://www.pixiv.net/users/example',
-      prefix: '',
-      id: 'pixiv',
-    },
-    {
-      label: 'skeb',
-      placeholder: 'example',
-      prefix: 'https://skeb.jp/@',
-      id: 'skeb',
-    },
-    {
-      label: 'Bluesky',
-      placeholder: 'example',
-      prefix: 'https://bsky.app/profile/',
-      id: 'bluesky',
-    },
-  ];
+  const monthOptions = useMemo(
+    () => Array.from({ length: 12 }, (_, i) => (i + 1).toString()),
+    []
+  );
+  const dateOptions = useMemo(
+    () => Array.from({ length: 31 }, (_, i) => (i + 1).toString()),
+    []
+  );
 
   return (
     <>
@@ -262,44 +218,45 @@ const SettingItemGroup = ({
           <label className="text-foreground text-subtitle">生年月日</label>
           <div className="flex">
             <SelectBox
-              displayStatus={"normal"}
-              label={"年"}
-              options= {yearOptions}
-              value={year}
+              displayStatus={'normal'}
+              label={'年'}
+              options={yearOptions}
+              value={birthday?.getFullYear().toString() || ''}
               onSelect={handleYearSelect}
               className="w-1/3"
             />
             <SelectBox
-              displayStatus={"normal"}
-              label={"月"}
-              options= {monthOptions}
-              value={month}
+              displayStatus={'normal'}
+              label={'月'}
+              options={monthOptions}
+              value={birthday ? (birthday.getMonth() + 1).toString() : ''}
               onSelect={handleMonthSelect}
               className="w-1/3"
             />
             <SelectBox
-              displayStatus={"normal"}
-              label={"日"}
-              options= {dateOptions}
-              value={date}
+              displayStatus={'normal'}
+              label={'日'}
+              options={dateOptions}
+              value={birthday?.getDate().toString() || ''}
               onSelect={handleDateSelect}
               className="w-1/3"
             />
           </div>
         </div>
-        <div className={`mt-15 ${isAdult ? '' : 'opacity-50'}`}>
-          <label className="text-foreground text-subtitle">成人向けコンテンツ</label>
+        <div className={`mt-15 ${isAdult(birthday) ? '' : 'opacity-50'}`}>
+          <label className="text-foreground text-subtitle">
+            成人向けコンテンツ
+          </label>
           <RadioButtonGroup
-            groupName={"AdultContentSetting"}
+            groupName={'AdultContentSetting'}
             options={['表示する', '表示しない']}
             value={adultContentSetting}
             onSelect={handleAdultContentChange}
-            disabled={isAdult ? false : true}
+            disabled={!isAdult(birthday)}
             className="gap-20"
           />
         </div>
-        <div className="mt-15">
-        </div>
+        <div className="mt-15"></div>
       </div>
     </>
   );

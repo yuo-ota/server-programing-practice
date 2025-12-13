@@ -1,4 +1,4 @@
-import Root from '@/features/setting/Root'
+import Root from '@/features/setting/Root';
 
 export const Setting = () => {
   return (
