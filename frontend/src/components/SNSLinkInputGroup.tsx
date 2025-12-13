@@ -18,10 +18,12 @@ const SNSLinkInputGroup = ({
   onChange,
   className = '',
 }: SNSLinkInputGroupProps) => {
-  const [selectedLabel, setSelectedLabel] = useState(defaultSelectedLabel || '');
+  const [selectedLabel, setSelectedLabel] = useState(
+    defaultSelectedLabel || ''
+  );
 
   const activeIndex = selectedLabel
-    ? SNSInputOptions.findIndex(option => option.label === selectedLabel)
+    ? SNSInputOptions.findIndex((option) => option.label === selectedLabel)
     : -1;
 
   const handleSelect = (newLabel: string) => {

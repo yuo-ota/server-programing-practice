@@ -17,7 +17,6 @@ const RadioButtonGroup = ({
   onSelect,
   className = '',
 }: RadioButtonGroupProps) => {
-
   const handleChange = (label: string) => {
     if (onSelect) {
       onSelect(label);
@@ -39,8 +38,8 @@ const RadioButtonGroup = ({
             checked={isChecked}
             disabled={disabled}
             onChange={() => {
-              if(!disabled){
-                handleChange(label)
+              if (!disabled) {
+                handleChange(label);
               }
             }}
           />
