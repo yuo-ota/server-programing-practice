@@ -378,6 +378,12 @@ public class UserService {
     return socialAccounts;
   }
 
+  /**
+   * ユーザー設定情報を取得する
+   *
+   * @param userId
+   * @return
+   */
   public UserSettingResponse showUserSetting(UUID userId) {
     UserSetting userSetting = userSettingRepository.findByUserId(userId);
     if (userSetting == null) {
