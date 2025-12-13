@@ -1,16 +1,50 @@
 import RadioButtonGroup from "@/components/RadioButtonGroup";
 import SelectBox from "@/components/SelectBox";
-import SNSLinkInputGroup from "@/components/SNSLinkInputGroup";
 import TextInput from "@/components/TextInput";
 import type { SNSInputOption } from "@/interfaces/app/SNSInputOption";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
-const SettingItemGroup = () => {
+interface SettingItemGroupProps {
+  displayName: string;
+  setDisplayName: (displayName: string) => void;
+  displayNameError: string;
+  setDisplayNameError: (displayNameError: string) => void;
+  userId: string;
+  setUserId: (userId: string) => void;
+  userIdError: string;
+  setUserIdError: (userIdError: string) => void;
+  year: string;
+  setYear: (year: string) => void;
+  month: string;
+  setMonth: (month: string) => void;
+  date: string;
+  setDate: (date: string) => void;
+  isAdult: boolean;
+  setIsAdult: (isAdult: boolean) => void;
+  adultContentSetting: string;
+  setAdultContentSetting: (adultContentSetting: string) => void;
+}
 
-  const [displayName, setDisplayName] = useState('');
-  const [displayNameError, setDisplayNameError] = useState('');
-  const [userId, setUserId] = useState('');
-  const [userIdError, setUserIdError] = useState('');
+const SettingItemGroup = ({
+  displayName,
+  setDisplayName,
+  displayNameError,
+  setDisplayNameError,
+  userId,
+  setUserId,
+  userIdError,
+  setUserIdError,
+  year,
+  setYear,
+  month,
+  setMonth,
+  date,
+  setDate,
+  isAdult,
+  setIsAdult,
+  adultContentSetting,
+  setAdultContentSetting,
+}: SettingItemGroupProps) => {
 
   /**
    * 表示名入力時の処理
@@ -58,13 +92,6 @@ const SettingItemGroup = () => {
 
   const currentYear = new Date().getFullYear();
 
-  const [year, setYear] = useState('');
-  const [month, setMonth] = useState('');
-  const [date, setDate] = useState('');
-
-  const [isAdult, setIsAdult] = useState(false);
-  const [adultContentSetting, setAdultContentSetting] = useState('表示しない');
-
   /**
    * isAdultの状態を監視し、falseになったら強制的に「表示しない」に設定
    */
@@ -84,7 +111,10 @@ const SettingItemGroup = () => {
   
     /**
    * 成人判定を行う処理
-   * @param e
+   * @param selectedYear
+   * @param selectedMonth
+   * @param selectedDate
+   * @returns boolean
    */
   const checkIsAdult = useCallback((selectedYear: string, selectedMonth: string, selectedDate: string): boolean => {
         if (!selectedYear || !selectedMonth || !selectedDate) {
@@ -109,7 +139,9 @@ const SettingItemGroup = () => {
 
     /**
    * 誕生日設定を行う処理
-   * @param e
+   * @param y 年
+   * @param m 月
+   * @param d 日
    */
     const handleBirthDay = useCallback((y: string, m: string, d: string) => {
         const finalYear = y || year;
@@ -127,7 +159,7 @@ const SettingItemGroup = () => {
 
     /**
    * 年が選択されたときの処理
-   * @param e
+   * @param value
    */
   const handleYearSelect = (value: string) => {
     setYear(value);
@@ -136,7 +168,7 @@ const SettingItemGroup = () => {
 
   /**
    * 月が選択されたときの処理
-   * @param e
+   * @param value
    */
   const handleMonthSelect = (value: string) => {
     setMonth(value);
@@ -145,7 +177,7 @@ const SettingItemGroup = () => {
 
   /**
    * 日が選択されたときの処理
-   * @param e
+   * @param value
    */
   const handleDateSelect = (value: string) => {
     setDate(value);
@@ -154,7 +186,7 @@ const SettingItemGroup = () => {
 
   const yearOptions = useMemo(() => {
         const startYear = currentYear - 150;
-        return Array.from({ length: currentYear - startYear + 1 }, (_, i) => 
+        return Array.from({ length: currentYear - startYear + 1 }, (_, i) =>
             (currentYear - i).toString()
         );
     }, [currentYear]);
@@ -233,6 +265,7 @@ const SettingItemGroup = () => {
               displayStatus={"normal"}
               label={"年"}
               options= {yearOptions}
+              value={year}
               onSelect={handleYearSelect}
               className="w-1/3"
             />
@@ -240,6 +273,7 @@ const SettingItemGroup = () => {
               displayStatus={"normal"}
               label={"月"}
               options= {monthOptions}
+              value={month}
               onSelect={handleMonthSelect}
               className="w-1/3"
             />
@@ -247,6 +281,7 @@ const SettingItemGroup = () => {
               displayStatus={"normal"}
               label={"日"}
               options= {dateOptions}
+              value={date}
               onSelect={handleDateSelect}
               className="w-1/3"
             />
