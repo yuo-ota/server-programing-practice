@@ -57,18 +57,16 @@ public class ReportService {
    */
   @Transactional
   public void createUserReport(UUID userId, CreateReportRequest request) {
-    UserSetting reporteeUserSetting =
-        userSettingRepository.findByDisplayId(request.getReporteeUser());
+    UserSetting reporteeUserSetting = userSettingRepository.findByDisplayId(request.getReporteeUser());
     if (reporteeUserSetting == null) {
       throw new InvalidParameterException("User not found");
     }
 
     UUID reporteeUserId = reporteeUserSetting.getUserId();
-    List<Integer> categoryStatusId =
-        mapCategoryStatus(request.getReportType(), ReportConstant.REPORT_USER_CATEGORIES_LIST);
+    List<Integer> categoryStatusId = mapCategoryStatus(request.getReportType(),
+        ReportConstant.REPORT_USER_CATEGORIES_LIST);
 
-    ReportEntity report =
-        new ReportEntity(userId, true, reporteeUserId, null, categoryStatusId, request.getDetail());
+    ReportEntity report = new ReportEntity(userId, true, reporteeUserId, null, categoryStatusId, request.getDetail());
 
     reportRepository.save(report);
   }
@@ -81,12 +79,11 @@ public class ReportService {
    */
   @Transactional
   public void createPostReport(UUID userId, CreateReportRequest request) {
-    List<Integer> categoryStatusId =
-        mapCategoryStatus(request.getReportType(), ReportConstant.REPORT_POST_CATEGORIES_LIST);
+    List<Integer> categoryStatusId = mapCategoryStatus(request.getReportType(),
+        ReportConstant.REPORT_POST_CATEGORIES_LIST);
 
-    ReportEntity report =
-        new ReportEntity(
-            userId, false, null, request.getReporteePost(), categoryStatusId, request.getDetail());
+    ReportEntity report = new ReportEntity(
+        userId, false, null, request.getReporteePost(), categoryStatusId, request.getDetail());
 
     reportRepository.save(report);
   }
@@ -94,7 +91,7 @@ public class ReportService {
   /**
    * 報告カテゴリをIDにマッピングします。
    *
-   * @param reportTypes 報告カテゴリの名前の配列
+   * @param reportTypes    報告カテゴリの名前の配列
    * @param categoriesList 有効な報告カテゴリ名のリスト
    * @return 報告カテゴリ名に対応するカテゴリIDのリスト
    */
@@ -177,9 +174,9 @@ public class ReportService {
    */
   private String buildReportSummary(ReportEntity reportEntity) {
     if (reportEntity.isReportUser()) {
-      return "報告されたアカウントがあります";
+      return ReportConstant.REPORTED_ACCOUNT;
     } else {
-      return "報告された投稿があります";
+      return ReportConstant.REPORTED_POST;
     }
   }
 }
