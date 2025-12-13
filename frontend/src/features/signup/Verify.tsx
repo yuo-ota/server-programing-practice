@@ -1,6 +1,6 @@
 import TopBanner from '@/components/TopBanner';
 import TransitionButton from '@/components/TransitionButton';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 interface VerifyProps {
