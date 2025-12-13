@@ -150,7 +150,7 @@ const SignupInputGroup = () => {
   };
 
   /**
-   * ログインボタンがクリックされたときの処理
+   * 登録ボタンがクリックされたときの処理
    * @returns
    */
   const handleSignupButtonClick = async () => {
