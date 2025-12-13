@@ -1,17 +1,41 @@
-import { passwordReset } from '@/api/PasswordResetApi';
+import { sendPasswordResetMail } from '@/api/PasswordResetApi';
 import TextInput from '@/components/TextInput';
 import TransitionButton from '@/components/TransitionButton';
 import { EMAIL_RESEND_INTERVAL_MS } from '@/constants/ResetPasswordConstants';
-import { useState } from 'react';
+import NotificationContext from '@/contexts/NotificationContext';
+import { checkEmailFormat } from '@/utils/validation';
+import { useContext, useEffect, useRef, useState } from 'react';
 
-let globalIntervalId: NodeJS.Timeout | null = null;
+const didInit = false;
 
-const PasswordInputGroup = () => {
+const EmailInputGroup = () => {
+  const timer = useRef<NodeJS.Timeout | null>(null);
+  const { showMessage } = useContext(NotificationContext);
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [emailSentTime, setEmailSentTime] = useState<Date | null>(null);
   const [passwordResetButtonLabel, setPasswordResetButtonLabel] =
     useState('パスワードリセット');
+
+  useEffect(() => {
+    if (!didInit) {
+      const storedEmailSentTime = localStorage.getItem('resetEmailSentTime');
+      if (storedEmailSentTime) {
+        const sentTime = new Date(storedEmailSentTime);
+        if (!canResendEmail(sentTime)) {
+          setEmailSentTime(sentTime);
+          countDownResendEmail(sentTime);
+        }
+      }
+    }
+
+    return () => {
+      if (timer.current) {
+        clearInterval(timer.current);
+        timer.current = null;
+      }
+    };
+  }, []);
 
   /**
    * メールアドレス入力欄の値が変更されたときの処理
@@ -73,46 +97,63 @@ const PasswordInputGroup = () => {
     if (getPasswordResetButtonStatus() === 'disabled-solid') {
       return;
     }
-    setEmailSentTime(new Date());
-    countDownResendEmail();
 
-    await passwordReset(email);
-  };
+    const emailSentTime = new Date();
+    localStorage.setItem('resetEmailSentTime', emailSentTime.toISOString());
+    setEmailSentTime(emailSentTime);
+    countDownResendEmail(emailSentTime);
 
-  /**
-   * メールアドレスの形式チェック
-   * @param email
-   * @returns
-   */
-  const checkEmailFormat = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    try {
+      await sendPasswordResetMail(email);
+      showMessage(['メールの送信に成功しました。'], '--color-success');
+    } catch {
+      setEmailSentTime(null);
+      resetCountDown();
+      showMessage(
+        ['メールの送信に失敗しました。', '再度時間を空けてお試しください。'],
+        '--color-error'
+      );
+    }
   };
 
   /**
    * メール再送信のカウントダウン処理
    */
-  const countDownResendEmail = () => {
-    if (globalIntervalId) {
-      clearInterval(globalIntervalId);
+  const countDownResendEmail = (emailSentTime: Date) => {
+    if (timer.current) {
+      clearInterval(timer.current);
     }
 
-    let remainingTime = EMAIL_RESEND_INTERVAL_MS / 1000;
+    const substractTime = Math.max(
+      new Date().getTime() - emailSentTime.getTime(),
+      0
+    );
+    let remainingTime = Math.floor(
+      (EMAIL_RESEND_INTERVAL_MS - substractTime) / 1000
+    );
     setPasswordResetButtonLabel(`再送可能まであと ${remainingTime} 秒`);
 
-    globalIntervalId = setInterval(() => {
+    timer.current = setInterval(() => {
       remainingTime -= 1;
       if (remainingTime > 0) {
         setPasswordResetButtonLabel(`再送可能まであと ${remainingTime} 秒`);
       } else {
         setPasswordResetButtonLabel('パスワードリセット');
 
-        if (globalIntervalId !== null) {
-          clearInterval(globalIntervalId);
-          globalIntervalId = null;
+        if (timer.current !== null) {
+          clearInterval(timer.current);
+          timer.current = null;
         }
       }
     }, 1000);
+  };
+
+  const resetCountDown = () => {
+    if (timer.current) {
+      clearInterval(timer.current);
+      timer.current = null;
+    }
+    setPasswordResetButtonLabel('パスワードリセット');
   };
 
   return (
@@ -143,4 +184,4 @@ const PasswordInputGroup = () => {
   );
 };
 
-export default PasswordInputGroup;
+export default EmailInputGroup;

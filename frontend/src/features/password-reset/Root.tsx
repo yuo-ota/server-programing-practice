@@ -1,5 +1,5 @@
 import TopBanner from '@/components/TopBanner';
-import PasswordInputGroup from './components/PasswordInputGroup';
+import EmailInputGroup from './components/EmailInputGroup';
 import IconButton from '@/components/IconButton';
 import SettingIcon from '@/assets/allowLeft.svg?react';
 import { useNavigate } from 'react-router';
@@ -26,7 +26,7 @@ export const Root = () => {
           className="h-16 w-full"
         />
         <div className="flex h-full w-full max-w-[500px] flex-col items-center px-8 py-14">
-          <PasswordInputGroup />
+          <EmailInputGroup />
         </div>
       </div>
     </>

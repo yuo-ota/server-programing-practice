@@ -3,6 +3,7 @@ import TextInput from '@/components/TextInput';
 import TransitionButton from '@/components/TransitionButton';
 import { useState } from 'react';
 import { login } from '@/api/AuthApi';
+import { checkEmailFormat, checkPasswordFormat } from '@/utils/validation';
 
 const LoginInputGroup = () => {
   const navigate = useNavigate();
@@ -54,6 +55,10 @@ const LoginInputGroup = () => {
       return;
     }
     if (!checkPasswordFormat(e.target.value)) {
+      setPasswordError('パスワードは英字・数字・記号を含めてください');
+      return;
+    }
+    if (password.length < 8) {
       setPasswordError('パスワードは8文字以上で入力してください');
       return;
     }
@@ -90,25 +95,6 @@ const LoginInputGroup = () => {
     return 'solid';
   };
 
-  /**
-   * メールアドレスの形式チェック
-   * @param email
-   * @returns
-   */
-  const checkEmailFormat = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  /**
-   * パスワードの形式チェック
-   * @param password
-   * @returns
-   */
-  const checkPasswordFormat = (password: string): boolean => {
-    return password.length >= 8;
-  };
-
   return (
     <>
       <div className="flex w-full flex-col gap-3.5">
@@ -128,7 +114,7 @@ const LoginInputGroup = () => {
         />
         <TextInput
           type="password"
-          label="パスワード(8文字以上)"
+          label="パスワード(英数字・記号を含む8文字以上)"
           placeholder="********"
           error={passwordError}
           id="password-input"
