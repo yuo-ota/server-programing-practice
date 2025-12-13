@@ -124,7 +124,7 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
     <div className="flex w-full flex-col gap-3.5">
       <TextInput
         type="password"
-        label="新規パスワード(英数字・記号含む8文字以上)"
+        label="新規パスワード(英数字・記号を含む8文字以上)"
         placeholder="********"
         error={passwordError}
         id="password-input"
