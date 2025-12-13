@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -66,7 +65,7 @@ public class ReportController {
   }
 
   @GetMapping
-  public ResponseEntity<?> index(@RequestHeader("Authorization") String token) {
+  public ResponseEntity<?> index(@CookieValue("token") String token) {
     try {
       UUID userId = authService.auth(token);
       ReportResponse response = reportService.index(userId);
@@ -95,7 +94,7 @@ public class ReportController {
     } catch (Exception e) {
       ErrorResponse errorResponse = new ErrorResponse();
 
-      errorResponse.setCode("SERVICE_ERROR");
+      errorResponse.setCode("INTERNAL_SERVER_ERROR");
       errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
