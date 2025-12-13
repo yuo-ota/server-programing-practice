@@ -9,6 +9,7 @@ import jp.ac.dendai.spp.backend.form.request.ShowUserRequest;
 import jp.ac.dendai.spp.backend.form.request.UpdateUserRequest;
 import jp.ac.dendai.spp.backend.form.response.ErrorResponse;
 import jp.ac.dendai.spp.backend.form.response.UserDataResponse;
+import jp.ac.dendai.spp.backend.form.response.UserSettingResponse;
 import jp.ac.dendai.spp.backend.service.AuthService;
 import jp.ac.dendai.spp.backend.service.UserService;
 import org.springframework.http.HttpHeaders;
@@ -156,7 +157,36 @@ public class UserController {
     } catch (Exception e) {
       ErrorResponse errorResponse = new ErrorResponse();
 
-      errorResponse.setCode("SERVICE_ERROR");
+      errorResponse.setCode("INTERNAL_SERVER_ERROR");
+      errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+  }
+
+  @GetMapping("/setting")
+  public ResponseEntity<?> showUserSetting(@CookieValue("token") String token) {
+    try {
+      UUID userId = authService.auth(token);
+      UserSettingResponse response = userService.showUserSetting(userId);
+      return ResponseEntity.ok(response);
+    } catch (AuthenticationFailedException e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("AUTHENTICATION_FAILED");
+      errorResponse.setMessage("ユーザー認証に失敗しました。");
+
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    } catch (InvalidParameterException e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("BAD_REQUEST_PARAM");
+      errorResponse.setMessage(e.getMessage());
+
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    } catch (Exception e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+
+      errorResponse.setCode("INTERNAL_SERVER_ERROR  ");
       errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }

@@ -23,6 +23,7 @@ import jp.ac.dendai.spp.backend.form.request.CreateUserRequest;
 import jp.ac.dendai.spp.backend.form.request.ShowUserRequest;
 import jp.ac.dendai.spp.backend.form.request.UpdateUserRequest;
 import jp.ac.dendai.spp.backend.form.response.UserDataResponse;
+import jp.ac.dendai.spp.backend.form.response.UserSettingResponse;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
 import jp.ac.dendai.spp.backend.repository.PreRegisterTokenRepository;
 import jp.ac.dendai.spp.backend.repository.SocialAccountRepository;
@@ -375,5 +376,25 @@ public class UserService {
       socialAccounts.add(account);
     }
     return socialAccounts;
+  }
+
+  public UserSettingResponse showUserSetting(UUID userId) {
+    UserSetting userSetting = userSettingRepository.findByUserId(userId);
+    if (userSetting == null) {
+      throw new InvalidParameterException("User setting not found for user ID: " + userId);
+    }
+
+    UserSettingResponse response = new UserSettingResponse();
+    response.setId(userSetting.getId());
+    response.setUserId(userSetting.getUserId());
+    response.setDisplayId(userSetting.getDisplayId());
+    response.setName(userSetting.getName());
+    response.setIconPath(userSetting.getIconPath());
+    response.setHeaderPath(userSetting.getHeaderPath());
+    response.setIntroduction(userSetting.getIntroduction());
+    response.setBirthday(userSetting.getBirthday());
+    response.setShowAdultContent(userSetting.isShowAdultContent());
+
+    return response;
   }
 }
