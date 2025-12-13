@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "reports")
-public class Report {
+public class ReportEntity {
 
   @Id
   @GeneratedValue
@@ -48,9 +48,9 @@ public class Report {
   private ZonedDateTime deletedAt;
 
   // コンストラクタ
-  public Report() {}
+  public ReportEntity() {}
 
-  public Report(
+  public ReportEntity(
       UUID reporter,
       boolean isReportUser,
       UUID reportee,
