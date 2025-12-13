@@ -147,7 +147,7 @@ const AdminLoginInputGroup = () => {
           />
           <Link
             className="text-annotation text-subparagraph"
-            to="/password-reset"
+            to="/login"
           >
             ログインページへ戻る
           </Link>
