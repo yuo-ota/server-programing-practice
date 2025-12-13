@@ -145,10 +145,7 @@ const AdminLoginInputGroup = () => {
             onClick={handleLoginButtonClick}
             className="mt-15 h-11 w-full"
           />
-          <Link
-            className="text-annotation text-subparagraph"
-            to="/login"
-          >
+          <Link className="text-annotation text-subparagraph" to="/login">
             ログインページへ戻る
           </Link>
         </div>
