@@ -106,7 +106,7 @@ const SignupInputGroup = () => {
    * パスワード確認入力欄からフォーカスが外れたときの処理
    * @param e
    */
-  const handlePasswordCheckBlur = (e?: React.FocusEvent<HTMLInputElement>) => {
+  const handlePasswordCheckBlur = () => {
     if (passwordCheck === '') {
       setPasswordCheckError('確認用パスワードを入力してください');
       return;
