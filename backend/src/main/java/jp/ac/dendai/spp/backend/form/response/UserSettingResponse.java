@@ -1,11 +1,8 @@
 package jp.ac.dendai.spp.backend.form.response;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 public class UserSettingResponse {
-  private UUID id;
-  private UUID userId;
   private String displayId;
   private String name;
   private String iconPath;
@@ -15,22 +12,6 @@ public class UserSettingResponse {
   private boolean showAdultContent;
 
   // Getters and Setters
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  public UUID getUserId() {
-    return userId;
-  }
-
-  public void setUserId(UUID userId) {
-    this.userId = userId;
-  }
-
   public String getDisplayId() {
     return displayId;
   }

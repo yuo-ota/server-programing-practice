@@ -379,10 +379,10 @@ public class UserService {
   }
 
   /**
-   * ユーザー設定情報を取得する
+   * 指定されたユーザーIDのユーザー設定情報を取得する。
    *
-   * @param userId
-   * @return
+   * @param userId 設定情報を取得する対象ユーザーのID
+   * @return 指定ユーザーの設定情報
    */
   public UserSettingResponse showUserSetting(UUID userId) {
     UserSetting userSetting = userSettingRepository.findByUserId(userId);
@@ -391,8 +391,6 @@ public class UserService {
     }
 
     UserSettingResponse response = new UserSettingResponse();
-    response.setId(userSetting.getId());
-    response.setUserId(userSetting.getUserId());
     response.setDisplayId(userSetting.getDisplayId());
     response.setName(userSetting.getName());
     response.setIconPath(userSetting.getIconPath());
