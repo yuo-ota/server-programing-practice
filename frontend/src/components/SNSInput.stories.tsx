@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import SNSInputGroup from './SNSInput';
+import SNSInput from './SNSInput';
 import { type ComponentProps } from 'react';
 import { initSNSInputValues } from '@/constants/snsInputConstants';
 
-type T = typeof SNSInputGroup;
+type T = typeof SNSInput;
 
 export default {
-  component: SNSInputGroup,
+  component: SNSInput,
   args: {
     ...initSNSInputValues,
     setInputValue: () => {},
     groupIndex: 0,
   },
-  render: function Comp(args: ComponentProps<typeof SNSInputGroup>) {
-    return <SNSInputGroup {...args}></SNSInputGroup>;
+  render: function Comp(args: ComponentProps<typeof SNSInput>) {
+    return <SNSInput {...args}></SNSInput>;
   },
 } satisfies Meta<T>;
 
