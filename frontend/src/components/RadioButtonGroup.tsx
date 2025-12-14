@@ -18,9 +18,7 @@ const RadioButtonGroup = ({
   className = '',
 }: RadioButtonGroupProps) => {
   const handleChange = (label: string) => {
-    if (onSelect) {
       onSelect(label);
-    }
   };
 
   return (

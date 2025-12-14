@@ -27,7 +27,7 @@ const Root = () => {
       setDisplayName(parsedData.name || '');
       setUserId(parsedData.user_id || '');
       setBirthday(parsedData.birthday ? new Date(parsedData.birthday) : null);
-      setAdultContentSetting(parsedData.show_adult_contents || '表示しない');
+      setAdultContentSetting(parsedData.show_adult_contents ? '表示する' : '表示しない');
     }
   }, []);
 
@@ -36,10 +36,10 @@ const Root = () => {
    */
   const createFormData = () => {
     const formData = new FormData();
-    if (userId && userId !== '') {
+    if (userId) {
       formData.append('user_id', userId);
     }
-    if (displayName && displayName !== '') {
+    if (displayName) {
       formData.append('name', displayName);
     }
     if (birthday) {
@@ -54,7 +54,6 @@ const Root = () => {
 
   /**
    * 保存ボタンがクリックされたときの処理
-   * @returns
    */
   const handleSaveButtonClick = async () => {
     try {
@@ -70,12 +69,12 @@ const Root = () => {
         'settingData',
         JSON.stringify({
           ...prevSettingJson,
-          ...(userId && userId !== ''
+          ...(userId
             ? {
                 user_id: userId,
               }
             : {}),
-          ...(displayName && displayName !== ''
+          ...(displayName
             ? {
                 name: displayName,
               }

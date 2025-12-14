@@ -51,7 +51,6 @@ const SettingItemGroup = ({
 
   /**
    * 表示名入力欄からフォーカスが外れたときの処理
-   * @param e
    */
   const handleDisplayNameBlur = () => {
     if (displayName === '') {
@@ -63,7 +62,6 @@ const SettingItemGroup = ({
 
   /**
    * ユーザーID入力欄からフォーカスが外れたときの処理
-   * @param e
    */
   const handleUserIdBlur = () => {
     if (userId === '') {
