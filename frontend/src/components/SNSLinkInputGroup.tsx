@@ -5,18 +5,19 @@ import TextInput from './TextInput';
 
 interface SNSLinkInputGroupProps {
   SNSInputOptions: SNSInputOption[];
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  groupIndex: number;
+  setInputValue: (sns: string, value: string, groupIndex: number) => void;
   className?: string;
 }
 
 const SNSLinkInputGroup = ({
   SNSInputOptions,
-  value,
-  onChange,
+  groupIndex,
+  setInputValue,
   className = '',
 }: SNSLinkInputGroupProps) => {
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [value, setValue] = useState('');
 
   const handleSelect = (value: string) => {
     const selectedIndex: number = SNSInputOptions.findIndex(
@@ -36,6 +37,14 @@ const SNSLinkInputGroup = ({
           id: 'sns-link-input', // 未選択時のID
         };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (activeIndex === -1) {
+      return;
+    }
+    setValue(e.target.value);
+    setInputValue(SNSInputOptions[activeIndex].id, e.target.value, groupIndex);
+  }
+
   return (
     <div className={`${className} flex`}>
       <SelectBox
@@ -53,7 +62,7 @@ const SNSLinkInputGroup = ({
         isUnroundedLeft
         id={activeOption.id}
         value={value}
-        onChange={onChange}
+        onChange={handleInputChange}
         className="-left-[2px] h-full w-80"
       />
     </div>
