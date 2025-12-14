@@ -1,4 +1,4 @@
-import type { SNSInputOption } from "@/interfaces/app/snsInput";
+import type { SNSInputOption } from '@/interfaces/app/snsInput';
 
 export const snsInputOptions: SNSInputOption[] = [
   {
@@ -35,5 +35,5 @@ export const snsInputOptions: SNSInputOption[] = [
 
 export const initSNSInputValues = {
   snsInputOptions: snsInputOptions,
-  className: 'w-9/10 h-11'
+  className: 'w-9/10 h-11',
 };

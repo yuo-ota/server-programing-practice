@@ -43,7 +43,7 @@ const SNSInput = ({
     }
     setValue(e.target.value);
     setInputValue(snsInputOptions[activeIndex].id, e.target.value, groupIndex);
-  }
+  };
 
   return (
     <div className={`${className} flex`}>

@@ -13,11 +13,7 @@ export default {
     groupIndex: 0,
   },
   render: function Comp(args: ComponentProps<typeof SNSInputGroup>) {
-    return (
-      <SNSInputGroup
-        {...args}
-      ></SNSInputGroup>
-    );
+    return <SNSInputGroup {...args}></SNSInputGroup>;
   },
 } satisfies Meta<T>;
 
