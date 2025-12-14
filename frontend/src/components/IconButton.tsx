@@ -1,4 +1,4 @@
-import { isValidElement, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 interface IconButtonProps {
   onClick: () => void;
@@ -11,11 +11,6 @@ const IconButton = ({
   ButtonIcon,
   className = '',
 }: IconButtonProps) => {
-  const hasIconClass =
-    isValidElement(ButtonIcon) &&
-    typeof (ButtonIcon.props as { className?: string }).className ===
-      'string' &&
-    (ButtonIcon.props as { className?: string }).className!.trim() !== '';
 
   return (
     <>
@@ -24,13 +19,7 @@ const IconButton = ({
         className={`${className} bg-background transition-brightness flex items-center justify-center rounded-full duration-150 hover:brightness-(--hover-nega-brightness) active:brightness-(--active-nega-brightness)`}
         type="button"
       >
-        <div
-          className={`flex items-center justify-center ${
-            hasIconClass ? '' : 'h-[80%] w-[80%]'
-          }`}
-        >
-          {ButtonIcon}
-        </div>
+        {ButtonIcon}
       </button>
     </>
   );
