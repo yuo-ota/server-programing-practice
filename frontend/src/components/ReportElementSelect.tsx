@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import CheckBox from './CheckBox';
-import type { ReportOption } from '../interfaces/app/ReportOption';
+import type { ReportOption } from '../interfaces/app/reportOption';
 
 interface ReportElementSelectProps {
   title: string;

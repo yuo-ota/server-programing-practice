@@ -1,17 +1,17 @@
 import { useState } from 'react';
-import type { SNSInputOption } from '../interfaces/app/SNSInputOption';
+import type { SNSInputOption } from '../interfaces/app/snsInputOption';
 import SelectBox from './SelectBox';
 import TextInput from './TextInput';
 
 interface SNSLinkInputGroupProps {
-  SNSInputOptions: SNSInputOption[];
+  snsInputOptions: SNSInputOption[];
   groupIndex: number;
   setInputValue: (sns: string, value: string, groupIndex: number) => void;
   className?: string;
 }
 
 const SNSLinkInputGroup = ({
-  SNSInputOptions,
+  snsInputOptions,
   groupIndex,
   setInputValue,
   className = '',
@@ -20,7 +20,7 @@ const SNSLinkInputGroup = ({
   const [value, setValue] = useState('');
 
   const handleSelect = (value: string) => {
-    const selectedIndex: number = SNSInputOptions.findIndex(
+    const selectedIndex: number = snsInputOptions.findIndex(
       (option) => option.label === value
     );
     setActiveIndex(selectedIndex !== -1 ? selectedIndex : 0);
@@ -29,8 +29,8 @@ const SNSLinkInputGroup = ({
   const isOptionSelected = activeIndex !== -1;
 
   const activeOption =
-    isOptionSelected && SNSInputOptions.length > activeIndex
-      ? SNSInputOptions[activeIndex]
+    isOptionSelected && snsInputOptions.length > activeIndex
+      ? snsInputOptions[activeIndex]
       : {
           placeholder: '', // 未選択時のプレースホルダー
           prefix: '',
@@ -42,7 +42,7 @@ const SNSLinkInputGroup = ({
       return;
     }
     setValue(e.target.value);
-    setInputValue(SNSInputOptions[activeIndex].id, e.target.value, groupIndex);
+    setInputValue(snsInputOptions[activeIndex].id, e.target.value, groupIndex);
   }
 
   return (
@@ -50,7 +50,7 @@ const SNSLinkInputGroup = ({
       <SelectBox
         displayStatus="unrounded-right"
         label=""
-        options={SNSInputOptions.map((option) => option.label)}
+        options={snsInputOptions.map((option) => option.label)}
         onSelect={handleSelect}
         className="h-full w-24"
       />

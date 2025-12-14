@@ -1,6 +1,6 @@
-import type { SNSInputOption } from "@/interfaces/app/SNSInputOption";
+import type { SNSInputOption } from "@/interfaces/app/snsInputOption";
 
-export const SNSInputOptions: SNSInputOption[] = [
+export const snsInputOptions: SNSInputOption[] = [
   {
     label: 'X',
     placeholder: 'example',
@@ -32,3 +32,8 @@ export const SNSInputOptions: SNSInputOption[] = [
     id: 'bluesky',
   },
 ];
+
+export const initSNSLinkInputValues = {
+  snsInputOptions: snsInputOptions,
+  className: 'w-9/10 h-11'
+};

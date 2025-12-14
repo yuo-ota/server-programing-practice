@@ -1,18 +1,8 @@
-import type { SNSInputOption } from "@/interfaces/app/SNSInputOption";
-import SNSLinkInputGroup from "./SNSLinkInputGroup";
-import TransitionButton from "./TransitionButton";
-import { SNSInputOptions } from "@/constants/SNSLinkInputConstants";
 import { useState } from "react";
-
-interface SNSLinkInputGroupProps {
-  SNSInputOptions: SNSInputOption[];
-  className?: string;
-}
-
-interface SNSLinkInputValue {
-  snsId: string;
-  value: string;
-}
+import type { SNSLinkInputGroupValue, SNSLinkInputValue } from "@/interfaces/app/snsInputOption";
+import { initSNSLinkInputValues } from "@/constants/snsLinkInputConstants";
+import TransitionButton from "./TransitionButton";
+import SNSLinkInputGroup from "./SNSLinkInputGroup";
 
 interface SNSLinkInputListsProps {
   setSNSLinkInputs: React.Dispatch<
@@ -22,11 +12,14 @@ interface SNSLinkInputListsProps {
 }
 
 const SNSLinkInputLists = ({ setSNSLinkInputs, className = '' }: SNSLinkInputListsProps) => {
-  const [snsInputGroups, setSNSInputGroups] = useState<SNSLinkInputGroupProps[]>([{
-    SNSInputOptions: SNSInputOptions,
-    className: 'w-9/10 h-11'
-  }]);
+  const [snsInputGroups, setSNSInputGroups] = useState<SNSLinkInputGroupValue[]>([initSNSLinkInputValues]);
 
+  /**
+   * 各SNSリンク入力欄の値を設定する
+   * @param snsId
+   * @param value
+   * @param groupIndex
+   */
   const setInputValue = (snsId: string, value: string, groupIndex: number) => {
     const newValue: SNSLinkInputValue = { snsId, value };
     setSNSLinkInputs(prev => {
@@ -41,13 +34,13 @@ const SNSLinkInputLists = ({ setSNSLinkInputs, className = '' }: SNSLinkInputLis
     });
   }
 
+  /**
+   * リンク入力欄を追加する
+   */
   const handleAddLink = () => {
     setSNSInputGroups(prev => [
       ...prev,
-      {
-        SNSInputOptions: SNSInputOptions,
-        className: 'w-9/10 h-11'
-      }
+      initSNSLinkInputValues
     ]);
   }
 
@@ -57,11 +50,9 @@ const SNSLinkInputLists = ({ setSNSLinkInputs, className = '' }: SNSLinkInputLis
         <div className="flex flex-col gap-2.5 mb-2.5">
           {snsInputGroups.map((group, index) => (
             <SNSLinkInputGroup
-              key={index}
               {...group}
               setInputValue={setInputValue}
-              groupIndex={index}
-            />
+              groupIndex={index}            />
           ))}
         </div>
         <TransitionButton
