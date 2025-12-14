@@ -56,6 +56,7 @@ const SNSInputGroup = ({
               {...snsInputValue}
               setInputValue={setInputValue}
               groupIndex={index}
+              key={`SNSInput-${index}`}
             />
           ))}
         </div>
