@@ -6,12 +6,12 @@ export interface SNSInputOption {
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-export interface SNSLinkInputValue {
+export interface SNSInputValue {
   snsId: string;
   value: string;
 }
 
-export interface SNSLinkInputGroupValue {
+export interface SNSInputGroupValue {
   snsInputOptions: SNSInputOption[];
   className?: string;
 }

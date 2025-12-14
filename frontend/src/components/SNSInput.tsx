@@ -1,21 +1,21 @@
 import { useState } from 'react';
-import type { SNSInputOption } from '../interfaces/app/snsInputOption';
+import type { SNSInputOption } from '../interfaces/app/snsInput';
 import SelectBox from './SelectBox';
 import TextInput from './TextInput';
 
-interface SNSLinkInputGroupProps {
+interface SNSInputProps {
   snsInputOptions: SNSInputOption[];
   groupIndex: number;
-  setInputValue: (sns: string, value: string, groupIndex: number) => void;
+  setInputValue: (snsId: string, value: string, groupIndex: number) => void;
   className?: string;
 }
 
-const SNSLinkInputGroup = ({
+const SNSInput = ({
   snsInputOptions,
   groupIndex,
   setInputValue,
   className = '',
-}: SNSLinkInputGroupProps) => {
+}: SNSInputProps) => {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [value, setValue] = useState('');
 
@@ -34,7 +34,7 @@ const SNSLinkInputGroup = ({
       : {
           placeholder: '', // 未選択時のプレースホルダー
           prefix: '',
-          id: 'sns-link-input', // 未選択時のID
+          id: 'sns-input', // 未選択時のID
         };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,4 +68,4 @@ const SNSLinkInputGroup = ({
     </div>
   );
 };
-export default SNSLinkInputGroup;
+export default SNSInput;
