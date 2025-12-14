@@ -4,7 +4,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { signup } from '@/api/AuthApi';
 import { checkEmailFormat, checkPasswordFormat } from '@/utils/validation';
 import { EMAIL_RESEND_INTERVAL_MS } from '@/constants/resetPasswordConstants';
-import NotificationContext from '@/contexts/NotificationContext';
+import NotificationContext from '@/contexts/notificationContext';
 
 const didInit = false;
 

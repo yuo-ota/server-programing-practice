@@ -1,7 +1,7 @@
 import { resetPassword } from '@/api/PasswordResetApi';
 import TextInput from '@/components/TextInput';
 import TransitionButton from '@/components/TransitionButton';
-import NotificationContext from '@/contexts/NotificationContext';
+import NotificationContext from '@/contexts/notificationContext';
 import { checkPasswordFormat } from '@/utils/validation';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
