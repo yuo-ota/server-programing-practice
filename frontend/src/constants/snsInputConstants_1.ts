@@ -1,4 +1,4 @@
-import type { SNSInputOption } from '@/interfaces/app/snsInput';
+import type { SNSInputOption } from '@/interfaces/app/snsInput_1';
 
 export const snsInputOptions: SNSInputOption[] = [
   {

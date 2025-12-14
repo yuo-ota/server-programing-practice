@@ -1,6 +1,6 @@
 import { authToken } from '@/api/AuthParamToken';
 import LoadingAuth from '@/app/auth/LoadingAuth';
-import { TOKEN_TYPE } from '@/constants/tokenType';
+import { TOKEN_TYPE } from '@/constants/tokenType_1';
 import { Verify as PreRegisterVerify } from '@/features/signup/Verify';
 import { useEffect, useRef, useState } from 'react';
 import { Navigate, useSearchParams } from 'react-router';

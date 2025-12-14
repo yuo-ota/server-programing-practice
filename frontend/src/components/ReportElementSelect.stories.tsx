@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ReportElementSelect from './ReportElementSelect';
-import type { ReportOption } from '../interfaces/app/reportOption';
+import type { ReportOption } from '../interfaces/app/reportOption_1';
 
 type T = typeof ReportElementSelect;
 const reportOptions: ReportOption[] = [
