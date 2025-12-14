@@ -11,7 +11,6 @@ const IconButton = ({
   ButtonIcon,
   className = '',
 }: IconButtonProps) => {
-
   return (
     <>
       <button
