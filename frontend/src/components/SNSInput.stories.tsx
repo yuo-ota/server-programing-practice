@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import SNSInput from './SNSInput';
 import { type ComponentProps } from 'react';
-import { initSNSInputValues } from '@/constants/snsInputConstants_1';
+import { initSNSInputValues } from '@/constants/snsInputConstants';
 
 type T = typeof SNSInput;
 

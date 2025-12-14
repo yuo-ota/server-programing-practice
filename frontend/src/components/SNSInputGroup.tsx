@@ -2,8 +2,8 @@ import { useState } from 'react';
 import type {
   SNSInputGroupValue,
   SNSInputValue,
-} from '@/interfaces/app/snsInput_1';
-import { initSNSInputValues } from '@/constants/snsInputConstants_1';
+} from '@/interfaces/app/snsInput';
+import { initSNSInputValues } from '@/constants/snsInputConstants';
 import TransitionButton from './TransitionButton';
 import SNSInput from './SNSInput';
 

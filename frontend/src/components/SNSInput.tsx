@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { SNSInputOption } from '../interfaces/app/snsInput_1';
+import type { SNSInputOption } from '../interfaces/app/snsInput';
 import SelectBox from './SelectBox';
 import TextInput from './TextInput';
 

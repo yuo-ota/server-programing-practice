@@ -1,4 +1,4 @@
-import type { NotificationProps } from '@/interfaces/app/notificationBar_1';
+import type { NotificationProps } from '@/interfaces/app/notificationBar';
 import { createContext } from 'react';
 
 type NotificationContextType = {
