@@ -13,7 +13,7 @@ const RadioButton = ({
   name,
   label,
   checked,
-  disabled = true,
+  disabled = false,
   onChange,
   className = '',
 }: RadioButtonProps) => {
