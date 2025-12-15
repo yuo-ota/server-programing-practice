@@ -1,7 +1,8 @@
 import RadioButtonGroup from '@/components/RadioButtonGroup';
 import SelectBox from '@/components/SelectBox';
+import SNSInputGroup from '@/components/SNSInputGroup';
 import TextInput from '@/components/TextInput';
-import type { SNSInputOption } from '@/interfaces/app/SNSInputOption';
+import type { SNSInputValue } from '@/interfaces/app/snsInput';
 import { useMemo } from 'react';
 
 interface SettingItemGroupProps {
@@ -17,6 +18,7 @@ interface SettingItemGroupProps {
   setBirthday: (birthday: Date) => void;
   adultContentSetting: string;
   setAdultContentSetting: (adultContentSetting: string) => void;
+  setSNSInputs: React.Dispatch<React.SetStateAction<SNSInputValue[]>>;
 }
 
 const SettingItemGroup = ({
@@ -32,6 +34,7 @@ const SettingItemGroup = ({
   setBirthday,
   adultContentSetting,
   setAdultContentSetting,
+  setSNSInputs,
 }: SettingItemGroupProps) => {
   /**
    * 表示名入力時の処理
@@ -183,8 +186,8 @@ const SettingItemGroup = ({
 
   return (
     <>
-      <div className="flex w-full flex-col">
-        <div>
+      <div className="flex w-full flex-col gap-6">
+        <div className="flex flex-col gap-2.5">
           <TextInput
             label="表示名"
             placeholder="example"
@@ -193,7 +196,7 @@ const SettingItemGroup = ({
             value={displayName}
             onChange={handleDisplayNameChange}
             onBlur={handleDisplayNameBlur}
-            className="h-5"
+            className="h-[88.5px]"
             displayStatus={'normal'}
             prefix={''}
             isUnroundedLeft={false}
@@ -206,13 +209,13 @@ const SettingItemGroup = ({
             value={userId}
             onChange={handleUserIdChange}
             onBlur={handleUserIdBlur}
-            className="mt-11 h-5"
+            className="h-[88.5px]"
             displayStatus={'normal'}
             prefix={''}
             isUnroundedLeft={false}
           />
         </div>
-        <div className="mt-15">
+        <div className="">
           <label className="text-foreground text-subtitle">生年月日</label>
           <div className="flex">
             <SelectBox
@@ -241,7 +244,7 @@ const SettingItemGroup = ({
             />
           </div>
         </div>
-        <div className={`mt-15 ${isAdult(birthday) ? '' : 'opacity-50'}`}>
+        <div className={` ${isAdult(birthday) ? '' : 'opacity-50'}`}>
           <label className="text-foreground text-subtitle">
             成人向けコンテンツ
           </label>
@@ -254,7 +257,10 @@ const SettingItemGroup = ({
             className="gap-20"
           />
         </div>
-        <div className="mt-15"></div>
+        <div className="">
+          <label className="text-foreground text-subtitle">SNS ID</label>
+          <SNSInputGroup className="w-full" setSNSInputs={setSNSInputs} />
+        </div>
       </div>
     </>
   );

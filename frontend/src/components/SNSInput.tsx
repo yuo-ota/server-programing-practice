@@ -46,13 +46,13 @@ const SNSInput = ({
   };
 
   return (
-    <div className={`${className} flex`}>
+    <div className={`${className} flex w-full`}>
       <SelectBox
         displayStatus="unrounded-right"
         label=""
         options={snsInputOptions.map((option) => option.label)}
         onSelect={handleSelect}
-        className="h-full w-24"
+        className="h-full w-24 flex-none"
       />
       <TextInput
         displayStatus={isOptionSelected ? 'normal' : 'disabled'}
@@ -63,7 +63,8 @@ const SNSInput = ({
         id={activeOption.id}
         value={value}
         onChange={handleInputChange}
-        className="-left-[2px] h-full w-80"
+        isSNSInput={true}
+        className="-left-[2px] h-full flex-1"
       />
     </div>
   );

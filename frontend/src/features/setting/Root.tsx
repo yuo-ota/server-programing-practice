@@ -5,8 +5,10 @@ import SettingIcon from '@/assets/allowLeft.svg?react';
 import IconButton from '@/components/IconButton';
 import TopBanner from '@/components/TopBanner';
 import { setting } from '@/api/SettingApi';
-import NotificationContext from '@/contexts/NotificationContext';
 import { useNavigate } from 'react-router-dom';
+import NotificationContext from '@/contexts/notificationContext';
+import type { SNSInputValue } from '@/interfaces/app/snsInput';
+import AccontManageGroup from './components/AccontManageGroup';
 
 const Root = () => {
   const navigate = useNavigate();
@@ -20,6 +22,8 @@ const Root = () => {
 
   const [adultContentSetting, setAdultContentSetting] = useState('表示しない');
 
+  const [SNSInputs, setSNSInputs] = useState<SNSInputValue[]>([]);
+
   useEffect(() => {
     const settingData = localStorage.getItem('settingData');
     if (settingData) {
@@ -27,7 +31,9 @@ const Root = () => {
       setDisplayName(parsedData.name || '');
       setUserId(parsedData.user_id || '');
       setBirthday(parsedData.birthday ? new Date(parsedData.birthday) : null);
-      setAdultContentSetting(parsedData.show_adult_contents ? '表示する' : '表示しない');
+      setAdultContentSetting(
+        parsedData.show_adult_contents ? '表示する' : '表示しない'
+      );
     }
   }, []);
 
@@ -113,9 +119,9 @@ const Root = () => {
             />
           }
           label="設定"
-          className="h-16 w-full"
+          className="absolute top-0 h-16 w-full"
         />
-        <div className="flex h-full w-full max-w-[500px] flex-col items-center px-8 py-14">
+        <div className="flex w-full max-w-[500px] flex-col items-center gap-6 px-8 pt-20 pb-48">
           <SettingItemGroup
             displayName={displayName}
             setDisplayName={setDisplayName}
@@ -129,7 +135,9 @@ const Root = () => {
             setBirthday={setBirthday}
             adultContentSetting={adultContentSetting}
             setAdultContentSetting={setAdultContentSetting}
+            setSNSInputs={setSNSInputs}
           />
+          <AccontManageGroup />
         </div>
         <BottomTab
           handleSaveButtonClick={handleSaveButtonClick}

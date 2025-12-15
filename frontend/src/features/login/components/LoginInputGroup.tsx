@@ -107,7 +107,7 @@ const LoginInputGroup = () => {
           value={email}
           onChange={handleEmailChange}
           onBlur={handleEmailBlur}
-          className="h-5"
+          className="h-[88.5px]"
           displayStatus={'normal'}
           prefix={''}
           isUnroundedLeft={false}
@@ -121,7 +121,7 @@ const LoginInputGroup = () => {
           value={password}
           onChange={handlePasswordChange}
           onBlur={handlePasswordBlur}
-          className="mt-15 h-5"
+          className="mt-15 h-[88.5px]"
           displayStatus={'normal'}
           prefix={''}
           isUnroundedLeft={false}

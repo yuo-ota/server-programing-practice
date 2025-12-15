@@ -11,7 +11,7 @@ const BottomTab = ({
 }: BottomTabProps) => {
   return (
     <>
-      <div className="bg-background shadow-up fixed right-0 bottom-0 left-0 flex w-full flex-col items-center justify-center gap-3 rounded-t-3xl pt-10 pb-6">
+      <div className="bg-background shadow-up fixed right-0 bottom-0 left-0 flex h-40 w-full flex-col items-center justify-center gap-3 rounded-t-3xl">
         <TransitionButton
           displayStatus="solid"
           label="設定を保存する"

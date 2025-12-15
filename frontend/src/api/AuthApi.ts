@@ -12,6 +12,10 @@ export const login = async (email: string, password: string): Promise<void> => {
   );
 };
 
+export const logout = async (): Promise<void> => {
+  await axios.post<void>(`${API_URL}/api/logout`, { withCredentials: true });
+};
+
 export const signup = async (
   email: string,
   password: string
@@ -24,4 +28,8 @@ export const signup = async (
     },
     { withCredentials: true }
   );
+};
+
+export const deleteAccount = async (): Promise<void> => {
+  await axios.delete<void>(`${API_URL}/api/user`, { withCredentials: true });
 };

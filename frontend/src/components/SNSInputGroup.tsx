@@ -49,8 +49,8 @@ const SNSInputGroup = ({
 
   return (
     <>
-      <div className={`${className} flex flex-col items-center`}>
-        <div className="mb-2.5 flex flex-col gap-2.5">
+      <div className={`${className} flex w-full flex-col items-center`}>
+        <div className="mb-2.5 flex w-full flex-col gap-2.5">
           {snsInputValues.map((snsInputValue, index) => (
             <SNSInput
               {...snsInputValue}
