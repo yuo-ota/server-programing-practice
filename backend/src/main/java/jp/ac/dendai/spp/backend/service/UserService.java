@@ -398,6 +398,7 @@ public class UserService {
     response.setIntroduction(userSetting.getIntroduction());
     response.setBirthday(userSetting.getBirthday());
     response.setShowAdultContent(userSetting.isShowAdultContent());
+    response.setSocialAccounts(getSocialAccounts(userId));
 
     return response;
   }

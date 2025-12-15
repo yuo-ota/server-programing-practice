@@ -1,6 +1,8 @@
 package jp.ac.dendai.spp.backend.form.response;
 
 import java.time.LocalDate;
+import java.util.List;
+import jp.ac.dendai.spp.backend.dto.SocialAccount;
 
 public class UserSettingResponse {
   private String displayId;
@@ -10,6 +12,7 @@ public class UserSettingResponse {
   private String introduction;
   private LocalDate birthday;
   private boolean showAdultContent;
+  private List<SocialAccount> socialAccounts;
 
   // Getters and Setters
   public String getDisplayId() {
@@ -66,5 +69,13 @@ public class UserSettingResponse {
 
   public void setShowAdultContent(boolean showAdultContent) {
     this.showAdultContent = showAdultContent;
+  }
+
+  public List<SocialAccount> getSocialAccounts() {
+    return socialAccounts;
+  }
+
+  public void setSocialAccounts(List<SocialAccount> socialAccounts) {
+    this.socialAccounts = socialAccounts;
   }
 }
