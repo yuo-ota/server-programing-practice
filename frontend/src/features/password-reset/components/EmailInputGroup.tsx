@@ -1,8 +1,8 @@
 import { sendPasswordResetMail } from '@/api/PasswordResetApi';
 import TextInput from '@/components/TextInput';
 import TransitionButton from '@/components/TransitionButton';
-import { EMAIL_RESEND_INTERVAL_MS } from '@/constants/ResetPasswordConstants';
-import NotificationContext from '@/contexts/NotificationContext';
+import { EMAIL_RESEND_INTERVAL_MS } from '@/constants/resetPasswordConstants';
+import NotificationContext from '@/contexts/notificationContext_1';
 import { checkEmailFormat } from '@/utils/validation';
 import { useContext, useEffect, useRef, useState } from 'react';
 

@@ -1,7 +1,7 @@
 import { resetPassword } from '@/api/PasswordResetApi';
 import TextInput from '@/components/TextInput';
 import TransitionButton from '@/components/TransitionButton';
-import NotificationContext from '@/contexts/NotificationContext';
+import NotificationContext from '@/contexts/notificationContext';
 import { checkPasswordFormat } from '@/utils/validation';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -38,6 +38,8 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
    * @param e
    */
   const handlePasswordBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    handlePasswordCheckBlur();
+
     if (password === '') {
       setPasswordError('パスワードを入力してください');
       return;
@@ -56,14 +58,13 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
 
   /**
    * パスワード確認入力欄からフォーカスが外れたときの処理
-   * @param e
    */
-  const handlePasswordCheckBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handlePasswordCheckBlur = () => {
     if (passwordCheck === '') {
       setPasswordCheckError('確認用パスワードを入力してください');
       return;
     }
-    if (password !== e.target.value) {
+    if (password !== passwordCheck) {
       setPasswordCheckError('パスワードが一致しません');
       return;
     }
@@ -124,7 +125,7 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
     <div className="flex w-full flex-col gap-3.5">
       <TextInput
         type="password"
-        label="新規パスワード(英数字・記号含む8文字以上)"
+        label="新規パスワード(英数字・記号を含む8文字以上)"
         placeholder="********"
         error={passwordError}
         id="password-input"

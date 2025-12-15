@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import NotificationContext from '@/contexts/NotificationContext';
+import NotificationContext from '@/contexts/notificationContext';
 
 export default function NotificationBar() {
   const { notifications } = useContext(NotificationContext);
@@ -12,8 +12,8 @@ export default function NotificationBar() {
         className="animate-fade-in-out fixed top-5 z-20 p-4 text-center text-white transition-opacity duration-300"
         style={{ backgroundColor: `var(${notifications.backgroundColor})` }}
       >
-        {notifications.messages.map((msg) => (
-          <div key={`notification-bar-${msg}`}>{msg}</div>
+        {notifications.messages.map((msg, index) => (
+          <div key={`notification-bar-${index}`}>{msg}</div>
         ))}
       </div>
     </div>

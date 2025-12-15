@@ -1,6 +1,6 @@
-import type { NotificationProps } from '@/interfaces/app/NotificationBar';
+import type { NotificationProps } from '@/interfaces/app/notificationBar';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import NotificationContext from '../contexts/NotificationContext';
+import NotificationContext from '../contexts/notificationContext';
 
 const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [notifications, setNotifications] = useState<NotificationProps | null>(
