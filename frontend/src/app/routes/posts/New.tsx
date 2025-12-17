@@ -1,3 +1,11 @@
+import { New as PostNew } from '@/features/posts/New';
+
 export const New = () => {
-  return <></>;
+  return (
+    <>
+      <div className="flex h-dvh w-dvw items-center justify-center">
+        <PostNew />
+      </div>
+    </>
+  );
 };
