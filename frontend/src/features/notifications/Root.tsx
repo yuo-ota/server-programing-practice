@@ -1,14 +1,69 @@
 import IconButton from "@/components/IconButton";
 import TopBanner from "@/components/TopBanner";
 import SettingIcon from "@/assets/setting.svg?react";
-import NotificationGroup from "./components/NotificationGroup";
 import MenuTab from "@/components/MenuTab";
 import HomeIcon from '@/assets/home.svg?react';
 import NotificationIcon from '@/assets/notification.svg?react';
 import UserIcon from '@/assets/UserIconDefault.svg?react';
 import NewPostIcon from '@/assets/newPost.svg?react';
+import { useNavigate } from "react-router-dom";
+import { getUserId } from "@/utils/handleLocalStrage";
+import type { Notification } from "@/interfaces/app/notification";
+import NotificationGroup from "./components/NotificationGroup";
+import { useContext, useEffect, useState } from "react";
+import { getNotifications } from "@/api/notification";
+import { isNotificationResponse } from "@/interfaces/api/notification";
+import NotificationContext from "@/contexts/notificationContext";
+
+let didInit = false;
 
 const Root = () => {
+  const navigate = useNavigate();
+  const { showMessage } = useContext(NotificationContext);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  useEffect(() => {
+    if (!didInit) {
+      getNotificationsProcess();
+      didInit = true;
+    }
+  }, []);
+
+  const getNotificationsProcess = async () => {
+    try {
+      const response = await getNotifications();
+      if (isNotificationResponse(response.data)) {
+        setNotifications(response.data.notifications);
+      } else {
+        throw new Error('Invalid notification response');
+      }
+    } catch {
+      showMessage(
+        [
+          '通知の取得に失敗しました。',
+          '再度時間を空けてお試しください。',
+        ],
+        '--color-error'
+      );
+    }
+  };
+
+  const handleSettingClick = () => {
+    navigate('/setting');
+  };
+
+  const handleNewPostClick = () => {
+    navigate('/posts/new');
+  };
+
+  const handleHomeClick = () => {
+    navigate(`/home/posts?date=${new Date().toISOString().split('T')[0]}`);
+  }
+
+  const handleProfileClick = () => {
+    navigate(`/home/profile/${getUserId()}`);
+  }
+
   return (
     <>
       <div className="flex h-full w-full flex-col items-center">
@@ -17,7 +72,7 @@ const Root = () => {
             <IconButton
               ButtonIcon={<SettingIcon className={`h-8 w-8`} />}
               className="h-12 w-12"
-              onClick={() => {}}
+              onClick={handleSettingClick}
             />
           }
           label=""
@@ -25,88 +80,12 @@ const Root = () => {
         />
         <div className="flex h-full w-full max-w-[500px] flex-col items-center overflow-y-auto">
           <NotificationGroup
-            notifications={[
-              {
-                notificationId: "1",
-                notificationType: 'いいね通知',
-                date: "2024-06-01T12:00:00Z",
-                content: {
-                  likedPostId: "post123",
-                  likedByUserId: ["user1", "user2", "user3", "user4"],
-                },
-              },
-              {
-                notificationId: "2",
-                notificationType: "処分通知",
-                date: "2024-06-02T15:30:00Z",
-                content: {
-                  category: "いいね停止",
-                  detail: "Your post violated our community guidelines.",
-                  duration: "7 days",
-                  endDate: "2024-06-09T15:30:00Z",
-                },
-              },
-              {
-                notificationId: "3",
-                notificationType: "処分通知",
-                date: "2024-06-02T15:30:00Z",
-                content: {
-                  category: "いいね停止",
-                  detail: "Your post violated our community guidelines.",
-                  duration: "7 days",
-                  endDate: "2024-06-09T15:30:00Z",
-                },
-              },
-              {
-                notificationId: "3",
-                notificationType: "処分通知",
-                date: "2024-06-02T15:30:00Z",
-                content: {
-                  category: "いいね停止",
-                  detail: "Your post violated our community guidelines.",
-                  duration: "7 days",
-                  endDate: "2024-06-09T15:30:00Z",
-                },
-              },
-              {
-                notificationId: "3",
-                notificationType: "処分通知",
-                date: "2024-06-02T15:30:00Z",
-                content: {
-                  category: "いいね停止",
-                  detail: "Your post violated our community guidelines.",
-                  duration: "7 days",
-                  endDate: "2024-06-09T15:30:00Z",
-                },
-              },
-              {
-                notificationId: "3",
-                notificationType: "処分通知",
-                date: "2024-06-02T15:30:00Z",
-                content: {
-                  category: "いいね停止",
-                  detail: "Your post violated our community guidelines.",
-                  duration: "7 days",
-                  endDate: "2024-06-09T15:30:00Z",
-                },
-              },
-              {
-                notificationId: "3",
-                notificationType: "処分通知",
-                date: "2024-06-02T15:30:00Z",
-                content: {
-                  category: "いいね停止",
-                  detail: "Your post violated our community guidelines.",
-                  duration: "7 days",
-                  endDate: "2024-06-09T15:30:00Z",
-                },
-              },
-            ]}
+            notifications={notifications}
           />
         </div>
         <div className="fixed w-full max-w-[500px] bottom-0">
           <IconButton
-            onClick={() => {}}
+            onClick={handleNewPostClick}
             ButtonIcon={<NewPostIcon className="h-12 w-12" />}
             className="absolute h-12 w-12 bottom-15 right-0 mr-2 mb-2"
           />
@@ -114,17 +93,18 @@ const Root = () => {
         <MenuTab
           buttons={[
             <IconButton
-              onClick={() => {}}
+              onClick={handleHomeClick}
               className="h-12 w-12"
               ButtonIcon={<HomeIcon className="h-[80%] w-[80%]" />}
             />,
             <IconButton
+              disabled={true}
               onClick={() => {}}
               className="h-12 w-12"
               ButtonIcon={<NotificationIcon className="h-[80%] w-[80%]" />}
             />,
             <IconButton
-              onClick={() => {}}
+              onClick={handleProfileClick}
               className="h-12 w-12"
               ButtonIcon={<UserIcon className="h-[80%] w-[80%]" />}
             />

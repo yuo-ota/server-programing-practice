@@ -1,42 +1,12 @@
 import HeartIcon from "@/assets/heart.svg?react";
 import CautionIcon from "@/assets/caution.svg?react";
 import NotificationLinkButton from "@/components/NotificationLinkButton";
-import { LIKE_NOTIFICATION, PENALTY_NOTIFICATION, NOTIFICATION_TYPE } from "@/constants/notificationConstants";
+import { LIKE_NOTIFICATION, PENALTY_NOTIFICATION } from "@/constants/notificationConstants";
 import { useNavigate } from "react-router-dom";
-
-interface BaseNotification {
-  notificationId: string;
-  date: string;
-}
-
-interface LikeNotification {
-  likedPostId: string;
-  likedByUserId: string[];
-}
-
-interface PenaltyNotification {
-  category: string;
-  detail: string;
-  duration: string;
-  endDate: string;
-}
-
-interface LikeNotificationGroup extends BaseNotification {
-  notificationType: typeof NOTIFICATION_TYPE.LIKE;
-  content: LikeNotification;
-}
-
-interface PenaltyNotificationGroup extends BaseNotification {
-  notificationType: typeof NOTIFICATION_TYPE.PENALTY;
-  content: PenaltyNotification;
-}
-
-type NotificationGroup =
-  | LikeNotificationGroup
-  | PenaltyNotificationGroup;
+import { type Notification } from "@/interfaces/app/notification";
 
 interface NotificationGroupProps {
-  notifications: NotificationGroup[];
+  notifications: Notification[];
 }
 
 const NotificationGroup = ({ notifications }: NotificationGroupProps) => {
@@ -48,7 +18,7 @@ const NotificationGroup = ({ notifications }: NotificationGroupProps) => {
 
   return (
     <>
-      <div className="flex w-full h-full flex-col bg-red-200 gap-[-10px]">
+      <div className="flex w-full h-full flex-col gap-[-10px]">
         <>
           {notifications.map((notification) => (
               <div key={notification.notificationId} className= "w-full p-5 flex flex-col border-b-2 first:border-t-2 bg-background">
