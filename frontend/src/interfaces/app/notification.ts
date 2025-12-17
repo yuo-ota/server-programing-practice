@@ -1,4 +1,4 @@
-import type { NOTIFICATION_TYPE } from "@/constants/notificationConstants";
+import type { NOTIFICATION_TYPE } from '@/constants/notificationConstants';
 
 interface BaseNotification {
   notificationId: string;
@@ -27,6 +27,4 @@ interface PenaltyNotificationGroup extends BaseNotification {
   content: PenaltyNotification;
 }
 
-export type Notification =
-  | LikeNotificationGroup
-  | PenaltyNotificationGroup;
+export type Notification = LikeNotificationGroup | PenaltyNotificationGroup;

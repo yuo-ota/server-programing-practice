@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 interface NotificationLinkButtonProps {
   label: string;
   onClick: () => void;
@@ -9,13 +7,13 @@ interface NotificationLinkButtonProps {
 const NotificationLinkButton = ({
   label,
   onClick,
-  className = "",
+  className = '',
 }: NotificationLinkButtonProps) => {
   return (
     <>
       <button
         type="button"
-        className={`${className} flex justify-between items-center border rounded-full bg-background px-4 py-2 hover:bg-hover`}
+        className={`${className} bg-background hover:bg-hover flex items-center justify-between rounded-full border px-4 py-2`}
         onClick={onClick}
       >
         <p>{label}</p>

@@ -1,4 +1,4 @@
-import Root from "@/features/notifications/Root";
+import Root from '@/features/notifications/Root';
 
 export const Notifications = () => {
   return (
