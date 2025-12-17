@@ -1,5 +1,6 @@
 package jp.ac.dendai.spp.backend.controller;
 
+import jakarta.validation.Valid;
 import jp.ac.dendai.spp.backend.error.AuthenticationFailedException;
 import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.request.CreatePasswordResetEmailRequest;
@@ -35,7 +36,7 @@ public class PasswordResetController {
   }
 
   @PatchMapping
-  public ResponseEntity<?> update(@RequestBody PasswordResetRequest request) {
+  public ResponseEntity<?> update(@Valid @RequestBody PasswordResetRequest request) {
     try {
       passwordResetService.resetPassword(request);
 
