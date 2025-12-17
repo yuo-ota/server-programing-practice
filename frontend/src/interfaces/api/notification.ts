@@ -19,11 +19,13 @@ export const isNotificationResponse = (
           typeof item === 'object' &&
           item !== null &&
           'notificationId' in item &&
-          typeof (item as { notificationId: unknown }).notificationId === 'string' &&
+          typeof (item as { notificationId: unknown }).notificationId ===
+            'string' &&
           'date' in item &&
           typeof (item as { date: unknown }).date === 'string' &&
           'notificationType' in item &&
-          typeof (item as { notificationType: unknown }).notificationType === typeof NOTIFICATION_TYPE &&
+          typeof (item as { notificationType: unknown }).notificationType ===
+            typeof NOTIFICATION_TYPE &&
           ((item.notificationType === NOTIFICATION_TYPE.LIKE &&
             'content' in item &&
             typeof (item as { content: unknown }).content === 'object' &&

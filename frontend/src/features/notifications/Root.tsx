@@ -10,17 +10,19 @@ import { useNavigate } from 'react-router-dom';
 import { getUserId } from '@/utils/handleLocalStrage';
 import type { Notification } from '@/interfaces/app/notification';
 import NotificationGroup from './components/NotificationGroup';
-import { useContext, useState } from 'react';
-import { getNotifications } from '@/api/notification';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { getNotifications } from '@/api/Notification';
 import { isNotificationResponse } from '@/interfaces/api/notification';
 import NotificationContext from '@/contexts/notificationContext';
+
+let didInit = false;
 
 const Root = () => {
   const navigate = useNavigate();
   const { showMessage } = useContext(NotificationContext);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  const getNotificationsProcess = async () => {
+  const getNotificationsProcess = useCallback(async () => {
     try {
       const response = await getNotifications();
       if (isNotificationResponse(response.data)) {
@@ -34,8 +36,14 @@ const Root = () => {
         '--color-error'
       );
     }
-  };
-  getNotificationsProcess();
+  }, [showMessage]);
+
+  useEffect(() => {
+    if (!didInit) {
+      getNotificationsProcess();
+      didInit = true;
+    }
+  }, [getNotificationsProcess]);
 
   const handleSettingClick = () => {
     navigate('/setting');
