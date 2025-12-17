@@ -7,12 +7,12 @@ interface MenuTabProps {
 
 const MenuTab = ({ className = '', buttons }: MenuTabProps) => {
   return (
-    <div
-      className={`${className} flex h-17 w-full items-center justify-around`}
-    >
-      {buttons.map((item, i) => (
-        <div key={`menuItems-${i}`}>{item}</div>
-      ))}
+    <div className={`${className} bg-background flex justify-center shadow-md`}>
+      <div className="relative flex h-full w-full max-w-[800px] items-center justify-around px-2">
+        {buttons.map((item, i) => (
+          <div key={`menuItems-${i}`}>{item}</div>
+        ))}
+      </div>
     </div>
   );
 };
