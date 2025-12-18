@@ -12,7 +12,10 @@ import type { Notification } from '@/interfaces/app/notification';
 import NotificationGroup from './components/NotificationGroup';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { getNotifications } from '@/api/Notification';
-import { isNotificationResponse } from '@/interfaces/api/notification';
+import {
+  isNotificationArray,
+  mapApiNotificationToNotification,
+} from '@/interfaces/api/notification';
 import NotificationContext from '@/contexts/notificationContext';
 
 let didInit = false;
@@ -25,8 +28,10 @@ const Root = () => {
   const getNotificationsProcess = useCallback(async () => {
     try {
       const response = await getNotifications();
-      if (isNotificationResponse(response.data)) {
-        setNotifications(response.data.notifications);
+      if (isNotificationArray(response.data)) {
+        setNotifications(
+          response.data.map((item) => mapApiNotificationToNotification(item))
+        );
       } else {
         throw new Error('Invalid notification response');
       }

@@ -7,7 +7,8 @@ interface BaseNotification {
 
 interface LikeNotification {
   likedPostId: string;
-  likedByUserId: string[];
+  likedByUserId: string;
+  likedByUserName: string;
 }
 
 interface PenaltyNotification {

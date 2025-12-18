@@ -5,7 +5,7 @@ import {
   LIKE_NOTIFICATION,
   PENALTY_NOTIFICATION,
 } from '@/constants/notificationConstants';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { type Notification } from '@/interfaces/app/notification';
 
 interface NotificationGroupProps {
@@ -29,19 +29,21 @@ const NotificationGroup = ({ notifications }: NotificationGroupProps) => {
               className="bg-background flex w-full flex-col border-b-2 p-5 first:border-t-2"
             >
               {notification.notificationType === LIKE_NOTIFICATION && (
-                <div
-                  key={`${notification.notificationId}-like`}
-                  className="flex w-full flex-col gap-4"
-                >
+                <div className="flex w-full flex-col gap-4">
                   <div className="flex items-center gap-2">
                     <HeartIcon className="fill-theme h-7 w-7" />
                     <p>
-                      {notification.content.likedByUserId.length}
-                      人にいいねされました！
+                      <Link
+                        className="text-link font-bold underline"
+                        to={`/home/profile/${notification.content.likedByUserId}`}
+                      >
+                        {notification.content.likedByUserName}さん
+                      </Link>
+                      にいいねされました！
                     </p>
                   </div>
                   <NotificationLinkButton
-                    label={'いいねされました。'}
+                    label={'投稿を確認する'}
                     onClick={() =>
                       handleClick(
                         `/home/posts/${notification.content.likedPostId}`
@@ -52,10 +54,7 @@ const NotificationGroup = ({ notifications }: NotificationGroupProps) => {
                 </div>
               )}
               {notification.notificationType === PENALTY_NOTIFICATION && (
-                <div
-                  key={`${notification.notificationId}-penalty`}
-                  className="w-full"
-                >
+                <div className="w-full">
                   <div className="flex items-center gap-2">
                     <CautionIcon className="fill-theme h-7 w-7" />
                     <p>一定期間のペナルティーが与えられました。</p>
