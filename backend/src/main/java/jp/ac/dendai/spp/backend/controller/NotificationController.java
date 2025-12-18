@@ -52,6 +52,7 @@ public class NotificationController {
       ErrorResponse errorResponse = new ErrorResponse();
 
       errorResponse.setCode("INTERNAL_SERVICE_ERROR");
+      e.printStackTrace();
       errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }

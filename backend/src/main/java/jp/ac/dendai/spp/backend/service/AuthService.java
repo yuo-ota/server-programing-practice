@@ -201,4 +201,19 @@ public class AuthService {
       throw new AuthenticationFailedException("JWT verification failed", e);
     }
   }
+
+  /**
+   * ログアウト用の空のクッキーを生成する
+   *
+   * @return
+   */
+  public ResponseCookie logout() {
+    return ResponseCookie.from("token", "")
+        .httpOnly(true)
+        .secure(true)
+        .path("/")
+        .maxAge(0) // クッキーを即座に削除
+        .sameSite("Strict")
+        .build();
+  }
 }

@@ -16,7 +16,7 @@ public interface LikeNotificationRepository extends JpaRepository<LikeNotificati
   @Query(
       value =
           """
-      SELECT l.post_id AS liked_post_id, us.display_id AS liked_by_user_id
+      SELECT l.post_id AS liked_post_id, us.display_id AS liked_by_user_id, us.name AS liked_by_user_name
       FROM like_notifications AS ln
       LEFT JOIN likes AS l
       ON ln.like_id = l.id
