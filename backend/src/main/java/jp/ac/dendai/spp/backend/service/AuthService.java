@@ -205,7 +205,7 @@ public class AuthService {
   /**
    * ログアウト用の空のクッキーを生成する
    *
-   * @return
+   * @return 空のResponseCookieオブジェクト
    */
   public ResponseCookie logout() {
     return ResponseCookie.from("token", "")
