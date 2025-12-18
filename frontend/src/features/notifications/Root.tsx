@@ -7,7 +7,7 @@ import NotificationIcon from '@/assets/notification.svg?react';
 import UserIcon from '@/assets/UserIconDefault.svg?react';
 import NewPostIcon from '@/assets/newPost.svg?react';
 import { useNavigate } from 'react-router-dom';
-import { getUserId } from '@/utils/handleLocalStrage';
+import { getUserId } from '@/utils/handleLocalStorage';
 import type { Notification } from '@/interfaces/app/notification';
 import NotificationGroup from './components/NotificationGroup';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';

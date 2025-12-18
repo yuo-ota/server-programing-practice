@@ -21,7 +21,7 @@ const NotificationGroup = ({ notifications }: NotificationGroupProps) => {
 
   return (
     <>
-      <div className="flex h-full w-full flex-col gap-[-10px]">
+      <div className="flex h-full w-full flex-col">
         <>
           {notifications.map((notification) => (
             <div
