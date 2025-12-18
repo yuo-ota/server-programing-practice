@@ -18,9 +18,8 @@ import {
 } from '@/interfaces/api/notification';
 import NotificationContext from '@/contexts/notificationContext';
 
-let didInit = false;
-
 const Root = () => {
+  let didInit = false;
   const navigate = useNavigate();
   const { showMessage } = useContext(NotificationContext);
   const [notifications, setNotifications] = useState<Notification[]>([]);
