@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { getUserId } from '@/utils/handleLocalStrage';
 import type { Notification } from '@/interfaces/app/notification';
 import NotificationGroup from './components/NotificationGroup';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { getNotifications } from '@/api/Notification';
 import {
   isNotificationArray,
@@ -19,7 +19,7 @@ import {
 import NotificationContext from '@/contexts/notificationContext';
 
 const Root = () => {
-  let didInit = false;
+  const didInit = useRef(false);
   const navigate = useNavigate();
   const { showMessage } = useContext(NotificationContext);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -43,9 +43,9 @@ const Root = () => {
   }, [showMessage]);
 
   useEffect(() => {
-    if (!didInit) {
+    if (!didInit.current) {
       getNotificationsProcess();
-      didInit = true;
+      didInit.current = true;
     }
   }, [getNotificationsProcess]);
 
