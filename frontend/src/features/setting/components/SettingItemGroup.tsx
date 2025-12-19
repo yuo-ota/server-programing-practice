@@ -18,6 +18,7 @@ interface SettingItemGroupProps {
   setBirthday: (birthday: Date) => void;
   adultContentSetting: string;
   setAdultContentSetting: (adultContentSetting: string) => void;
+  SNSInputs: SNSInputValue[];
   setSNSInputs: React.Dispatch<React.SetStateAction<SNSInputValue[]>>;
 }
 
@@ -34,6 +35,7 @@ const SettingItemGroup = ({
   setBirthday,
   adultContentSetting,
   setAdultContentSetting,
+  SNSInputs,
   setSNSInputs,
 }: SettingItemGroupProps) => {
   /**
@@ -259,7 +261,11 @@ const SettingItemGroup = ({
         </div>
         <div className="">
           <label className="text-foreground text-subtitle">SNS ID</label>
-          <SNSInputGroup className="w-full" setSNSInputs={setSNSInputs} />
+          <SNSInputGroup
+            className="w-full"
+            setSNSInputs={setSNSInputs}
+            SNSInputs={SNSInputs}
+          />
         </div>
       </div>
     </>

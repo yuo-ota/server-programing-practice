@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { SNSInputOption } from '../interfaces/app/snsInput';
 import SelectBox from './SelectBox';
 import TextInput from './TextInput';
@@ -6,6 +6,8 @@ import TextInput from './TextInput';
 interface SNSInputProps {
   snsInputOptions: SNSInputOption[];
   groupIndex: number;
+  value?: string;
+  snsId?: string;
   setInputValue: (snsId: string, value: string, groupIndex: number) => void;
   className?: string;
 }
@@ -13,17 +15,33 @@ interface SNSInputProps {
 const SNSInput = ({
   snsInputOptions,
   groupIndex,
+  value: propValue = '',
+  snsId: propSnsId,
   setInputValue,
   className = '',
 }: SNSInputProps) => {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [value, setValue] = useState('');
 
-  const handleSelect = (value: string) => {
+  useEffect(() => {
+    setValue(propValue);
+
+    const index = propSnsId
+      ? snsInputOptions.findIndex((opt) => opt.id === propSnsId)
+      : -1;
+    setActiveIndex(index !== -1 ? index : -1);
+  }, [propValue, propSnsId, snsInputOptions]);
+
+  const handleSelect = (selectedLabel: string) => {
     const selectedIndex: number = snsInputOptions.findIndex(
-      (option) => option.label === value
+      (option) => option.label === selectedLabel
     );
-    setActiveIndex(selectedIndex !== -1 ? selectedIndex : 0);
+    setActiveIndex(selectedIndex !== -1 ? selectedIndex : -1);
+    if (selectedIndex !== -1) {
+      setInputValue(snsInputOptions[selectedIndex].id, value, groupIndex);
+    } else {
+      setInputValue('', '', groupIndex);
+    }
   };
 
   const isOptionSelected = activeIndex !== -1;
@@ -32,6 +50,7 @@ const SNSInput = ({
     isOptionSelected && snsInputOptions.length > activeIndex
       ? snsInputOptions[activeIndex]
       : {
+          label: '',
           placeholder: '', // 未選択時のプレースホルダー
           prefix: '',
           id: 'sns-input', // 未選択時のID
@@ -52,6 +71,7 @@ const SNSInput = ({
         label=""
         options={snsInputOptions.map((option) => option.label)}
         onSelect={handleSelect}
+        value={activeOption.label || ''}
         className="h-full w-24 flex-none"
       />
       <TextInput

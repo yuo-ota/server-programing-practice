@@ -8,6 +8,7 @@ import { setting } from '@/api/SettingApi';
 import { useNavigate } from 'react-router-dom';
 import NotificationContext from '@/contexts/notificationContext';
 import type { SNSInputValue } from '@/interfaces/app/snsInput';
+import type { SocialAccount } from '@/interfaces/app/socialAccount';
 import AccontManageGroup from './components/AccontManageGroup';
 
 const Root = () => {
@@ -24,16 +25,50 @@ const Root = () => {
 
   const [SNSInputs, setSNSInputs] = useState<SNSInputValue[]>([]);
 
+  // 日付を YYYY-MM-DD (ローカル日) に変換
+  const formatLocalDate = (date: Date) => {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  };
+
+  // YYYY-MM-DD からローカル日付の Date オブジェクトを作る
+  const parseLocalDate = (s: string) => {
+    const [y, m, d] = s.split('-').map((v) => parseInt(v, 10));
+    return new Date(y, m - 1, d);
+  };
+
   useEffect(() => {
     const settingData = localStorage.getItem('settingData');
     if (settingData) {
-      const parsedData = JSON.parse(settingData);
+      const parsedData = JSON.parse(settingData) as {
+        name?: string;
+        user_id?: string;
+        birthday?: string;
+        show_adult_contents?: boolean;
+        social_accounts?: SocialAccount[];
+      };
       setDisplayName(parsedData.name || '');
       setUserId(parsedData.user_id || '');
-      setBirthday(parsedData.birthday ? new Date(parsedData.birthday) : null);
+      setBirthday(
+        parsedData.birthday ? parseLocalDate(parsedData.birthday) : null
+      );
       setAdultContentSetting(
         parsedData.show_adult_contents ? '表示する' : '表示しない'
       );
+      if (
+        parsedData.social_accounts &&
+        Array.isArray(parsedData.social_accounts)
+      ) {
+        const mapped = parsedData.social_accounts.map((acc: SocialAccount) => ({
+          snsId: acc.name ?? (acc.platform_id ? String(acc.platform_id) : ''),
+          value: acc.identifier ?? acc.link ?? '',
+          platform_id: acc.platform_id ?? undefined,
+          identifier: acc.identifier ?? acc.link ?? '',
+        }));
+        setSNSInputs(mapped);
+      }
     }
   }, []);
 
@@ -49,12 +84,24 @@ const Root = () => {
       formData.append('name', displayName);
     }
     if (birthday) {
-      formData.append('birthday', birthday.toISOString().split('T')[0]);
+      formData.append('birthday', formatLocalDate(birthday));
     }
     formData.append(
       'show_adult_contents',
       adultContentSetting === '表示する' ? 'true' : 'false'
     );
+    SNSInputs.forEach((sns, index) => {
+      if (sns.snsId && sns.value) {
+        formData.append(`social_accounts[${index}][name]`, sns.snsId);
+        formData.append(`social_accounts[${index}][identifier]`, sns.value);
+        if (sns.platform_id !== undefined && sns.platform_id !== null) {
+          formData.append(
+            `social_accounts[${index}][platform_id]`,
+            String(sns.platform_id)
+          );
+        }
+      }
+    });
     return formData;
   };
 
@@ -64,9 +111,7 @@ const Root = () => {
   const handleSaveButtonClick = async () => {
     try {
       const formData = createFormData();
-      // API呼び出し
       await setting(formData);
-      // ローカルストレージに保存
       const prevSettingData = localStorage.getItem('settingData');
       const prevSettingJson = prevSettingData
         ? JSON.parse(prevSettingData)
@@ -87,10 +132,14 @@ const Root = () => {
             : {}),
           ...(birthday
             ? {
-                birthday: birthday.toISOString().split('T')[0],
+                birthday: formatLocalDate(birthday),
               }
             : {}),
           show_adult_contents: adultContentSetting === '表示する',
+          social_accounts: SNSInputs.map((s) => ({
+            name: s.snsId,
+            identifier: s.value,
+          })),
         })
       );
       showMessage(['設定を保存しました'], '--color-success');
@@ -135,6 +184,7 @@ const Root = () => {
             setBirthday={setBirthday}
             adultContentSetting={adultContentSetting}
             setAdultContentSetting={setAdultContentSetting}
+            SNSInputs={SNSInputs}
             setSNSInputs={setSNSInputs}
           />
           <AccontManageGroup />

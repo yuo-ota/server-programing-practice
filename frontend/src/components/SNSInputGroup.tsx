@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type {
   SNSInputGroupValue,
   SNSInputValue,
@@ -9,16 +9,32 @@ import SNSInput from './SNSInput';
 
 interface SNSInputGroupProps {
   setSNSInputs: React.Dispatch<React.SetStateAction<SNSInputValue[]>>;
+  SNSInputs?: SNSInputValue[];
   className?: string;
 }
 
 const SNSInputGroup = ({
   setSNSInputs,
+  SNSInputs = [],
   className = '',
 }: SNSInputGroupProps) => {
   const [snsInputValues, setSNSInputValues] = useState<SNSInputGroupValue[]>([
     initSNSInputValues,
   ]);
+
+  useEffect(() => {
+    const desired = Math.max(1, SNSInputs.length);
+    setSNSInputValues((prev) => {
+      if (prev.length === desired) return prev;
+      if (prev.length < desired) {
+        return [
+          ...prev,
+          ...Array(desired - prev.length).fill(initSNSInputValues),
+        ];
+      }
+      return prev.slice(0, desired);
+    });
+  }, [SNSInputs]);
 
   /**
    * 各SNSリンク入力欄の値を設定する
@@ -27,16 +43,31 @@ const SNSInputGroup = ({
    * @param inputIndex
    */
   const setInputValue = (snsId: string, value: string, inputIndex: number) => {
-    const newValue: SNSInputValue = { snsId, value };
+    const newValue: SNSInputValue = {
+      platform_id: undefined,
+      identifier: value,
+      snsId,
+      value,
+    };
     setSNSInputs((prev) => {
       const next = [...prev];
+
+      // 存在しないインデックスなら空の要素を埋める
+      if (!next[inputIndex]) {
+        next[inputIndex] = {
+          platform_id: undefined,
+          identifier: '',
+          snsId: '',
+          value: '',
+        };
+      }
 
       next[inputIndex] = {
         ...(next[inputIndex] ?? {}),
         ...newValue,
       };
 
-      return next;
+      return next as SNSInputValue[];
     });
   };
 
@@ -45,6 +76,10 @@ const SNSInputGroup = ({
    */
   const handleAddLink = () => {
     setSNSInputValues((prev) => [...prev, initSNSInputValues]);
+    setSNSInputs((prev) => [
+      ...prev,
+      { platform_id: undefined, identifier: '', snsId: '', value: '' },
+    ]);
   };
 
   return (
@@ -54,6 +89,8 @@ const SNSInputGroup = ({
           {snsInputValues.map((snsInputValue, index) => (
             <SNSInput
               {...snsInputValue}
+              value={SNSInputs?.[index]?.value}
+              snsId={SNSInputs?.[index]?.snsId}
               setInputValue={setInputValue}
               groupIndex={index}
               key={`SNSInput-${index}`}
