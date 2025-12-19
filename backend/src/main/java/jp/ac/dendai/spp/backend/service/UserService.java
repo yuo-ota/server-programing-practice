@@ -294,6 +294,7 @@ public class UserService {
     response.setName(targetUserSetting.getName());
     response.setIconPath(targetUserSetting.getIconPath());
     response.setHeaderPath(targetUserSetting.getHeaderPath());
+    response.setIntroduction(targetUserSetting.getIntroduction());
 
     List<SocialAccount> socialAccounts = getSocialAccounts(targetUserId);
     response.setSocialAccounts(socialAccounts);
