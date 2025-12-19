@@ -477,6 +477,8 @@ paths:
                     type: string
                   header_path:
                     type: string
+                  introduction:
+                    type: string
                   social_accounts:
                     type: array
                     items:
