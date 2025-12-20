@@ -70,16 +70,18 @@ const SettingItemGroup = ({
   /**
    * ユーザーID入力欄からフォーカスが外れたときの処理
    */
-  const handleUserIdBlur = async() => {
+  const handleUserIdBlur = async () => {
     if (userId === '') {
       setUserIdError('ユーザーIDを入力してください');
       return;
     }
 
     const response = await checkUserId(userId);
-    
-    if(isCheckUserIdResponse(response.data) === false) {
-      setUserIdError('ユーザーIDの確認に失敗しました。時間をおいて再度お試しください。');
+
+    if (isCheckUserIdResponse(response.data) === false) {
+      setUserIdError(
+        'ユーザーIDの確認に失敗しました。時間をおいて再度お試しください。'
+      );
       return;
     }
 

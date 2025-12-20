@@ -7,10 +7,14 @@ export const setting = async (formData: FormData): Promise<void> => {
   });
 };
 
-export const checkUserId = async (userId: string): Promise<AxiosResponse<void>> => {
+export const checkUserId = async (
+  userId: string
+): Promise<AxiosResponse<void>> => {
   const response = await axios.get<void>(
-    `${API_URL}/api/users/check-id/${userId}`, {
+    `${API_URL}/api/users/check-id/${userId}`,
+    {
       withCredentials: true,
-    });
+    }
+  );
   return response;
-}
+};

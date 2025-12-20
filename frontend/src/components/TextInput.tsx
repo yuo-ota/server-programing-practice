@@ -42,14 +42,14 @@ const TextInput = ({
         } ${isUnroundedLeft ? 'rounded-r-lg' : 'rounded-lg'}`}
       >
         <label
-          className="text-annotation text-body inline-block flex-none cursor-pointer pl-1 absolute top-0"
+          className="text-annotation text-body absolute top-0 inline-block flex-none cursor-pointer pl-1"
           htmlFor={id}
         >
           {prefix}
         </label>
         <input
           id={id}
-          className={`placeholder:text-placeholder text-foreground text-subtitle ease h-full flex-1 pl-1  outline-none ${prefix && `pt-1`} ${displayStatus == 'disabled' && `pointer-events-none cursor-not-allowed`} ${isUnroundedLeft ? 'rounded-r-lg' : 'rounded-lg'}`}
+          className={`placeholder:text-placeholder text-foreground text-subtitle ease h-full flex-1 pl-1 outline-none ${prefix && `pt-1`} ${displayStatus == 'disabled' && `pointer-events-none cursor-not-allowed`} ${isUnroundedLeft ? 'rounded-r-lg' : 'rounded-lg'}`}
           value={value}
           onChange={displayStatus == 'disabled' ? () => {} : onChange}
           onBlur={displayStatus == 'disabled' ? () => {} : onBlur}

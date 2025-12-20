@@ -18,4 +18,4 @@ export const isCheckUserIdResponse = (
     'available' in data &&
     typeof data.available === 'boolean'
   );
-}
+};
