@@ -1,34 +1,40 @@
 import { useState } from 'react';
 import TabElement from './TabElement';
+interface Tabs{
+  label: string;
+  onClick: () => void;
+}
 
 interface TabElementGroupProps {
-  tabs: string[];
+  tabs: Tabs[];
   className?: string;
-  onChange?: (index: number) => void;
+  defaultIndex?: number;
 }
 
 const TabElementGroup = ({
   tabs,
   className = '',
-  onChange,
+  defaultIndex,
 }: TabElementGroupProps) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(defaultIndex ?? 0);
 
   const handleSelect = (index: number) => {
     setSelectedIndex(index);
-    onChange?.(index);
   };
 
   return (
     <div
       className={`grid w-full grid-cols-2 place-items-center gap-x-4 ${className}`}
     >
-      {tabs.map((label, index) => (
+      {tabs.map((tab, index) => (
         <TabElement
-          key={label}
-          label={label}
+          key={tab.label}
+          label={tab.label}
           selected={selectedIndex === index}
-          onClick={() => handleSelect(index)}
+          onClick={() => {
+            handleSelect(index);
+            tab.onClick();
+          }}
           className="w-24 flex-1"
         />
       ))}
