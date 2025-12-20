@@ -12,6 +12,7 @@ import jp.ac.dendai.spp.backend.dto.Content;
 import jp.ac.dendai.spp.backend.dto.LikedPost;
 import jp.ac.dendai.spp.backend.dto.OwnPost;
 import jp.ac.dendai.spp.backend.dto.SocialAccount;
+import jp.ac.dendai.spp.backend.entity.Like;
 import jp.ac.dendai.spp.backend.entity.LikedPostEntity;
 import jp.ac.dendai.spp.backend.entity.OwnPostEntity;
 import jp.ac.dendai.spp.backend.entity.PreRegisterToken;
@@ -24,6 +25,7 @@ import jp.ac.dendai.spp.backend.form.request.ShowUserRequest;
 import jp.ac.dendai.spp.backend.form.request.UpdateUserRequest;
 import jp.ac.dendai.spp.backend.form.response.UserDataResponse;
 import jp.ac.dendai.spp.backend.form.response.UserSettingResponse;
+import jp.ac.dendai.spp.backend.repository.LikeRepository;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
 import jp.ac.dendai.spp.backend.repository.PreRegisterTokenRepository;
 import jp.ac.dendai.spp.backend.repository.SocialAccountRepository;
@@ -47,6 +49,7 @@ public class UserService {
   private final DisplayIdService displayIdService;
   private final ElectedPostService electedPostService;
   private final PreRegisterTokenRepository preRegisterTokenRepository;
+  private final LikeRepository likeRepository;
 
   public UserService(
       AuthService authService,
@@ -57,7 +60,8 @@ public class UserService {
       DisplayIdService displayIdService,
       PreRegisterTokenRepository preRegisterTokenRepository,
       PostRepository postRepository,
-      ElectedPostService electedPostService) {
+      ElectedPostService electedPostService,
+      LikeRepository likeRepository) {
     this.authService = authService;
     this.tokenService = tokenService;
     this.userRepository = userRepository;
@@ -67,6 +71,7 @@ public class UserService {
     this.electedPostService = electedPostService;
     this.preRegisterTokenRepository = preRegisterTokenRepository;
     this.postRepository = postRepository;
+    this.likeRepository = likeRepository;
   }
 
   @Transactional
@@ -325,8 +330,16 @@ public class UserService {
       Content content =
           new Content(
               ownPostEntity.getDescription(), ownPostEntity.getImagePath(), ownPostEntity.getAlt());
+      Like like = likeRepository.findByUserIdAndPostId(userId, ownPostEntity.getPostId());
+      boolean isLiked;
+      if (like != null) {
+        isLiked = true;
+      } else {
+        isLiked = false;
+      }
       OwnPost ownPost =
-          new OwnPost(ownPostEntity.getPostId(), iconPath, content, ownPostEntity.getLikeCount());
+          new OwnPost(
+              ownPostEntity.getPostId(), iconPath, content, ownPostEntity.getLikeCount(), isLiked);
       ownPosts.add(ownPost);
     }
     return ownPosts;
