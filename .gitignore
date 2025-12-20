@@ -27,6 +27,9 @@ storybook-static
 
 override_api/
 
+*.pem
+*.p12
+
 # ====================
 # Backend (Spring Boot)
 # ====================
