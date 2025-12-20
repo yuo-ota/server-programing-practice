@@ -11,7 +11,7 @@ public class CreatePostRequest {
   private String text;
 
   @NotNull
-  @Size(min = 1, max = 1, message = "画像は1枚以上1枚以下で設定してください。")
+  @Size(min = 1, max = 1, message = "画像は1のみ設定してください。")
   private List<MultipartFile> images;
 
   @NotNull private String sensitive;
