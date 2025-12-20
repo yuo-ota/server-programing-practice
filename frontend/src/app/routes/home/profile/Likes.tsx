@@ -13,36 +13,36 @@ import SettingIcon from '@/assets/setting.svg?react';
 import TopBanner from '@/components/TopBanner';
 
 export const Likes = () => {
-  const {userId} = useParams<{ userId : string }>();
+  const { userId } = useParams<{ userId: string }>();
   const [userData, setUserData] = useState<Profile | undefined>(undefined);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(!userId) return;
+    if (!userId) return;
 
     const getUserProfile = async () => {
       const profile = await getProfile(userId);
       setUserData(profile);
     };
 
-    getUserProfile()
+    getUserProfile();
   }, [userId]);
 
   const handleHomeClick = () => {
     navigate(`/home/posts?date=${new Date().toISOString().split('T')[0]}`);
-  }
+  };
 
   const handleProfileClick = () => {
     navigate(`/home/profile/${getUserId()}`);
-    };
+  };
 
   const handleSettingClick = () => {
     navigate('/setting');
-  }
+  };
 
   const handleNotificationClick = () => {
-    navigate('/home/notifications')
-  }
+    navigate('/home/notifications');
+  };
 
   return (
     <div className="relative h-dvh w-dvw">
@@ -60,7 +60,7 @@ export const Likes = () => {
       />
 
       {/* メインコンテンツ */}
-      <main className="pt-16 pb-17 h-full overflow-y-auto">
+      <main className="h-full overflow-y-auto pt-16 pb-17">
         <HomeProfileLikes userData={userData} />
       </main>
 

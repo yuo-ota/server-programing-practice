@@ -35,46 +35,48 @@ interface LikedPost extends BasePost {
 }
 
 export const isProfile = (data: unknown): data is Profile => {
-  return(
+  return (
     typeof data === 'object' &&
     data !== null &&
     'name' in data &&
-    typeof (data as { name: unknown}).name === 'string' &&
+    typeof (data as { name: unknown }).name === 'string' &&
     'iconPath' in data &&
-    typeof (data as { iconPath: unknown}).iconPath === 'string' &&
+    typeof (data as { iconPath: unknown }).iconPath === 'string' &&
     'headerPath' in data &&
-    typeof (data as { headerPath: unknown}).headerPath === 'string' &&
+    typeof (data as { headerPath: unknown }).headerPath === 'string' &&
     'introduction' in data &&
-    typeof (data as { introduction: unknown}).introduction === 'string' &&
+    typeof (data as { introduction: unknown }).introduction === 'string' &&
     'socialAccounts' in data &&
-    typeof (data as { socialAccounts: unknown}).socialAccounts === 'object' &&
-    (data as { socialAccounts: unknown}).socialAccounts !== null &&
-    isSocialAccountArray((data as {socialAccounts: unknown}).socialAccounts) &&
+    typeof (data as { socialAccounts: unknown }).socialAccounts === 'object' &&
+    (data as { socialAccounts: unknown }).socialAccounts !== null &&
+    isSocialAccountArray(
+      (data as { socialAccounts: unknown }).socialAccounts
+    ) &&
     'posts' in data &&
-    typeof (data as { posts: unknown}).posts === 'object' &&
-    (data as {posts: unknown}).posts !== null &&
-    isPostArray((data as {posts: unknown}).posts) &&
+    typeof (data as { posts: unknown }).posts === 'object' &&
+    (data as { posts: unknown }).posts !== null &&
+    isPostArray((data as { posts: unknown }).posts) &&
     'likedPosts' in data &&
-    typeof (data as { likedPosts: unknown}).likedPosts === 'object' &&
-    (data as {likedPosts: unknown}).likedPosts !== null &&
-    isLikedPostArray((data as {likedPosts: unknown}).likedPosts)
+    typeof (data as { likedPosts: unknown }).likedPosts === 'object' &&
+    (data as { likedPosts: unknown }).likedPosts !== null &&
+    isLikedPostArray((data as { likedPosts: unknown }).likedPosts)
   );
 };
 
 const isSocialAccountArray = (data: unknown): data is SocialAccounts[] => {
-  return(
+  return (
     Array.isArray(data) &&
     data.every(
       (item: unknown) =>
         typeof item === 'object' &&
         item !== null &&
         'name' in item &&
-        typeof (item as {name: unknown }).name === 'string' &&
+        typeof (item as { name: unknown }).name === 'string' &&
         'identifier' in item &&
-        typeof (item as {identifier: unknown }).identifier === 'string'
+        typeof (item as { identifier: unknown }).identifier === 'string'
     )
-  )
-}
+  );
+};
 
 const isBasePost = (data: unknown): data is BasePost => {
   return (
@@ -119,7 +121,7 @@ const isLikedPostArray = (data: unknown): data is LikedPost[] => {
         typeof (item as { name: unknown }).name === 'string'
     )
   );
-}
+};
 
 const isContent = (data: unknown): data is Content => {
   return (
@@ -132,4 +134,4 @@ const isContent = (data: unknown): data is Content => {
     'alt' in data &&
     typeof (data as { alt: unknown }).alt === 'string'
   );
-}
+};

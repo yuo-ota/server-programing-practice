@@ -9,10 +9,9 @@ export default {
   args: {
     name: 'ユーザーネーム',
     userId: 'ユーザーID',
-    icon: <UserIcon className="w-full h-full"/>,
+    icon: <UserIcon className="h-full w-full" />,
     className: '',
   },
 } satisfies Meta<T>;
 
-export const Default: StoryObj<T> = {
-};
+export const Default: StoryObj<T> = {};

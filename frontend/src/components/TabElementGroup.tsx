@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import TabElement from './TabElement';
-interface Tabs{
+interface Tabs {
   label: string;
   onClick: () => void;
 }
