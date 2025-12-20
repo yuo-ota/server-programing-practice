@@ -84,7 +84,7 @@ const LoginInputGroup = () => {
   const saveUserSettingToLocalStorage = async () => {
     const userSetting = await getUserSetting();
 
-    if (typeof userSetting.data === 'object' && userSetting.data !== null) {
+    if (isSettingData(userSetting.data)) {
       localStorage.setItem('settingData', JSON.stringify(userSetting.data));
     }
   };
