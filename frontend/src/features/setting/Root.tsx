@@ -72,6 +72,14 @@ const Root = () => {
     }
   }, []);
 
+  const isError = (): boolean => {
+    let errorExists = false;
+    if (displayNameError || userIdError) {
+      errorExists = true;
+    }
+    return errorExists;
+  };
+
   /**
    * formData作成
    */
@@ -109,6 +117,10 @@ const Root = () => {
    * 保存ボタンがクリックされたときの処理
    */
   const handleSaveButtonClick = async () => {
+    if (isError()) {
+      showMessage(['入力内容にエラーがあります'], '--color-error');
+      return;
+    }
     try {
       const formData = createFormData();
       await setting(formData);
