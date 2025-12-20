@@ -499,6 +499,8 @@ paths:
                           type: string
                         like_count:
                           type: integer
+                        is_liked:
+                          type: boolean
                         content:
                           type: object
                           properties:
@@ -662,19 +664,31 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  text:
-                    type: string
-                  images:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        path:
-                          type: string
-                        alt:
-                          type: string
+                type: array
+                items:
+                  type: object
+                  properties:
+                    user_id:
+                      type: string
+                    name:
+                      type: string
+                    icon_path:
+                      type: string
+                    is_liked:
+                      type: boolean
+                    post_id:
+                      type: string
+                    text:
+                      type: string
+                    images:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          path:
+                            type: string
+                          alt:
+                            type: string
         "400":
           description: パラメーターが不正の場合
           content:
@@ -799,6 +813,16 @@ paths:
               schema:
                 type: object
                 properties:
+                  user_id:
+                    type: string
+                  name:
+                    type: string
+                  icon_path:
+                    type: string
+                  is_liked:
+                    type: boolean
+                  post_id:
+                    type: string
                   text:
                     type: string
                   images:
