@@ -10,13 +10,17 @@ import jp.ac.dendai.spp.backend.constant.PostConstant;
 import jp.ac.dendai.spp.backend.dto.Image;
 import jp.ac.dendai.spp.backend.entity.ElectedPost;
 import jp.ac.dendai.spp.backend.entity.ImageEntity;
+import jp.ac.dendai.spp.backend.entity.Like;
 import jp.ac.dendai.spp.backend.entity.Post;
+import jp.ac.dendai.spp.backend.entity.UserSetting;
 import jp.ac.dendai.spp.backend.error.InvalidParameterException;
 import jp.ac.dendai.spp.backend.form.request.CreatePostRequest;
 import jp.ac.dendai.spp.backend.form.response.ShowPostResponse;
 import jp.ac.dendai.spp.backend.repository.ElectedPostRepository;
 import jp.ac.dendai.spp.backend.repository.ImageRepository;
+import jp.ac.dendai.spp.backend.repository.LikeRepository;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
+import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
 import jp.ac.dendai.spp.backend.util.ImageManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +31,8 @@ public class PostService {
   private final PostRepository postRepository;
   private final ImageRepository imageRepository;
   private final ElectedPostRepository electedPostRepository;
+  private final UserSettingRepository userSettingRepository;
+  private final LikeRepository likeRepository;
 
   private final AuthService authService;
 
@@ -34,10 +40,14 @@ public class PostService {
       PostRepository postRepository,
       ImageRepository imageRepository,
       ElectedPostRepository electedPostRepository,
+      UserSettingRepository userSettingRepository,
+      LikeRepository likeRepository,
       AuthService authService) {
     this.postRepository = postRepository;
     this.imageRepository = imageRepository;
     this.electedPostRepository = electedPostRepository;
+    this.userSettingRepository = userSettingRepository;
+    this.likeRepository = likeRepository;
     this.authService = authService;
   }
 
@@ -147,10 +157,17 @@ public class PostService {
     checkValidPost(userId, post);
 
     String displayId = authService.getDisplayIdByUserId(post.getCreatorId());
+    UserSetting userSetting = userSettingRepository.findByDisplayId(displayId);
     List<ImageEntity> images = imageRepository.findByPostId(postId);
     List<Image> imageDtos = new ArrayList<>();
 
+    Like like = likeRepository.findByUserIdAndPostId(userId, postId);
+    boolean isLiked = like != null;
+
+    response.setLiked(isLiked);
     response.setUserId(displayId);
+    response.setName(userSetting.getName());
+    response.setIconPath(userSetting.getIconPath());
     response.setPostId(post.getId());
     response.setText(post.getDescription());
     for (ImageEntity imageEntity : images) {

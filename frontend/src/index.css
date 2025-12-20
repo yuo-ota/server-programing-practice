@@ -31,6 +31,7 @@
       opacity: 1;
     }
   }
+  --shadow-up: 0 -4px 6px rgba(0, 0, 0, 0.1);
 }
 
 :root {

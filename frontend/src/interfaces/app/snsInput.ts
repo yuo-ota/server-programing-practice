@@ -7,6 +7,8 @@ export interface SNSInputOption {
 }
 
 export interface SNSInputValue {
+  platform_id: number | undefined;
+  identifier: string;
   snsId: string;
   value: string;
 }

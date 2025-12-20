@@ -1,36 +1,31 @@
-import { useState } from 'react';
 import RadioButton from './RadioButton';
 
 interface RadioButtonGroupProps {
   groupName: string;
   options: string[];
-  initialValue: string;
-  onChange?: (newValue: string) => void;
+  value: string;
+  disabled?: boolean;
+  onSelect: (newValue: string) => void;
   className?: string;
 }
 
 const RadioButtonGroup = ({
   groupName,
   options,
-  initialValue,
-  onChange,
+  value,
+  disabled = false,
+  onSelect,
   className = '',
 }: RadioButtonGroupProps) => {
-  const [selectedValue, setSelectedValue] = useState(initialValue);
-
   const handleChange = (label: string) => {
-    setSelectedValue(label);
-
-    if (onChange) {
-      onChange(label);
-    }
+    onSelect(label);
   };
 
   return (
     <div className={`${className} flex`}>
       {options.map((label, index) => {
         const uniqueId = `${groupName}-${index}`;
-        const isChecked = selectedValue === label;
+        const isChecked = value === label;
 
         return (
           <RadioButton
@@ -39,7 +34,12 @@ const RadioButtonGroup = ({
             name={groupName}
             label={label}
             checked={isChecked}
-            onChange={() => handleChange(label)}
+            disabled={disabled}
+            onChange={() => {
+              if (!disabled) {
+                handleChange(label);
+              }
+            }}
           />
         );
       })}
