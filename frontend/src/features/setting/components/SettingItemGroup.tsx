@@ -1,7 +1,9 @@
+import { checkUserId } from '@/api/SettingApi';
 import RadioButtonGroup from '@/components/RadioButtonGroup';
 import SelectBox from '@/components/SelectBox';
 import SNSInputGroup from '@/components/SNSInputGroup';
 import TextInput from '@/components/TextInput';
+import { isCheckUserIdResponse } from '@/interfaces/api/setting';
 import type { SNSInputValue } from '@/interfaces/app/snsInput';
 import { useMemo } from 'react';
 
@@ -68,15 +70,23 @@ const SettingItemGroup = ({
   /**
    * ユーザーID入力欄からフォーカスが外れたときの処理
    */
-  const handleUserIdBlur = () => {
+  const handleUserIdBlur = async() => {
     if (userId === '') {
       setUserIdError('ユーザーIDを入力してください');
       return;
     }
-    // if ( ) {
-    //   setUserIdError('そのユーザーIDはすでに使用されています');
-    //   return;
-    // }
+
+    const response = await checkUserId(userId);
+    
+    if(isCheckUserIdResponse(response.data) === false) {
+      setUserIdError('ユーザーIDの確認に失敗しました。時間をおいて再度お試しください。');
+      return;
+    }
+
+    if (response.data.available === false) {
+      setUserIdError('そのユーザーIDはすでに使用されています');
+      return;
+    }
     setUserIdError('');
   };
 

@@ -11,7 +11,7 @@ const AccontManageGroup = () => {
    */
   const handleLogoutButtonClick = async () => {
     await logout();
-    navigate('/root');
+    navigate('/');
   };
 
   /**
@@ -20,7 +20,7 @@ const AccontManageGroup = () => {
    */
   const handleDeleteAccountButtonClick = async () => {
     await deleteAccount();
-    navigate('/root');
+    navigate('/');
   };
 
   return (
