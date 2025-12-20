@@ -25,3 +25,17 @@ export const signup = async (
     { withCredentials: true }
   );
 };
+
+export const adminLogin = async (
+  email: string,
+  password: string
+): Promise<void> => {
+  await axios.post<void>(
+    `${API_URL}/api/admin/login`,
+    {
+      email_address: email,
+      password: password,
+    },
+    { withCredentials: true }
+  );
+};

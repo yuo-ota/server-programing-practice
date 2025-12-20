@@ -372,6 +372,82 @@ paths:
                   message:
                     type: string
 
+  /api/user/setting:
+    get:
+      summary: ユーザー設定取得
+      parameters:
+        - name: token
+          in: cookie
+          required: true
+          schema:
+            type: string
+          description: "認証用トークン"
+      responses:
+        "200":
+          description: 取得できた場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  display_id:
+                    type: string
+                  name:
+                    type: string
+                  icon_path:
+                    type: string
+                  header_path:
+                    type: string
+                  introduction:
+                    type: string
+                  birthday:
+                    type: string
+                    format: date
+                  show_adult_content:
+                    type: boolean
+                  social_accounts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        identifier:
+                          type: string
+        "400":
+          description: パラメーターが不正の場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "401":
+          description: ユーザー認証に失敗した場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        "500":
+          description: サーバー内部で予期せぬエラーの発生
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
   /api/user/{userId}:
     get:
       summary: アカウント詳細情報取得
@@ -400,6 +476,8 @@ paths:
                   icon_path:
                     type: string
                   header_path:
+                    type: string
+                  introduction:
                     type: string
                   social_accounts:
                     type: array

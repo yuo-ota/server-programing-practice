@@ -5,12 +5,14 @@ import java.util.UUID;
 public class LikeNotificateContent extends NotificateContent {
   private UUID likedPostId;
   private String likedByUserId;
+  private String likedByUsername;
 
   public LikeNotificateContent() {}
 
-  public LikeNotificateContent(UUID likedPostId, String likedByUserId) {
+  public LikeNotificateContent(UUID likedPostId, String likedByUserId, String likedByUsername) {
     this.likedPostId = likedPostId;
     this.likedByUserId = likedByUserId;
+    this.likedByUsername = likedByUsername;
   }
 
   // Getters and Setters
@@ -28,5 +30,13 @@ public class LikeNotificateContent extends NotificateContent {
 
   public void setLikedByUserId(String likedByUserId) {
     this.likedByUserId = likedByUserId;
+  }
+
+  public String getLikedByUsername() {
+    return likedByUsername;
+  }
+
+  public void setLikedByUsername(String likedByUsername) {
+    this.likedByUsername = likedByUsername;
   }
 }

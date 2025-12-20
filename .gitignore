@@ -25,6 +25,8 @@ dist-ssr
 *storybook.log
 storybook-static
 
+override_api/
+
 # ====================
 # Backend (Spring Boot)
 # ====================
