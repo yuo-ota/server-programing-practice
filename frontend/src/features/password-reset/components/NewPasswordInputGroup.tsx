@@ -135,7 +135,7 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
         displayStatus={'normal'}
         prefix={''}
         isUnroundedLeft={false}
-        className="h-5"
+        className="h-[88.5px]"
       />
       <TextInput
         type="password"
@@ -149,7 +149,7 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
         displayStatus={'normal'}
         prefix={''}
         isUnroundedLeft={false}
-        className="mt-15 h-5"
+        className="mt-15 h-[88.5px]"
       />
       <div className="mt-3.5 flex flex-col items-center gap-2.5">
         <TransitionButton
