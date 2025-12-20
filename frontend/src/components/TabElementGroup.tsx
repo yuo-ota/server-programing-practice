@@ -24,7 +24,7 @@ const TabElementGroup = ({
 
   return (
     <div
-      className={`grid w-full grid-cols-2 place-items-center gap-x-4 ${className}`}
+      className={`grid w-full auto-cols-fr grid-flow-col place-items-center gap-x-4 ${className}`}
     >
       {tabs.map((tab, index) => (
         <TabElement
