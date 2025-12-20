@@ -23,7 +23,6 @@ export default defineConfig({
     svgr(),
     react(),
     tailwindcss(),
-    basicSsl()
   ],
   envDir: path.resolve(__dirname, '..'),
   test: {

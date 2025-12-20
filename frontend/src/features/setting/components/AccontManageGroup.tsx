@@ -37,7 +37,7 @@ const AccontManageGroup = () => {
         />
         <TransitionButton
           displayStatus={'attention'}
-          label={'パスワードをリセット'}
+          label={'アカウントを削除'}
           onClick={handleDeleteAccountButtonClick}
           className="h-11 w-full"
         />
