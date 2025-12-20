@@ -1,4 +1,4 @@
-export interface setting {
+export interface Setting {
   user_id: string;
   name: string;
   birthday: string;

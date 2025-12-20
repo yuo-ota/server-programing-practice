@@ -140,7 +140,7 @@ const SettingItemGroup = ({
   const handleMonthSelect = (value: string) => {
     let newBirthday: Date;
     if (!birthday) {
-      newBirthday = new Date(currentYear, parseInt(value), 1);
+      newBirthday = new Date(currentYear, parseInt(value)-1, 1);
       setBirthday(newBirthday);
       updateIsAdult(newBirthday);
       return;
