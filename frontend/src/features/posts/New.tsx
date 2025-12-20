@@ -105,7 +105,7 @@ export const New = () => {
       errorExists = true;
     }
     return errorExists;
-  }
+  };
 
   /**
    * 戻るボタンがクリックされたときの処理
@@ -134,15 +134,21 @@ export const New = () => {
       setIsSubmitting(true);
       const formData = new FormData();
       formData.append('text', title);
-      formData.append('sensitive', visibility === '成人向け' ? 'true' : 'false');
+      formData.append(
+        'sensitive',
+        visibility === '成人向け' ? 'true' : 'false'
+      );
       formData.append('images', image.file);
 
       await createPost(formData);
 
       showMessage(['投稿しました'], '--color-success');
       navigate(-1);
-    } catch (e) {
-      showMessage(['投稿に失敗しました。', '再度時間を空けてお試しください。'], '--color-error');
+    } catch {
+      showMessage(
+        ['投稿に失敗しました。', '再度時間を空けてお試しください。'],
+        '--color-error'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -171,10 +177,7 @@ export const New = () => {
           className="h-16 w-full"
         />
         <div className="flex items-start gap-4 px-2 pt-6">
-            <img
-              src={iconUrl}
-              className="h-14 w-14 rounded-full object-cover"
-            />
+          <img src={iconUrl} className="h-14 w-14 rounded-full object-cover" />
           <PostInputGroup
             className="min-w-0 flex-1"
             title={title}
