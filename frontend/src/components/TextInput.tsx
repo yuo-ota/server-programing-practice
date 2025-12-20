@@ -35,21 +35,21 @@ const TextInput = ({
         {label}
       </label>
       <div
-        className={`flex w-full flex-1 cursor-pointer items-center justify-start border bg-transparent transition duration-150 focus:shadow focus:outline-none ${
+        className={`relative flex w-full flex-1 cursor-pointer items-center justify-start border bg-transparent transition duration-150 focus:shadow focus:outline-none ${
           error
             ? 'border-error focus:border-error'
             : 'border-foreground focus:border-theme hover:border-foreground/(--hover-nega-opacity)'
         } ${isUnroundedLeft ? 'rounded-r-lg' : 'rounded-lg'}`}
       >
         <label
-          className="text-foreground text-body inline-block flex-none cursor-pointer pl-3"
+          className="text-annotation text-body inline-block flex-none cursor-pointer pl-1 absolute top-0"
           htmlFor={id}
         >
           {prefix}
         </label>
         <input
           id={id}
-          className={`placeholder:text-placeholder text-foreground text-subtitle ease -ml-3 h-full flex-1 pl-3 outline-none ${displayStatus == 'disabled' && `pointer-events-none cursor-not-allowed`} ${isUnroundedLeft ? 'rounded-r-lg' : 'rounded-lg'}`}
+          className={`placeholder:text-placeholder text-foreground text-subtitle ease h-full flex-1 pl-1  outline-none ${prefix && `pt-1`} ${displayStatus == 'disabled' && `pointer-events-none cursor-not-allowed`} ${isUnroundedLeft ? 'rounded-r-lg' : 'rounded-lg'}`}
           value={value}
           onChange={displayStatus == 'disabled' ? () => {} : onChange}
           onBlur={displayStatus == 'disabled' ? () => {} : onBlur}
