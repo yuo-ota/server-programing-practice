@@ -271,8 +271,9 @@ const SettingItemGroup = ({
             className="gap-20"
           />
         </div>
-        <div className="">
+        <div className="flex flex-col">
           <label className="text-foreground text-subtitle">SNS ID</label>
+          <label className="text-annotation text-body">他SNSのリンクをプロフィールに添付できます</label>
           <SNSInputGroup
             className="w-full"
             setSNSInputs={setSNSInputs}
