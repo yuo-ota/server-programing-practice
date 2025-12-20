@@ -9,7 +9,7 @@ public class ImageConstant {
 
   public static final int MAX_FILENAME_GENERATION_ATTEMPTS = 10;
   public static final java.util.Set<String> ALLOWED_EXTENSIONS =
-      new java.util.HashSet<>(java.util.Arrays.asList("png", "jpg", "jpeg", "webp", "heic"));
+      new java.util.HashSet<>(java.util.Arrays.asList("png", "jpg", "jpeg", "jpe", "gif", "svg", "webp"));
   public static final long MAX_FILE_SIZE_BYTES = 5L * 1024L * 1024L;
 
   public static final Map<String, String> IMAGE_TYPE_MAP =
