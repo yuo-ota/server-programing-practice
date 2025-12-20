@@ -35,16 +35,16 @@ public class UserDataResponse {
     return headerPath;
   }
 
+  public void setHeaderPath(String headerPath) {
+    this.headerPath = headerPath;
+  }
+
   public String getIntroduction() {
     return introduction;
   }
 
   public void setIntroduction(String introduction) {
     this.introduction = introduction;
-  }
-
-  public void setHeaderPath(String headerPath) {
-    this.headerPath = headerPath;
   }
 
   public List<OwnPost> getPosts() {

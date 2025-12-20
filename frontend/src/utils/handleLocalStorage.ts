@@ -1,12 +1,20 @@
+import { isSettingData } from '@/interfaces/api/userSetting';
+
 export const getUserId = () => {
-  try {
-    const settingData = localStorage.getItem('settingData');
-    if (settingData) {
-      const parsedData = JSON.parse(settingData);
-      return parsedData.user_id as string;
+  const settingData = localStorage.getItem('settingData');
+
+  if (settingData) {
+    try {
+      const parsed: unknown = JSON.parse(settingData);
+
+      if (isSettingData(parsed)) {
+        const userId = parsed.display_id;
+        return userId;
+      }
+      throw new Error('Invalid setting data format');
+    } catch {
+      return '';
     }
-    return '';
-  } catch {
-    return '';
   }
+  return '';
 };
