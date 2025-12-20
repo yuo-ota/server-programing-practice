@@ -162,12 +162,9 @@ public class PostService {
     List<Image> imageDtos = new ArrayList<>();
 
     Like like = likeRepository.findByUserIdAndPostId(userId, postId);
-    if (like != null) {
-      response.setLiked(true);
-    } else {
-      response.setLiked(false);
-    }
+    boolean isLiked = like != null;
 
+    response.setLiked(isLiked);
     response.setUserId(displayId);
     response.setName(userSetting.getName());
     response.setIconPath(userSetting.getIconPath());

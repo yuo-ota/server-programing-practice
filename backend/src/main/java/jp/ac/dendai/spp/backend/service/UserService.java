@@ -304,7 +304,7 @@ public class UserService {
     List<SocialAccount> socialAccounts = getSocialAccounts(targetUserId);
     response.setSocialAccounts(socialAccounts);
 
-    List<OwnPost> ownPosts = getOwnPosts(targetUserId, targetUserSetting.getIconPath());
+    List<OwnPost> ownPosts = getOwnPosts(targetUserId, targetUserSetting.getIconPath(), userId);
     response.setPosts(ownPosts);
 
     if (userId != null && userId.equals(targetUserId)) {
@@ -322,7 +322,7 @@ public class UserService {
    * @param iconPath 投稿所有者のアイコンパス
    * @return 指定ユーザーの投稿一覧
    */
-  public List<OwnPost> getOwnPosts(UUID userId, String iconPath) {
+  public List<OwnPost> getOwnPosts(UUID userId, String iconPath, UUID viewerId) {
     List<OwnPost> ownPosts = new ArrayList<>();
     List<OwnPostEntity> ownPostEntities = postRepository.findByOwnPost(userId);
 
@@ -330,13 +330,8 @@ public class UserService {
       Content content =
           new Content(
               ownPostEntity.getDescription(), ownPostEntity.getImagePath(), ownPostEntity.getAlt());
-      Like like = likeRepository.findByUserIdAndPostId(userId, ownPostEntity.getPostId());
-      boolean isLiked;
-      if (like != null) {
-        isLiked = true;
-      } else {
-        isLiked = false;
-      }
+      Like like = likeRepository.findByUserIdAndPostId(viewerId, ownPostEntity.getPostId());
+      boolean isLiked = like != null;
       OwnPost ownPost =
           new OwnPost(
               ownPostEntity.getPostId(), iconPath, content, ownPostEntity.getLikeCount(), isLiked);
