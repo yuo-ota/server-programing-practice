@@ -30,6 +30,11 @@ export const signup = async (
   );
 };
 
+export const deleteAccount = async (): Promise<void> => {
+  await axios.delete<void>(`${API_URL}/api/user`, { withCredentials: true });
+};
+
+
 export const adminLogin = async (
   email: string,
   password: string
