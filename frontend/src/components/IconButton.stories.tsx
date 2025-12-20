@@ -8,7 +8,7 @@ export default {
   component: IconButton,
   args: {
     onClick: () => {},
-    ButtonIcon: <SettingIcon className={`h-10 w-10`} />,
+    ButtonIcon: <SettingIcon className={''} />,
     className: 'w-12 h-12',
   },
 } satisfies Meta<T>;

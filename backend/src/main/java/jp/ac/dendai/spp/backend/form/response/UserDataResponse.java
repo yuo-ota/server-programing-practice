@@ -9,6 +9,7 @@ public class UserDataResponse {
   private String name;
   private String iconPath;
   private String headerPath;
+  private String introduction;
   private List<OwnPost> posts;
   private List<LikedPost> likedPosts;
   private List<SocialAccount> socialAccounts;
@@ -36,6 +37,14 @@ public class UserDataResponse {
 
   public void setHeaderPath(String headerPath) {
     this.headerPath = headerPath;
+  }
+
+  public String getIntroduction() {
+    return introduction;
+  }
+
+  public void setIntroduction(String introduction) {
+    this.introduction = introduction;
   }
 
   public List<OwnPost> getPosts() {

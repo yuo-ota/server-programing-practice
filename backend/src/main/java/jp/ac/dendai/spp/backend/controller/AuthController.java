@@ -178,4 +178,17 @@ public class AuthController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
   }
+
+  @PostMapping("/logout")
+  public ResponseEntity<?> logout() {
+    try {
+      ResponseCookie cookie = authService.logout();
+      return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
+    } catch (Exception e) {
+      ErrorResponse errorResponse = new ErrorResponse();
+      errorResponse.setCode("INTERNAL_SERVER_ERROR");
+      errorResponse.setMessage("サーバー内部で予期せぬエラーが発生しました。");
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+  }
 }
