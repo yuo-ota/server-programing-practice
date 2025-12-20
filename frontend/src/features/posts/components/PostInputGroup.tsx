@@ -63,7 +63,7 @@ const PostInputGroup = ({
 
   return (
     <>
-      <div className={`${className} flex flex-col gap-6`}>
+      <div className={`${className} relative flex flex-col gap-6`}>
         <div className="flex flex-col">
           <div className="flex">
             <button
