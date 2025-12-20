@@ -16,10 +16,11 @@ interface PostProps {
   postId: string;
   text: string;
   images: images;
+  isLiked: boolean;
   className?: string;
 }
 
-const Post = ({icon, userName, userId, text, images, className=""}: PostProps) => {
+const Post = ({icon, userName, userId, text, images, isLiked, className=""}: PostProps) => {
   
   const navigate = useNavigate();
 
@@ -33,7 +34,7 @@ const Post = ({icon, userName, userId, text, images, className=""}: PostProps) =
 
 
   return (
-    <div className={`${className} flex w-full`}>
+    <div className={`${className} flex w-full px-2`}>
       <IconButton
       onClick={() => {handleProfileClick()}}
       ButtonIcon={icon}
@@ -46,7 +47,7 @@ const Post = ({icon, userName, userId, text, images, className=""}: PostProps) =
           </p>
           <div className="flex items-center">
             <LikeButton
-              isLiked={false}
+              isLiked={isLiked}
               onClick={() => {}}
               className="w-12 h-12"
             />
