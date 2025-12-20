@@ -8,7 +8,7 @@ export const getUserId = () => {
       const parsed: unknown = JSON.parse(settingData);
 
       if (isSettingData(parsed)) {
-        const userId = (parsed as SettingData).display_id;
+        const userId = parsed.display_id;
         return userId;
       }
       throw new Error('Invalid setting data format');
