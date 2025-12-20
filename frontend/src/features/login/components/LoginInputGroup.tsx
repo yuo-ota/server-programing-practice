@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { login } from '@/api/AuthApi';
 import { checkEmailFormat, checkPasswordFormat } from '@/utils/validation';
 import { getUserSetting } from '@/api/UserApi';
+import { isSettingData } from '@/interfaces/api/userSetting';
 
 const LoginInputGroup = () => {
   const navigate = useNavigate();

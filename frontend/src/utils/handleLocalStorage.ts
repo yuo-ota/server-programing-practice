@@ -13,8 +13,8 @@ export const getUserId = () => {
       }
       throw new Error('Invalid setting data format');
     } catch {
-      return null;
+      return '';
     }
   }
-  return null;
+  return '';
 };
