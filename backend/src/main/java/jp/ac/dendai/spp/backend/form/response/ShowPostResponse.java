@@ -6,7 +6,10 @@ import jp.ac.dendai.spp.backend.dto.Image;
 
 public class ShowPostResponse {
   private String userId;
+  private String name;
+  private String iconPath;
   private UUID postId;
+  private boolean isLiked;
   private String text;
   private List<Image> images;
 
@@ -19,12 +22,36 @@ public class ShowPostResponse {
     this.userId = userId;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getIconPath() {
+    return iconPath;
+  }
+
+  public void setIconPath(String iconPath) {
+    this.iconPath = iconPath;
+  }
+
   public UUID getPostId() {
     return postId;
   }
 
   public void setPostId(UUID postId) {
     this.postId = postId;
+  }
+
+  public boolean isLiked() {
+    return isLiked;
+  }
+
+  public void setLiked(boolean liked) {
+    isLiked = liked;
   }
 
   public String getText() {
