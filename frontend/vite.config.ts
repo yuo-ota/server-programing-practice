@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import svgr from 'vite-plugin-svgr';
+import fs from 'fs';
 
 // https://vite.dev/config/
 import path from 'node:path';
@@ -23,6 +24,13 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    https: {
+      key: fs.readFileSync('localhost-key.pem'),
+      cert: fs.readFileSync('localhost.pem'),
+    },
+    port: 5173,
+  },
   envDir: path.resolve(__dirname, '..'),
   test: {
     projects: [{
