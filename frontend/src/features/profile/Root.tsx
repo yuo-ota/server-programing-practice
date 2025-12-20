@@ -1,11 +1,9 @@
-//interfaceでuserId取得しておく⇒そっからまたGetすればいい？
 import type { Profile } from '@/interfaces/api/user';
-import UserCoreInfomation from './components/UserCoreInfomation';
 import { getUserId } from '@/utils/handleLocalStorage';
 import { useNavigate, useParams } from 'react-router-dom';
-import SimpleButton from '@/components/SimpleButton';
-import KebabMenu from '@/components/KebabMenu';
 import TabElementGroup from '@/components/TabElementGroup';
+import UserProfile from './components/UserProfile';
+import Post from '@/components/Post';
 import { API_URL } from '@/config';
 
 interface RootProps {
@@ -15,8 +13,9 @@ interface RootProps {
 const Root = ({ userData }: RootProps) => {
   const { userId } = useParams<{ userId: string }>();
   const loginUserId = getUserId();
-  const isMyProfile = loginUserId === userId;
   const navigate = useNavigate();
+
+  const isMyProfile = loginUserId === userId;
 
   const handleLikedClick = () => {
     navigate(`/home/profile/${userId}/likes`);
@@ -26,62 +25,38 @@ const Root = ({ userData }: RootProps) => {
     <>
       {/* プロフィール部分 */}
       <div>
-        <div className="flex h-[110px] w-full">
-          <img
-            src={`${API_URL}/images/headers/default.png`}
-            className="h-full w-full object-cover"
-          />
-        </div>
-        <div className="mx-5 my-2.5">
-          <div className="flex items-center justify-between">
-            <UserCoreInfomation
-              icon={
-                <img src={`${userData?.iconPath}`} className="h-full w-full" />
-              }
-              name={`${userData?.name}`}
-              userId={`${userId}`}
-              className=""
-            />
-            {isMyProfile ? (
-              <SimpleButton label="編集" onClick={() => {}} className="" />
-            ) : (
-              <KebabMenu
-                items={[{ label: 'テキスト1', onClick: () => {} }]}
-                className="h-12 w-12"
-              />
-            )}
-          </div>
-          <p className="text-foreground text-subtitle my-2.5">
-            {userData?.introduction}
-            {loginUserId}
-          </p>
-          <div>
-            {userData?.socialAccounts?.filter(Boolean).map((item, idx) => (
-              <SimpleButton
-                key={idx}
-                label={`${item?.name}`}
-                onClick={() => {}}
-                className=""
-              />
-            ))}
-          </div>
-        </div>
+        <UserProfile userData={userData!} loginUserId={loginUserId} />
       </div>
       <div className="flex justify-center">
         <TabElementGroup
-          tabs={[
+          tabs={isMyProfile ? [
             { label: '投稿', onClick: () => {} },
-            {
-              label: 'いいね',
-              onClick: () => {
-                handleLikedClick();
-              },
-            },
+            { label: 'いいね', onClick: () => {handleLikedClick()},},
+          ] : [
+            { label: '投稿',onClick: () => {},},
           ]}
           className="mx-5 mt-2.5"
+          defaultIndex={0}
         />
       </div>
       {/* 過去の投稿 */}
+      <div>
+        {/* 投稿一覧コンポーネントをここに配置 */} 
+        {userData?.posts?.map((post) => (
+          <div key={post.postId} className="mb-4">
+            {/* Postコンポーネントを使用して投稿を表示 */}
+            <Post
+              icon={<img src={`${API_URL}${userData.iconPath}`} alt="User Icon" className="h-full w-full" />}
+              userName={userData.name}
+              userId={userId!}
+              postId={post.postId}
+              text={post.content.description}
+              images={{ imagePath: `${API_URL}${post.content.path}`, alt: post.content.alt }}
+            />
+          </div>
+        ))
+        }
+      </div>
     </>
   );
 };

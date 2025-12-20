@@ -11,6 +11,7 @@ import NotificationIcon from '@/assets/notification.svg?react';
 import UserIcon from '@/assets/userIconDefault.svg?react';
 import SettingIcon from '@/assets/setting.svg?react';
 import TopBanner from '@/components/TopBanner';
+import PostIcon from '@/assets/post.svg?react';
 
 export const Root = () => {
   const { userId } = useParams<{ userId: string }>();
@@ -44,6 +45,10 @@ export const Root = () => {
     navigate('/home/notifications');
   };
 
+  const handlePostClick = () => {
+    navigate('/posts/new');
+  }
+
   return (
     <div className="relative h-dvh w-dvw">
       {/* TopBanner（上固定） */}
@@ -65,6 +70,12 @@ export const Root = () => {
       </main>
 
       {/* MenuTab（下固定） */}
+      <div className="fixed bottom-0 left-0 z-30 w-full">
+      <IconButton
+        onClick={handlePostClick}
+        ButtonIcon={<PostIcon className="h-full w-full flex items-center" />}
+        className=" h-12 w-12 absolute bottom-20 right-4 z-40 rounded-full"
+      />
       <MenuTab
         buttons={[
           <IconButton
@@ -83,8 +94,9 @@ export const Root = () => {
             ButtonIcon={<UserIcon className="h-[80%] w-[80%]" />}
           />,
         ]}
-        className="fixed bottom-0 left-0 z-30 h-17 w-full"
+        className="h-17 w-full"
       />
+      </div>
     </div>
   );
 };
