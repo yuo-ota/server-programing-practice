@@ -2,9 +2,21 @@ import TopBanner from "@/components/TopBanner"
 import { useNavigate } from "react-router-dom";
 import BannerButton from "@/components/BannerButton";
 import PostInputGroup from "./components/PostInputGroup";
+import { useEffect, useState } from "react";
 
 export const New = () => {
   const navigate = useNavigate();
+  const [iconUrl, setIconUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const settingData = localStorage.getItem('settingData');
+    if (settingData) {
+      const parsedData = JSON.parse(settingData) as { icon?: string };
+      if (parsedData?.icon) {
+        setIconUrl(parsedData.icon);
+      }
+    }
+  }, []);
 
   const handleReturnButtonClick = () => {
     navigate(-1);
@@ -32,9 +44,16 @@ export const New = () => {
           }
           className="h-16 w-full"
         />
-        <PostInputGroup
-          className=""
-        />
+        <div className="flex items-start gap-4 pt-6 px-2">[]
+          {iconUrl ? (
+            <img src={iconUrl} alt="アイコン" className="w-14 h-14 rounded-full object-cover" />
+          ) : (
+            <div role="img" aria-label="アイコン未設定" className="w-14 h-14 rounded-full bg-gray-200 dark:bg-gray-700" />
+          )}
+          <PostInputGroup
+            className="flex-1"
+          />
+        </div>
       </div>
     </>
   );
