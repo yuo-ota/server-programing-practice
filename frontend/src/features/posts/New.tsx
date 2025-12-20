@@ -5,6 +5,7 @@ import PostInputGroup from './components/PostInputGroup';
 import { useContext, useEffect, useState } from 'react';
 import NotificationContext from '@/contexts/notificationContext';
 import { createPost } from '@/api/PostApi';
+import { getIconPath } from '@/utils/handleLocalStorage';
 
 export const New = () => {
   const navigate = useNavigate();
@@ -45,13 +46,7 @@ export const New = () => {
   };
 
   useEffect(() => {
-    const settingData = localStorage.getItem('settingData');
-    if (settingData) {
-      const parsedData = JSON.parse(settingData) as { icon?: string };
-      if (parsedData?.icon) {
-        setIconUrl(parsedData.icon);
-      }
-    }
+    setIconUrl(getIconPath());
   }, []);
 
   const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -176,19 +171,10 @@ export const New = () => {
           className="h-16 w-full"
         />
         <div className="flex items-start gap-4 px-2 pt-6">
-          {iconUrl ? (
             <img
               src={iconUrl}
-              alt="アイコン"
               className="h-14 w-14 rounded-full object-cover"
             />
-          ) : (
-            <div
-              role="img"
-              aria-label="アイコン未設定"
-              className="h-14 w-14 rounded-full bg-gray-200 dark:bg-gray-700"
-            />
-          )}
           <PostInputGroup
             className="min-w-0 flex-1"
             title={title}
