@@ -1,4 +1,4 @@
-import { isSettingData, type SettingData } from '@/interfaces/api/userSetting';
+import { isSettingData } from '@/interfaces/api/userSetting';
 
 export const getUserId = () => {
   const settingData = localStorage.getItem('settingData');
