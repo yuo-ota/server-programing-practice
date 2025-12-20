@@ -168,7 +168,7 @@ const EmailInputGroup = () => {
           value={email}
           onChange={handleEmailChange}
           onBlur={handleEmailBlur}
-          className="h-5"
+          className="h-[88.5px]"
           displayStatus={'normal'}
           prefix={''}
           isUnroundedLeft={false}

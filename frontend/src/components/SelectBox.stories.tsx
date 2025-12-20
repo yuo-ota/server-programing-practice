@@ -9,6 +9,7 @@ export default {
     displayStatus: 'normal',
     label: 'test',
     options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+    defaultOption: '5',
     onSelect: () => {},
     className: 'w-30',
   },

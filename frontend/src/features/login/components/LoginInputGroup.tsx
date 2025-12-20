@@ -4,6 +4,8 @@ import TransitionButton from '@/components/TransitionButton';
 import { useState } from 'react';
 import { login } from '@/api/AuthApi';
 import { checkEmailFormat, checkPasswordFormat } from '@/utils/validation';
+import { getUserSetting } from '@/api/UserApi';
+import { isSettingData } from '@/interfaces/api/userSetting';
 
 const LoginInputGroup = () => {
   const navigate = useNavigate();
@@ -76,7 +78,16 @@ const LoginInputGroup = () => {
     }
 
     await login(email, password);
+    await saveUserSettingToLocalStorage();
     navigate('/home');
+  };
+
+  const saveUserSettingToLocalStorage = async () => {
+    const userSetting = await getUserSetting();
+
+    if (isSettingData(userSetting.data)) {
+      localStorage.setItem('settingData', JSON.stringify(userSetting.data));
+    }
   };
 
   /**
@@ -107,7 +118,7 @@ const LoginInputGroup = () => {
           value={email}
           onChange={handleEmailChange}
           onBlur={handleEmailBlur}
-          className="h-5"
+          className="h-[88.5px]"
           displayStatus={'normal'}
           prefix={''}
           isUnroundedLeft={false}
@@ -121,7 +132,7 @@ const LoginInputGroup = () => {
           value={password}
           onChange={handlePasswordChange}
           onBlur={handlePasswordBlur}
-          className="mt-15 h-5"
+          className="mt-15 h-[88.5px]"
           displayStatus={'normal'}
           prefix={''}
           isUnroundedLeft={false}

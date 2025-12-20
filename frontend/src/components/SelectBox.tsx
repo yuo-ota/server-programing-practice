@@ -5,6 +5,7 @@ interface SelectBoxProps {
   displayStatus: 'normal' | 'unrounded-right';
   label: string;
   options: string[];
+  value?: string;
   onSelect: (value: string) => void;
   className?: string;
 }
@@ -13,15 +14,16 @@ const SelectBox = ({
   displayStatus,
   label,
   options,
+  value,
   onSelect,
   className = '',
 }: SelectBoxProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(label);
 
-  const handleSelect = (value: string) => {
-    setSelected(value);
-    onSelect(value);
+  const selectedDisplayValue = value || label;
+
+  const handleSelect = (newValue: string) => {
+    onSelect(newValue);
     setIsOpen(false);
   };
 
@@ -33,9 +35,9 @@ const SelectBox = ({
         type="button"
       >
         <span
-          className={`text-body truncate ${selected === label ? 'text-placeholder' : 'text-foreground'}`}
+          className={`text-body truncate ${selectedDisplayValue === label ? 'text-placeholder' : 'text-foreground'}`}
         >
-          {selected}
+          {selectedDisplayValue}
         </span>
         <ExpansionIcon
           className={`h-4 w-4 transition-transform duration-200 ${
@@ -51,7 +53,7 @@ const SelectBox = ({
               <button
                 onClick={() => handleSelect(opt)}
                 className={`bg-background transition-brightness block w-full px-3 py-2 text-left duration-150 hover:brightness-(--hover-nega-brightness) active:brightness-(--active-nega-brightness) ${
-                  selected === opt ? 'text-inactive' : ''
+                  selectedDisplayValue === opt ? 'text-inactive' : ''
                 }`}
               >
                 {opt}
