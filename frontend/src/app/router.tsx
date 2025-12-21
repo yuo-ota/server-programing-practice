@@ -57,7 +57,7 @@ export const AppRoutes = () => {
             <Route path="posts">
               <Route element={<HomePostsRoot />} />
               <Route path=":postId" element={<HomePostsPost />} />
-              <Route path=":postId/report" element={<HomePostsPostReport />} />
+              <Route path=":postId/report" element={<HomePostsPostReport  />} />
             </Route>
             <Route path="profile">
               <Route path=":userId" element={<HomeProfileRoot />} />

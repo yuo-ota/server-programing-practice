@@ -5,15 +5,18 @@ import type { ReportOption } from '../interfaces/app/reportOption';
 interface ReportElementSelectProps {
   title: string;
   reportOptions: ReportOption[];
+  checkedItems: Record<string, boolean>;
+  setCheckedItems: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
   className?: string;
 }
 
 const ReportElementSelect = ({
   title,
   reportOptions,
+  checkedItems,
+  setCheckedItems,
   className = '',
 }: ReportElementSelectProps) => {
-  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.target;
@@ -25,7 +28,7 @@ const ReportElementSelect = ({
   };
 
   return (
-    <div className={`${className} space-y-4 p-10`}>
+    <div className={`${className} space-y-4`}>
       <h2 className="text-title text-foreground">{title}</h2>
 
       <div className="space-y-4">
