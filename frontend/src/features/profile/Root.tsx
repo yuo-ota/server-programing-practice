@@ -42,7 +42,7 @@ const Root = ({ userData }: RootProps) => {
                 ]
               : [{ label: '投稿', onClick: () => {} }]
           }
-          className="mx-5 mt-2.5"
+          className="my-2.5 shadow-md"
           defaultIndex={0}
         />
       </div>
