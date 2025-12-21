@@ -5,6 +5,7 @@ import SNSInputGroup from '@/components/SNSInputGroup';
 import TextInput from '@/components/TextInput';
 import { isCheckUserIdResponse } from '@/interfaces/api/setting';
 import type { SNSInputValue } from '@/interfaces/app/snsInput';
+import { getUserId } from '@/utils/handleLocalStorage';
 import { useMemo } from 'react';
 
 interface SettingItemGroupProps {
@@ -76,20 +77,29 @@ const SettingItemGroup = ({
       return;
     }
 
-    const response = await checkUserId(userId);
+    if (userId.length < 3 || userId.length > 15) {
+      setUserIdError('ユーザーIDは3文字以上15文字以下で入力してください');
+      return;
+    }
 
-    if (isCheckUserIdResponse(response.data) === false) {
+    try {
+      const response = await checkUserId(userId);
+
+      if (isCheckUserIdResponse(response.data) === false) {
+        setUserIdError('サーバー応答が不正です。後でもう一度お試しください。');
+        return;
+      }
+
+      if (response.data.available === false && userId !== getUserId()) {
+        setUserIdError('そのユーザーIDはすでに使用されています');
+        return;
+      }
+      setUserIdError('');
+    } catch {
       setUserIdError(
-        'ユーザーIDの確認に失敗しました。時間をおいて再度お試しください。'
+        'サーバーで問題が発生しました。しばらくしてから再度お試しください。'
       );
-      return;
     }
-
-    if (response.data.available === false) {
-      setUserIdError('そのユーザーIDはすでに使用されています');
-      return;
-    }
-    setUserIdError('');
   };
 
   const currentYear = new Date().getFullYear();
@@ -271,8 +281,11 @@ const SettingItemGroup = ({
             className="gap-20"
           />
         </div>
-        <div className="">
+        <div className="flex flex-col">
           <label className="text-foreground text-subtitle">SNS ID</label>
+          <label className="text-annotation text-body">
+            他SNSのリンクをプロフィールに添付できます
+          </label>
           <SNSInputGroup
             className="w-full"
             setSNSInputs={setSNSInputs}
