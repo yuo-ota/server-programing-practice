@@ -31,7 +31,8 @@ const KebabMenu = ({ className = '', items }: KebabMenuProps) => {
           {items.map((item) => (
             <li key={item.label}>
               <button
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   item.onClick();
                   setIsOpen(false);
                 }}

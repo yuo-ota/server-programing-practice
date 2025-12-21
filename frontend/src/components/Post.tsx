@@ -38,6 +38,10 @@ const Post = ({
 
   const navigate = useNavigate();
 
+  const handlePostClick = () => {
+    navigate(`/home/posts/${postId}`);
+  };
+
   const handleReportClick = () => {
     navigate(`/home/profile/${userId}/report`);
   };
@@ -64,7 +68,13 @@ const Post = ({
   };
 
   return (
-    <div className={`${className} flex w-full px-2`}>
+    <div
+      className={`${className} flex w-full px-2`}
+      tabIndex={0}
+      onClick={() => {
+        handlePostClick();
+      }}
+    >
       <IconButton
         onClick={() => {
           handleProfileClick();
