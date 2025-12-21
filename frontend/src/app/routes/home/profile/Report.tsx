@@ -36,7 +36,7 @@ export const Report = () => {
           userIconPath: response.iconPath,
           userName: response.name,
           userId: userId,
-          userDescription: response.introduction,
+          userDescription: response.introduction || '',
         });
       } catch {
         setReportData(null);
