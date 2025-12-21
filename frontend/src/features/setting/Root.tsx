@@ -84,7 +84,7 @@ const Root = () => {
   const createFormData = () => {
     const formData = new FormData();
     if (userId && userId !== getUserId()) {
-      formData.append('display_id', userId);
+      formData.append('userId', userId);
     }
     if (displayName) {
       formData.append('name', displayName);
@@ -93,16 +93,16 @@ const Root = () => {
       formData.append('birthday', formatLocalDate(birthday));
     }
     formData.append(
-      'show_adult_content',
+      'showAdultContent',
       adultContentSetting === '表示する' ? 'true' : 'false'
     );
     SNSInputs.forEach((sns, index) => {
       if (sns.snsId && sns.value) {
-        formData.append(`social_accounts[${index}][name]`, sns.snsId);
-        formData.append(`social_accounts[${index}][identifier]`, sns.value);
+        formData.append(`socialAccounts[${index}][name]`, sns.snsId);
+        formData.append(`socialAccounts[${index}][identifier]`, sns.value);
         if (sns.platform_id !== undefined && sns.platform_id !== null) {
           formData.append(
-            `social_accounts[${index}][platform_id]`,
+            `socialAccounts[${index}][platform_id]`,
             String(sns.platform_id)
           );
         }
