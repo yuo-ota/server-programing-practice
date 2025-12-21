@@ -7,19 +7,20 @@ const ReportThumbNail = ( reportData?: ReportProps ) => {
   }
   return (
     <>
-      <div className="flex justify-between items-start">
-        <div className="flex flex-col gap-4 flex-2 min-w-0">
-          <div className="flex gap-1.5">
+      <div className="flex justify-between items-start w-full py-4">
+        <div className="flex flex-col gap-2 flex-2 min-w-0 px-4">
+          <div className="flex gap-1.5 items-center">
             <img
               src={`${API_URL}${reportData.userIconPath}`}
               alt={`${reportData.userName} icon`}
-              className="w-8 h-8 rounded-full flex-none"
+              className="w-10 h-10 rounded-full flex-none"
             />
             <div className="flex flex-col">
               <p>{reportData.userName}</p>
               <p className="text-sm text-gray-500">@{reportData.userId}</p>
             </div>
           </div>
+          <p className="truncate">{reportData.postDescription}</p>
         </div>
         <img
           src={`${API_URL}${reportData.postImagePath}`}

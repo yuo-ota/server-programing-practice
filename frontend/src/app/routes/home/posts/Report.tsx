@@ -1,5 +1,5 @@
 import { Report as ReportRoot } from '@/features/posts/Report';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { NotFound } from '../../error/NotFound';
 import { getPost } from '@/api/PostApi';
@@ -7,12 +7,18 @@ import type { ReportProps } from '@/interfaces/app/report';
 import { isPost } from '@/interfaces/api/post';
 
 export const Report = () => {
+  const didInit = useRef(false);
   const postId = useParams<{ postId: string }>().postId || "";
   const [checking, setChecking] = useState(true);
   const [reportData, setReportData] = useState<ReportProps | null>(null);
 
   useEffect(() => {
     const fetchReportData = async () => {
+      if (didInit.current) {
+        return;
+      }
+      didInit.current = true;
+      
       if (!postId) {
         setChecking(false);
         return;
