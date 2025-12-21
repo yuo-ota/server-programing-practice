@@ -46,7 +46,8 @@ export const isProfile = (data: unknown): data is Profile => {
     'headerPath' in data &&
     typeof (data as { headerPath: unknown }).headerPath === 'string' &&
     'introduction' in data &&
-    typeof (data as { introduction: unknown }).introduction === 'string' &&
+    (typeof (data as { introduction: unknown }).introduction === 'string' ||
+    (data as { introduction: unknown }).introduction === null) &&
     'socialAccounts' in data &&
     Array.isArray((data as { socialAccounts: unknown }).socialAccounts) &&
     isSocialAccountArray(

@@ -19,9 +19,15 @@ export type ReportPostCategory = (typeof REPORT_POST_CATEGORIES_LIST)[number];
 
 export const REPORT_POST_MAP = {
   'visibility-settings': '不適切な公開制限',
-  hate: 'ヘイト',
-  harassment: '攻撃的な行為や嫌がらせ',
-  violence: '暴力的な発言',
-  privacy: 'プライバシーの侵害',
-  spam: 'スパムやなりすまし',
+  'hate': 'ヘイト',
+  'harassment': '攻撃的な行為や嫌がらせ',
+  'violence': '暴力的な発言',
+  'privacy': 'プライバシーの侵害',
+  'spam': 'スパムやなりすまし',
+};
+
+export const REPORT_USER_MAP = {
+  'inappropriate-profile': '不適切な名前やプロフィール',
+  'spam': 'スパムやなりすまし',
+  'promote-crime': '犯罪行為の助長',
 };
