@@ -1,13 +1,13 @@
-import { API_URL } from "@/config";
-import type { Profile } from "@/interfaces/api/user";
-import UserCoreInfomation from "./UserCoreInfomation";
-import SimpleButton from "@/components/SimpleButton";
-import KebabMenu from "@/components/KebabMenu";
-import { useNavigate, useParams } from "react-router-dom";
+import { API_URL } from '@/config';
+import type { Profile } from '@/interfaces/api/user';
+import UserCoreInfomation from './UserCoreInfomation';
+import SimpleButton from '@/components/SimpleButton';
+import KebabMenu from '@/components/KebabMenu';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface UserProfileProps {
-    userData: Profile;
-    loginUserId?: string;
+  userData: Profile;
+  loginUserId?: string;
 }
 
 const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
@@ -16,17 +16,17 @@ const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
   const navigate = useNavigate();
 
   const handleReportClick = () => {
-    navigate(`/home/profile/${userId}/report`); 
-  }
+    navigate(`/home/profile/${userId}/report`);
+  };
   const handleEditClick = () => {
-    if(isMyProfile){
+    if (isMyProfile) {
       navigate(`/home/profile/${userId}/edit`);
     }
-  }
-  
-    return(
-        <>
-        <div>
+  };
+
+  return (
+    <>
+      <div>
         <div className="flex h-[110px] w-full">
           <img
             src={`${API_URL}${userData?.headerPath}`}
@@ -37,18 +37,35 @@ const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
           <div className="flex items-center justify-between">
             <UserCoreInfomation
               icon={
-                <img src={`${API_URL}${userData?.iconPath}`} className="h-full w-full" />
+                <img
+                  src={`${API_URL}${userData?.iconPath}`}
+                  className="h-full w-full"
+                />
               }
               name={`${userData?.name}`}
               userId={`${userId}`}
               className=""
             />
             {isMyProfile ? (
-              <SimpleButton label="編集" onClick={() => {handleEditClick()}} className="" />
+              <SimpleButton
+                label="編集"
+                onClick={() => {
+                  handleEditClick();
+                }}
+                className=""
+              />
             ) : (
               <KebabMenu
-                items={[{ label: '通報する', onClick: () => {handleReportClick()} , itemsClassName: "text-error"}]}
-                className="h-12 w-12 ml-12"
+                items={[
+                  {
+                    label: '通報する',
+                    onClick: () => {
+                      handleReportClick();
+                    },
+                    itemsClassName: 'text-error',
+                  },
+                ]}
+                className="ml-12 h-12 w-12"
               />
             )}
           </div>
@@ -67,8 +84,8 @@ const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
           </div>
         </div>
       </div>
-      </>
-    )
+    </>
+  );
 };
 
 export default UserProfile;

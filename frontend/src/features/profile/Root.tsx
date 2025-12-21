@@ -29,24 +29,37 @@ const Root = ({ userData }: RootProps) => {
       </div>
       <div className="flex justify-center">
         <TabElementGroup
-          tabs={isMyProfile ? [
-            { label: '投稿', onClick: () => {} },
-            { label: 'いいね', onClick: () => {handleLikedClick()},},
-          ] : [
-            { label: '投稿',onClick: () => {},},
-          ]}
+          tabs={
+            isMyProfile
+              ? [
+                  { label: '投稿', onClick: () => {} },
+                  {
+                    label: 'いいね',
+                    onClick: () => {
+                      handleLikedClick();
+                    },
+                  },
+                ]
+              : [{ label: '投稿', onClick: () => {} }]
+          }
           className="mx-5 mt-2.5"
           defaultIndex={0}
         />
       </div>
       {/* 過去の投稿 */}
       <div>
-        {/* 投稿一覧コンポーネントをここに配置 */} 
+        {/* 投稿一覧コンポーネントをここに配置 */}
         {userData?.posts?.map((post) => (
           <div key={post.postId} className="mb-4">
             {/* Postコンポーネントを使用して投稿を表示 */}
             <Post
-              icon={<img src={`${API_URL}${userData.iconPath}`} alt="User Icon" className="h-full w-full" />}
+              icon={
+                <img
+                  src={`${API_URL}${userData.iconPath}`}
+                  alt="User Icon"
+                  className="h-full w-full"
+                />
+              }
               userName={userData.name}
               userId={userId!}
               postId={post.postId}
@@ -55,8 +68,7 @@ const Root = ({ userData }: RootProps) => {
               images={{ imagePath: post.content.path, alt: post.content.alt }}
             />
           </div>
-        ))
-        }
+        ))}
       </div>
     </>
   );

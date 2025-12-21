@@ -12,10 +12,9 @@ export default {
     text: 'サンプルテキスト',
     images: {
       imagePath: 'https://images.hitpaw.com/topics/video-tips/16-9.jpg',
-      alt: 'Sample image'
-    }
+      alt: 'Sample image',
+    },
   },
 } satisfies Meta<T>;
 
-export const Default: StoryObj<T> = {
-};
+export const Default: StoryObj<T> = {};

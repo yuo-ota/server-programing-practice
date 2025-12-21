@@ -42,22 +42,30 @@ export const Likes = ({ userData }: RootProps) => {
       </div>
       {/* 過去のいいね */}
       <div>
-        {/* いいね一覧コンポーネントをここに配置 */} 
+        {/* いいね一覧コンポーネントをここに配置 */}
         {userData?.likedPosts?.map((post) => (
           <div key={post.postId} className="mb-4">
             {/* Postコンポーネントを使用して投稿を表示 */}
             <Post
-              icon={<img src={`${API_URL}${post.iconPath}`} alt="User Icon" className="h-full w-full" />}
+              icon={
+                <img
+                  src={`${API_URL}${post.iconPath}`}
+                  alt="User Icon"
+                  className="h-full w-full"
+                />
+              }
               userName={post.name}
               userId={post.userId}
               postId={post.postId}
               text={post.content.description}
               liked={true}
-              images={{ imagePath: `${post.content.path}`, alt: post.content.alt }}
+              images={{
+                imagePath: `${post.content.path}`,
+                alt: post.content.alt,
+              }}
             />
           </div>
-        ))
-        }
+        ))}
       </div>
     </>
   );

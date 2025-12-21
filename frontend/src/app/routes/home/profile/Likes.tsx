@@ -71,31 +71,31 @@ export const Likes = () => {
 
       {/* MenuTab（下固定） */}
       <div className="fixed bottom-0 left-0 z-30 w-full">
-      <IconButton
-        onClick={handlePostClick}
-        ButtonIcon={<PostIcon className="h-full w-full flex items-center" />}
-        className=" h-12 w-12 absolute bottom-20 right-4 z-40 rounded-full"
-      />
-      <MenuTab
-        buttons={[
-          <IconButton
-            onClick={handleHomeClick}
-            className="h-12 w-12"
-            ButtonIcon={<HomeIcon className="h-[80%] w-[80%]" />}
-          />,
-          <IconButton
-            onClick={handleNotificationClick}
-            className="h-12 w-12"
-            ButtonIcon={<NotificationIcon className="h-[80%] w-[80%]" />}
-          />,
-          <IconButton
-            onClick={handleProfileClick}
-            className="h-12 w-12"
-            ButtonIcon={<UserIcon className="h-[80%] w-[80%]" />}
-          />,
-        ]}
-        className="h-17 w-full"
-      />
+        <IconButton
+          onClick={handlePostClick}
+          ButtonIcon={<PostIcon className="flex h-full w-full items-center" />}
+          className="absolute right-4 bottom-20 z-40 h-12 w-12 rounded-full"
+        />
+        <MenuTab
+          buttons={[
+            <IconButton
+              onClick={handleHomeClick}
+              className="h-12 w-12"
+              ButtonIcon={<HomeIcon className="h-[80%] w-[80%]" />}
+            />,
+            <IconButton
+              onClick={handleNotificationClick}
+              className="h-12 w-12"
+              ButtonIcon={<NotificationIcon className="h-[80%] w-[80%]" />}
+            />,
+            <IconButton
+              onClick={handleProfileClick}
+              className="h-12 w-12"
+              ButtonIcon={<UserIcon className="h-[80%] w-[80%]" />}
+            />,
+          ]}
+          className="h-17 w-full"
+        />
       </div>
     </div>
   );
