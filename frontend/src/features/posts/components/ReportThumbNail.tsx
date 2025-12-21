@@ -1,7 +1,7 @@
 import { API_URL } from '@/config';
 import type { ReportProps } from '@/interfaces/app/report';
 
-const ReportThumbNail = (reportData?: ReportProps) => {
+const ReportThumbNail = ({reportData}: {reportData: ReportProps}) => {
   if (!reportData) {
     return null;
   }
