@@ -12,7 +12,7 @@ INSERT INTO images (post_id, index, path, alt)
 SELECT
   p.id AS post_id,
   n.num AS index,
-  CONCAT('path/to/image_', p.id, '_', n.num, '.jpg') AS path,
+  CONCAT('/images/_', p.id, '_', n.num, '.jpg') AS path,
   CONCAT('Image ', p.id, '-', n.num) AS alt
 FROM posts p
 CROSS JOIN (
