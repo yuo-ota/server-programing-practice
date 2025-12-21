@@ -53,7 +53,7 @@ export const Report = () => {
   }
 
   if (checking || !reportData) {
-    return <div>Loading...</div>;
+    return <LoadingAuth />;
   }
 
   return (

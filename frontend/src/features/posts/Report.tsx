@@ -64,7 +64,7 @@ export const Report = (reportData: ReportProps) => {
           className="fixed h-16 w-full"
         />
         <div className="flex h-full w-full max-w-[500px] flex-col items-center py-16">
-          <ReportThumbNail {...reportData} />
+          <ReportThumbNail reportData={reportData} />
           <ReportInputGroup
             checkedItems={checkedItems}
             setCheckedItems={setCheckedItems}
