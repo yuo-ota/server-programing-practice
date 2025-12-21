@@ -3,7 +3,7 @@ import LoadingAuth from '@/app/auth/LoadingAuth';
 import { TOKEN_TYPE } from '@/constants/tokenType';
 import { Setting as SignupSetting } from '@/features/signup/Setting';
 import { useEffect, useRef, useState } from 'react';
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation } from 'react-router-dom';
 
 type LocationState = {
   token: string;
@@ -19,7 +19,6 @@ export const Setting = () => {
 
   useEffect(() => {
     if (!didInit.current && token) {
-      console.log("Verifying token in Setting route:", token);
       verifyToken(token);
       didInit.current = true;
     }
@@ -55,9 +54,7 @@ export const Setting = () => {
   return (
     <>
       <div className="flex h-dvh w-dvw items-center justify-center">
-        <SignupSetting
-          token={token}
-        />
+        <SignupSetting token={token} />
       </div>
     </>
   );

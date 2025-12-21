@@ -5,7 +5,6 @@ import NotificationContext from '@/contexts/notificationContext';
 import type { SNSInputValue } from '@/interfaces/app/snsInput';
 import TransitionButton from '@/components/TransitionButton';
 import { useNavigate } from 'react-router-dom';
-import { getUserId } from '@/utils/handleLocalStorage';
 import { createUser } from '@/api/UserApi';
 
 interface SettingProps {
