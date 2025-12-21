@@ -5,6 +5,7 @@ import { NotFound } from '../../error/NotFound';
 import { getPost } from '@/api/PostApi';
 import type { ReportProps } from '@/interfaces/app/report';
 import { isPost } from '@/interfaces/api/post';
+import LoadingAuth from '@/app/auth/LoadingAuth';
 
 export const Report = () => {
   const didInit = useRef(false);
@@ -40,6 +41,8 @@ export const Report = () => {
           postImagePath: response.data.images[0]?.path || '',
           postImageAlt: response.data.images[0]?.alt || '',
         });
+      } catch {
+        setReportData(null);
       } finally {
         setChecking(false);
       }
