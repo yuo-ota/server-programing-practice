@@ -43,7 +43,7 @@ const Post = ({
   };
 
   const handleReportClick = () => {
-    navigate(`/home/profile/${userId}/report`);
+    navigate(`/home/posts/${postId}/report`);
   };
 
   const handleProfileClick = () => {
