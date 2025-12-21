@@ -86,9 +86,7 @@ const SettingItemGroup = ({
       const response = await checkUserId(userId);
 
       if (isCheckUserIdResponse(response.data) === false) {
-        setUserIdError(
-          'ユーザーIDの確認に失敗しました。時間をおいて再度お試しください。'
-        );
+        setUserIdError('サーバー応答が不正です。後でもう一度お試しください。');
         return;
       }
 
@@ -99,7 +97,7 @@ const SettingItemGroup = ({
       setUserIdError('');
     } catch {
       setUserIdError(
-        'ユーザーIDの確認に失敗しました。時間をおいて再度お試しください。'
+        'サーバーで問題が発生しました。しばらくしてから再度お試しください。'
       );
     }
   };
