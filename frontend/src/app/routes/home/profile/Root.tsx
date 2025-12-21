@@ -24,20 +24,22 @@ export const Root = () => {
     if (!userId) return;
 
     const getUserProfile = async () => {
-      try{
+      try {
         const profile = await getProfile(userId);
         setUserData(profile);
-      }
-      catch(error){
+      } catch {
         showMessage(
-        ['ユーザープロフィールの取得に失敗しました。', '再度時間を空けてお試しください。'],
-        '--color-error'
-      );
+          [
+            'ユーザープロフィールの取得に失敗しました。',
+            '再度時間を空けてお試しください。',
+          ],
+          '--color-error'
+        );
       }
     };
 
     getUserProfile();
-  }, [userId]);
+  }, [userId, showMessage]);
 
   const handleHomeClick = () => {
     navigate(`/home/posts?date=${new Date().toISOString().split('T')[0]}`);
