@@ -10,6 +10,7 @@ import NotificationContext from '@/contexts/notificationContext';
 import type { SNSInputValue } from '@/interfaces/app/snsInput';
 import type { SocialAccount } from '@/interfaces/app/socialAccount';
 import AccontManageGroup from './components/AccontManageGroup';
+import { getParsedData, getUserId } from '@/utils/handleLocalStorage';
 
 const Root = () => {
   const navigate = useNavigate();
@@ -42,20 +43,17 @@ const Root = () => {
   useEffect(() => {
     const settingData = localStorage.getItem('settingData');
     if (settingData) {
-      const parsedData = JSON.parse(settingData) as {
-        name?: string;
-        user_id?: string;
-        birthday?: string;
-        show_adult_contents?: boolean;
-        social_accounts?: SocialAccount[];
-      };
+      const parsedData = getParsedData();
+      if (!parsedData) {
+        return;
+      }
       setDisplayName(parsedData.name || '');
-      setUserId(parsedData.user_id || '');
+      setUserId(parsedData.display_id || '');
       setBirthday(
         parsedData.birthday ? parseLocalDate(parsedData.birthday) : null
       );
       setAdultContentSetting(
-        parsedData.show_adult_contents ? '表示する' : '表示しない'
+        parsedData.show_adult_content ? '表示する' : '表示しない'
       );
       if (
         parsedData.social_accounts &&
@@ -85,8 +83,8 @@ const Root = () => {
    */
   const createFormData = () => {
     const formData = new FormData();
-    if (userId) {
-      formData.append('user_id', userId);
+    if (userId && userId !== getUserId()) {
+      formData.append('display_id', userId);
     }
     if (displayName) {
       formData.append('name', displayName);
@@ -95,7 +93,7 @@ const Root = () => {
       formData.append('birthday', formatLocalDate(birthday));
     }
     formData.append(
-      'show_adult_contents',
+      'show_adult_content',
       adultContentSetting === '表示する' ? 'true' : 'false'
     );
     SNSInputs.forEach((sns, index) => {
@@ -134,7 +132,7 @@ const Root = () => {
           ...prevSettingJson,
           ...(userId
             ? {
-                user_id: userId,
+                display_id: userId,
               }
             : {}),
           ...(displayName

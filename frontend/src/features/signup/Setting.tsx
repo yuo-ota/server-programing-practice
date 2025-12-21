@@ -6,6 +6,7 @@ import NotificationContext from '@/contexts/notificationContext';
 import type { SNSInputValue } from '@/interfaces/app/snsInput';
 import TransitionButton from '@/components/TransitionButton';
 import { useNavigate } from 'react-router-dom';
+import { getUserId } from '@/utils/handleLocalStorage';
 
 export const Setting = () => {
   const navigate = useNavigate();
@@ -34,8 +35,8 @@ export const Setting = () => {
    */
   const createFormData = () => {
     const formData = new FormData();
-    if (userId) {
-      formData.append('user_id', userId);
+    if (userId && userId !== getUserId()) {
+      formData.append('display_id', userId);
     }
     if (displayName) {
       formData.append('name', displayName);
@@ -44,7 +45,7 @@ export const Setting = () => {
       formData.append('birthday', formatLocalDate(birthday));
     }
     formData.append(
-      'show_adult_contents',
+      'show_adult_content',
       adultContentSetting === '表示する' ? 'true' : 'false'
     );
     SNSInputs.forEach((sns, index) => {
@@ -86,7 +87,7 @@ export const Setting = () => {
         JSON.stringify({
           ...(userId
             ? {
-                user_id: userId,
+                display_id: userId,
               }
             : {}),
           ...(displayName
@@ -99,7 +100,7 @@ export const Setting = () => {
                 birthday: formatLocalDate(birthday),
               }
             : {}),
-          show_adult_contents: adultContentSetting === '表示する',
+          show_adult_content: adultContentSetting === '表示する',
           social_accounts: SNSInputs.map((s) => ({
             name: s.snsId,
             identifier: s.value,

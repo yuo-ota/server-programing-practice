@@ -37,3 +37,21 @@ export const getIconPath = () => {
   }
   return '';
 };
+
+export const getParsedData = () => {
+  const settingData = localStorage.getItem('settingData');
+
+  if (settingData) {
+    try {
+      const parsed: unknown = JSON.parse(settingData);
+
+      if (isSettingData(parsed)) {
+        return parsed;
+      }
+      throw new Error('Invalid setting data format');
+    } catch {
+      return null;
+    }
+  }
+  return null;
+};

@@ -5,6 +5,7 @@ import SNSInputGroup from '@/components/SNSInputGroup';
 import TextInput from '@/components/TextInput';
 import { isCheckUserIdResponse } from '@/interfaces/api/setting';
 import type { SNSInputValue } from '@/interfaces/app/snsInput';
+import { getUserId } from '@/utils/handleLocalStorage';
 import { useMemo } from 'react';
 
 interface SettingItemGroupProps {
@@ -76,20 +77,26 @@ const SettingItemGroup = ({
       return;
     }
 
-    const response = await checkUserId(userId);
+    try {
+      const response = await checkUserId(userId);
 
-    if (isCheckUserIdResponse(response.data) === false) {
+      if (isCheckUserIdResponse(response.data) === false) {
+        setUserIdError(
+          'ユーザーIDの確認に失敗しました。時間をおいて再度お試しください。'
+        );
+        return;
+      }
+
+      if (response.data.available === false && userId !== getUserId()) {
+        setUserIdError('そのユーザーIDはすでに使用されています');
+        return;
+      }
+      setUserIdError('');
+    } catch (e) {
       setUserIdError(
         'ユーザーIDの確認に失敗しました。時間をおいて再度お試しください。'
       );
-      return;
     }
-
-    if (response.data.available === false) {
-      setUserIdError('そのユーザーIDはすでに使用されています');
-      return;
-    }
-    setUserIdError('');
   };
 
   const currentYear = new Date().getFullYear();
