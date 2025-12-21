@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 interface DialogProps {
   isOpen: boolean;
-  onButtonClick?: () => void;
+  onButtonClick: () => void;
   onClose?: () => void;
   text: string;
   className?: string;
@@ -56,7 +56,7 @@ const Dialog = ({
         <div onClick={handleClickContent}>{text}</div>
         <SimpleButton
           label="リンク先を開く"
-          onClick={onButtonClick!}
+          onClick={onButtonClick}
           className="mt-4"
         />
         <SimpleButton label="閉じる" onClick={onCloseDialog} className="mt-4" />

@@ -7,7 +7,7 @@ import { removeLike, setLike } from '@/utils/likes';
 import { API_URL } from '@/config';
 import NotificationContext from '@/contexts/notificationContext';
 
-interface images {
+interface Images {
   imagePath: string;
   alt: string;
 }
@@ -18,7 +18,7 @@ interface PostProps {
   userId: string;
   postId: string;
   text: string;
-  images: images;
+  images: Images;
   liked: boolean;
   className?: string;
 }
@@ -33,7 +33,7 @@ const Post = ({
   liked,
   className = '',
 }: PostProps) => {
-  const [Like, setIsLike] = useState(liked);
+  const [like, setIsLike] = useState(liked);
   const { showMessage } = useContext(NotificationContext);
 
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const Post = ({
 
   const handleLikeClick = async () => {
     try {
-      if (!Like) {
+      if (!like) {
         await setLike(postId);
         setIsLike(true);
       } else {
@@ -87,7 +87,7 @@ const Post = ({
           <p className="truncate">{userName}</p>
           <div className="flex items-center">
             <LikeButton
-              isLiked={Like}
+              isLiked={like}
               onClick={() => {
                 handleLikeClick();
               }}

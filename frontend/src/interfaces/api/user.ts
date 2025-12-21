@@ -48,18 +48,13 @@ export const isProfile = (data: unknown): data is Profile => {
     'introduction' in data &&
     typeof (data as { introduction: unknown }).introduction === 'string' &&
     'socialAccounts' in data &&
-    typeof (data as { socialAccounts: unknown }).socialAccounts === 'object' &&
-    (data as { socialAccounts: unknown }).socialAccounts !== null &&
-    isSocialAccountArray(
-      (data as { socialAccounts: unknown }).socialAccounts
-    ) &&
+    Array.isArray((data as { socialAccounts: unknown }).socialAccounts) &&
+    isSocialAccountArray((data as { socialAccounts: unknown }).socialAccounts) &&
     'posts' in data &&
-    typeof (data as { posts: unknown }).posts === 'object' &&
-    (data as { posts: unknown }).posts !== null &&
+    Array.isArray((data as { posts: unknown }).posts) &&
     isPostArray((data as { posts: unknown }).posts) &&
     'likedPosts' in data &&
-    typeof (data as { likedPosts: unknown }).likedPosts === 'object' &&
-    (data as { likedPosts: unknown }).likedPosts !== null &&
+    Array.isArray((data as { likedPosts: unknown }).likedPosts) &&
     isLikedPostArray((data as { likedPosts: unknown }).likedPosts)
   );
 };

@@ -25,7 +25,9 @@ const Root = ({ userData }: RootProps) => {
     <>
       {/* プロフィール部分 */}
       <div>
-        <UserProfile userData={userData!} loginUserId={loginUserId} />
+        {userData && (
+          <UserProfile userData={userData} loginUserId={loginUserId} />
+        )}
       </div>
       <div className="flex justify-center">
         <TabElementGroup

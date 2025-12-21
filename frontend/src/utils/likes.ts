@@ -1,9 +1,8 @@
 import { like, unlike } from '@/api/LikeApi';
 
-export const setLike = (postId: string): void => {
-  like(postId);
+export const setLike = (postId: string) => {
+  return like(postId);
 };
-
-export const removeLike = (postId: string): void => {
-  unlike(postId);
+export const removeLike = (postId: string) => {
+  return unlike(postId);
 };

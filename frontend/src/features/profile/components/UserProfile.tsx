@@ -30,13 +30,29 @@ const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
     }
   };
 
+  const getSafeUrl = (url: string): string | null => {
+    try {
+      const parsedUrl = new URL(url, window.location.origin);
+      if (parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:') {
+        return parsedUrl.toString();
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  };
   const handleLinkClick = (url: string) => {
     openDialog();
     setDialogUrl(url);
   };
-
   const handleDialogLinkClick = (url: string) => {
-    navigate(url);
+    const safeUrl = getSafeUrl(url);
+    if (!safeUrl) {
+      closeDialog();
+      return;
+    }
+    window.open(safeUrl, '_blank', 'noopener,noreferrer');
+    closeDialog();
   };
 
   return (
@@ -49,7 +65,6 @@ const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
               onButtonClick={() => handleDialogLinkClick(dialogUrl)}
               onClose={closeDialog}
               text={`以下のリンク先へアクセスしますか?\n${dialogUrl}`}
-              className=""
             />
           </div>
         )}
@@ -57,6 +72,7 @@ const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
           <img
             src={`${API_URL}${userData?.headerPath}`}
             className="h-full w-full object-cover"
+            alt="Header Image"
           />
         </div>
         <div className="mx-5 my-2.5">
@@ -66,11 +82,11 @@ const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
                 <img
                   src={`${API_URL}${userData?.iconPath}`}
                   className="h-full w-full"
+                  alt="User Icon"
                 />
               }
               name={`${userData?.name}`}
               userId={`${userId}`}
-              className=""
             />
             {isMyProfile ? (
               <SimpleButton
@@ -99,14 +115,13 @@ const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
             {userData?.introduction}
           </p>
           <div>
-            {userData?.socialAccounts?.filter(Boolean).map((item, idx) => (
+            {userData?.socialAccounts?.filter(Boolean).map((item) => (
               <SimpleButton
-                key={idx}
+                key={`${item?.name}-${item?.identifier}`}
                 label={`${item?.name}`}
                 onClick={() => {
                   handleLinkClick(item?.identifier);
                 }}
-                className=""
               />
             ))}
           </div>

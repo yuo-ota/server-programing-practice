@@ -2,7 +2,7 @@ import HomeProfileRoot from '@/features/profile/Root';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProfile } from '@/api/ProfileApi';
 import { type Profile } from '@/interfaces/api/user';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { getUserId } from '@/utils/handleLocalStorage';
 import MenuTab from '@/components/MenuTab';
 import IconButton from '@/components/IconButton';
@@ -12,18 +12,28 @@ import UserIcon from '@/assets/userIconDefault.svg?react';
 import SettingIcon from '@/assets/setting.svg?react';
 import TopBanner from '@/components/TopBanner';
 import PostIcon from '@/assets/post.svg?react';
+import NotificationContext from '@/contexts/notificationContext';
 
 export const Root = () => {
   const { userId } = useParams<{ userId: string }>();
   const [userData, setUserData] = useState<Profile | undefined>(undefined);
+  const { showMessage } = useContext(NotificationContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!userId) return;
 
     const getUserProfile = async () => {
-      const profile = await getProfile(userId);
-      setUserData(profile);
+      try{
+        const profile = await getProfile(userId);
+        setUserData(profile);
+      }
+      catch(error){
+        showMessage(
+        ['ユーザープロフィールの取得に失敗しました。', '再度時間を空けてお試しください。'],
+        '--color-error'
+      );
+      }
     };
 
     getUserProfile();
