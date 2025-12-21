@@ -22,28 +22,28 @@ export const Likes = () => {
   const navigate = useNavigate();
 
   const getProfileProcess = useCallback(async () => {
-      if (!userId) return;
-      try {
-        const profile = await getProfile(userId);
-        setUserData(profile);
-      } catch {
-        navigate('/not-found');
-        showMessage(
-          [
-            'ユーザープロフィールの取得に失敗しました。',
-            '再度時間を空けてお試しください。',
-          ],
-          '--color-error'
-        );
-      }
-    }, [userId, showMessage, navigate]);
-  
-    useEffect(() => {
-      if (!didInit.current) {
-        getProfileProcess();
-        didInit.current = true;
-      }
-    }, [getProfileProcess]);
+    if (!userId) return;
+    try {
+      const profile = await getProfile(userId);
+      setUserData(profile);
+    } catch {
+      navigate('/not-found');
+      showMessage(
+        [
+          'ユーザープロフィールの取得に失敗しました。',
+          '再度時間を空けてお試しください。',
+        ],
+        '--color-error'
+      );
+    }
+  }, [userId, showMessage, navigate]);
+
+  useEffect(() => {
+    if (!didInit.current) {
+      getProfileProcess();
+      didInit.current = true;
+    }
+  }, [getProfileProcess]);
 
   const handleHomeClick = () => {
     navigate(`/home/posts?date=${new Date().toISOString().split('T')[0]}`);
