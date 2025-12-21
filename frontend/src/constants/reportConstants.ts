@@ -25,3 +25,9 @@ export const REPORT_POST_MAP = {
   privacy: 'プライバシーの侵害',
   spam: 'スパムやなりすまし',
 };
+
+export const REPORT_USER_MAP = {
+  'inappropriate-profile': '不適切な名前やプロフィール',
+  spam: 'スパムやなりすまし',
+  'promote-crime': '犯罪行為の助長',
+};

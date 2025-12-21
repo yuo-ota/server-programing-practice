@@ -7,3 +7,10 @@ export interface ReportProps {
   postImagePath: string;
   postImageAlt: string;
 }
+
+export interface ReportUserProps {
+  userIconPath: string;
+  userName: string;
+  userId: string;
+  userDescription: string;
+}
