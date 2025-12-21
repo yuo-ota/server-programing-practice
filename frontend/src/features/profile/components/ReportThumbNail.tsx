@@ -7,7 +7,7 @@ const ReportThumbNail = ({ reportData }: { reportData: ReportUserProps }) => {
   }
   return (
     <>
-      <div className="flex min-w-0 flex-col gap-2 px-4  w-full items-start justify-between py-4">
+      <div className="flex w-full min-w-0 flex-col items-start justify-between gap-2 px-4 py-4">
         <div className="flex items-center gap-1.5">
           <img
             src={`${API_URL}${reportData.userIconPath}`}

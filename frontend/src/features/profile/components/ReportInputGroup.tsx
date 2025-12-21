@@ -41,9 +41,8 @@ const ReportInputGroup = ({
             id: 'promote-crime',
             name: 'promote-crime',
             label: '犯罪行為の助長',
-            helperText:
-              '自傷行為、テロ行為、その他の違法行為',
-          }
+            helperText: '自傷行為、テロ行為、その他の違法行為',
+          },
         ]}
         checkedItems={checkedItems}
         setCheckedItems={setCheckedItems}
