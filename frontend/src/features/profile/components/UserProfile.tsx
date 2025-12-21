@@ -4,6 +4,8 @@ import UserCoreInfomation from './UserCoreInfomation';
 import SimpleButton from '@/components/SimpleButton';
 import KebabMenu from '@/components/KebabMenu';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import Dialog from './Dialog';
 
 interface UserProfileProps {
   userData: Profile;
@@ -12,7 +14,11 @@ interface UserProfileProps {
 
 const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
   const { userId } = useParams<{ userId: string }>();
+  const [isOpen, setIsOpen] = useState(false);
+  const openDialog = () => setIsOpen(true);
+  const closeDialog = () => setIsOpen(false);
   const isMyProfile = loginUserId === userId;
+  const [dialogUrl, setDialogUrl] = useState('');
   const navigate = useNavigate();
 
   const handleReportClick = () => {
@@ -24,9 +30,29 @@ const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
     }
   };
 
+  const handleLinkClick = (url: string) => {
+    openDialog();
+    setDialogUrl(url);
+  };
+
+  const handleDialogLinkClick = (url: string) => {
+    navigate(url);
+  };
+
   return (
     <>
       <div>
+        {isOpen && (
+          <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center">
+            <Dialog
+              isOpen={isOpen}
+              onButtonClick={() => handleDialogLinkClick(dialogUrl)}
+              onClose={closeDialog}
+              text={`以下のリンク先へアクセスしますか?\n${dialogUrl}`}
+              className=""
+            />
+          </div>
+        )}
         <div className="flex h-[110px] w-full">
           <img
             src={`${API_URL}${userData?.headerPath}`}
@@ -77,7 +103,9 @@ const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
               <SimpleButton
                 key={idx}
                 label={`${item?.name}`}
-                onClick={() => {}}
+                onClick={() => {
+                  handleLinkClick(item?.identifier);
+                }}
                 className=""
               />
             ))}
