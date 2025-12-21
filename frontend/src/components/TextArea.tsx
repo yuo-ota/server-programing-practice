@@ -4,6 +4,7 @@ interface TextAreaProps {
   limit?: number;
   id: string;
   value: string;
+  setHasError?: (hasError: boolean) => void;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
   className?: string;
@@ -15,6 +16,7 @@ const TextArea = ({
   limit,
   id,
   value,
+  setHasError = () => {},
   onChange,
   onBlur,
   className = '',
@@ -29,14 +31,17 @@ const TextArea = ({
 
   const isValidLength = (limit?: number, inputText?: string): boolean => {
     if (!limit) {
+      setHasError(false);
       return true;
     }
-    return textLength(inputText) <= limit;
+    const isValid = textLength(inputText) <= limit;
+    setHasError(!isValid);
+    return isValid;
   };
 
   return (
     <div className={`${className} min-w-24`}>
-      <div className="flex min-h-5 items-end justify-between">
+      <div className="flex min-h-5 flex-none items-end justify-between">
         <label htmlFor={id} className="text-subtitle">
           {label}
         </label>
@@ -48,7 +53,7 @@ const TextArea = ({
       </div>
       <textarea
         id={id}
-        className={`placeholder:text-placeholder text-foreground text-subtitle ease h-full w-full resize-none rounded-md border bg-transparent px-3 py-2 shadow-md transition duration-150 focus:shadow focus:outline-none ${
+        className={`placeholder:text-placeholder text-foreground text-subtitle ease h-[180px] w-full resize-none rounded-md border bg-transparent px-3 py-2 shadow-md transition duration-150 focus:shadow focus:outline-none ${
           isValidLength(limit, value)
             ? 'border-foreground focus:border-theme hover:border-foreground/(--hover-nega-opacity)'
             : 'border-error focus:border-error'
