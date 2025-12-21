@@ -76,7 +76,7 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
             ) AS i
             ON l.post_id = i.post_id
             LEFT JOIN user_settings AS us
-            ON l.user_id = us.user_id
+            ON p.creator_id = us.user_id
             WHERE l.user_id = :userId
             """,
       nativeQuery = true)
