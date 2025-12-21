@@ -27,7 +27,7 @@ interface BasePost {
 
 interface Post extends BasePost {
   likeCount: number;
-  isLiked: boolean;
+  liked: boolean;
 }
 
 interface LikedPost extends BasePost {
@@ -104,8 +104,8 @@ const isPostArray = (data: unknown): data is Post[] => {
         isBasePost(item) &&
         'likeCount' in item &&
         typeof (item as { likeCount: unknown }).likeCount === 'number' &&
-        'isLiked' in item &&
-        typeof (item as { isLiked: unknown }).isLiked === 'boolean'
+        'liked' in item &&
+        typeof (item as { liked: unknown }).liked === 'boolean'
     )
   );
 };

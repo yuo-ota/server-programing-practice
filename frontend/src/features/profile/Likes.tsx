@@ -52,8 +52,8 @@ export const Likes = ({ userData }: RootProps) => {
               userId={post.userId}
               postId={post.postId}
               text={post.content.description}
-              isLiked={true}
-              images={{ imagePath: `${API_URL}${post.content.path}`, alt: post.content.alt }}
+              liked={true}
+              images={{ imagePath: `${post.content.path}`, alt: post.content.alt }}
             />
           </div>
         ))

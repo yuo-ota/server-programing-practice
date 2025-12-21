@@ -26,7 +26,7 @@ interface UserPosts {
   postId: string;
   iconPath: string;
   likeCount: number;
-  isLiked: boolean;
+  liked: boolean;
   content: Content;
 }
 
@@ -53,7 +53,7 @@ interface PostResponse {
   post_id: string;
   icon_path: string;
   like_count: number;
-  is_Liked: boolean;
+  liked: boolean;
   content: ContentResponse;
 }
 
@@ -98,7 +98,7 @@ export const getProfile = async (userId: string): Promise<UserProfile> => {
       postId: p.post_id,
       iconPath: p.icon_path,
       likeCount: p.like_count,
-      isLiked: p.is_Liked,
+      liked: p.liked,
       content: {
         description: p.content.description,
         path: p.content.path,

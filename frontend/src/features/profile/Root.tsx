@@ -50,9 +50,9 @@ const Root = ({ userData }: RootProps) => {
               userName={userData.name}
               userId={userId!}
               postId={post.postId}
-              isLiked={post.isLiked}
+              liked={post.liked}
               text={post.content.description}
-              images={{ imagePath: `${API_URL}${post.content.path}`, alt: post.content.alt }}
+              images={{ imagePath: post.content.path, alt: post.content.alt }}
             />
           </div>
         ))
