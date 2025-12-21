@@ -117,10 +117,7 @@ export const Setting = () => {
   return (
     <>
       <div className="flex h-full w-full flex-col items-center">
-        <TopBanner
-          label="初期登録"
-          className="absolute top-0 h-16 w-full"
-        />
+        <TopBanner label="初期登録" className="absolute top-0 h-16 w-full" />
         <div className="flex w-full max-w-[500px] flex-col items-center gap-6 px-8 pt-20 pb-48">
           <SettingItemGroup
             displayName={displayName}
@@ -139,10 +136,10 @@ export const Setting = () => {
             setSNSInputs={setSNSInputs}
           />
           <TransitionButton
-            displayStatus='solid'
-            label='はじめる'
+            displayStatus="solid"
+            label="はじめる"
             onClick={handleDoneButtonClick}
-            className='h-11 w-full mt-10'
+            className="mt-10 h-11 w-full"
           />
         </div>
       </div>

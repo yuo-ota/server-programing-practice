@@ -92,7 +92,7 @@ const SettingItemGroup = ({
         return;
       }
       setUserIdError('');
-    } catch (e) {
+    } catch {
       setUserIdError(
         'ユーザーIDの確認に失敗しました。時間をおいて再度お試しください。'
       );
@@ -280,7 +280,9 @@ const SettingItemGroup = ({
         </div>
         <div className="flex flex-col">
           <label className="text-foreground text-subtitle">SNS ID</label>
-          <label className="text-annotation text-body">他SNSのリンクをプロフィールに添付できます</label>
+          <label className="text-annotation text-body">
+            他SNSのリンクをプロフィールに添付できます
+          </label>
           <SNSInputGroup
             className="w-full"
             setSNSInputs={setSNSInputs}
