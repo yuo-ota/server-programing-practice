@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import UserCoreInfomation from './UserCoreInfomation';
+import UserCoreInformation from './UserCoreInformation';
 import UserIcon from '@/assets/UserIconDefault.svg?react';
 
-type T = typeof UserCoreInfomation;
+type T = typeof UserCoreInformation;
 
 export default {
-  component: UserCoreInfomation,
+  component: UserCoreInformation,
   args: {
     name: 'ユーザーネーム',
     userId: 'ユーザーID',

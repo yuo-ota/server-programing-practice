@@ -1,18 +1,18 @@
 import type { ReactNode } from 'react';
 
-interface UserCoreInfomationProps {
+interface UserCoreInformationProps {
   icon: ReactNode;
   name: string;
   userId: string;
   className?: string;
 }
 
-const UserCoreInfomation = ({
+const UserCoreInformation = ({
   icon,
   name,
   userId,
   className = '',
-}: UserCoreInfomationProps) => {
+}: UserCoreInformationProps) => {
   return (
     <>
       <div className={`${className} flex items-center gap-2.5`}>
@@ -28,4 +28,4 @@ const UserCoreInfomation = ({
   );
 };
 
-export default UserCoreInfomation;
+export default UserCoreInformation;

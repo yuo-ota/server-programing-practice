@@ -1,6 +1,6 @@
 import { API_URL } from '@/config';
 import type { Profile } from '@/interfaces/api/user';
-import UserCoreInfomation from './UserCoreInfomation';
+import UserCoreInformation from './UserCoreInformation';
 import SimpleButton from '@/components/SimpleButton';
 import KebabMenu from '@/components/KebabMenu';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -61,7 +61,7 @@ const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
         </div>
         <div className="mx-5 my-2.5">
           <div className="flex items-center justify-between">
-            <UserCoreInfomation
+            <UserCoreInformation
               icon={
                 <img
                   src={`${API_URL}${userData?.iconPath}`}
