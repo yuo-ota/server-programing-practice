@@ -13,4 +13,3 @@ export const getPost = async (postId: string): Promise<AxiosResponse<void>> => {
   });
   return response;
 };
-

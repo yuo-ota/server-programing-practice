@@ -1,19 +1,19 @@
-import { API_URL } from "@/config";
-import type { ReportProps } from "@/interfaces/app/report";
+import { API_URL } from '@/config';
+import type { ReportProps } from '@/interfaces/app/report';
 
-const ReportThumbNail = ( reportData?: ReportProps ) => {
+const ReportThumbNail = (reportData?: ReportProps) => {
   if (!reportData) {
     return null;
   }
   return (
     <>
-      <div className="flex justify-between items-start w-full py-4">
-        <div className="flex flex-col gap-2 flex-2 min-w-0 px-4">
-          <div className="flex gap-1.5 items-center">
+      <div className="flex w-full items-start justify-between py-4">
+        <div className="flex min-w-0 flex-2 flex-col gap-2 px-4">
+          <div className="flex items-center gap-1.5">
             <img
               src={`${API_URL}${reportData.userIconPath}`}
               alt={`${reportData.userName} icon`}
-              className="w-10 h-10 rounded-full flex-none"
+              className="h-10 w-10 flex-none rounded-full"
             />
             <div className="flex flex-col">
               <p>{reportData.userName}</p>
@@ -25,11 +25,11 @@ const ReportThumbNail = ( reportData?: ReportProps ) => {
         <img
           src={`${API_URL}${reportData.postImagePath}`}
           alt={reportData.postImageAlt}
-          className="object-cover flex-1 min-w-0 mr-4"
+          className="mr-4 min-w-0 flex-1 object-cover"
         />
       </div>
     </>
   );
 };
 
-export default ReportThumbNail
+export default ReportThumbNail;

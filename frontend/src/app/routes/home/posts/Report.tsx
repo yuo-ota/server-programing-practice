@@ -8,7 +8,7 @@ import { isPost } from '@/interfaces/api/post';
 
 export const Report = () => {
   const didInit = useRef(false);
-  const postId = useParams<{ postId: string }>().postId || "";
+  const postId = useParams<{ postId: string }>().postId || '';
   const [checking, setChecking] = useState(true);
   const [reportData, setReportData] = useState<ReportProps | null>(null);
 
@@ -18,7 +18,7 @@ export const Report = () => {
         return;
       }
       didInit.current = true;
-      
+
       if (!postId) {
         setChecking(false);
         return;
@@ -37,8 +37,8 @@ export const Report = () => {
           userId: response.data.user_id,
           postId: response.data.post_id,
           postDescription: response.data.text,
-          postImagePath: response.data.images[0]?.path || "",
-          postImageAlt: response.data.images[0]?.alt || ""
+          postImagePath: response.data.images[0]?.path || '',
+          postImageAlt: response.data.images[0]?.alt || '',
         });
       } finally {
         setChecking(false);
@@ -51,7 +51,7 @@ export const Report = () => {
   if (reportData === null && !checking) {
     return <NotFound />;
   }
-  
+
   if (checking || !reportData) {
     return <div>Loading...</div>;
   }

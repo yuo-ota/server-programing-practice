@@ -14,7 +14,6 @@ export interface Image {
 }
 
 export const isPost = (data: unknown): data is Post => {
-  console.log(data);
   return (
     typeof data === 'object' &&
     data !== null &&

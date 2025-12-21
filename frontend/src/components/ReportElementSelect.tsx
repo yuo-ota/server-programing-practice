@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import CheckBox from './CheckBox';
 import type { ReportOption } from '../interfaces/app/reportOption';
 
@@ -6,7 +5,9 @@ interface ReportElementSelectProps {
   title: string;
   reportOptions: ReportOption[];
   checkedItems: Record<string, boolean>;
-  setCheckedItems: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
+  setCheckedItems: React.Dispatch<
+    React.SetStateAction<Record<string, boolean>>
+  >;
   className?: string;
 }
 
@@ -17,7 +18,6 @@ const ReportElementSelect = ({
   setCheckedItems,
   className = '',
 }: ReportElementSelectProps) => {
-
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.target;
 
