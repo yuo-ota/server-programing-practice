@@ -39,7 +39,7 @@ export const Likes = () => {
     };
 
     getUserProfile();
-  }, [userId, showMessage]);
+  }, [userId]);
 
   const handleHomeClick = () => {
     navigate(`/home/posts?date=${new Date().toISOString().split('T')[0]}`);
