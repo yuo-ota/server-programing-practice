@@ -2,7 +2,7 @@ import HomeProfileLikes from '@/features/profile/Likes';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProfile } from '@/api/ProfileApi';
 import { type Profile } from '@/interfaces/api/user';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { getUserId } from '@/utils/handleLocalStorage';
 import MenuTab from '@/components/MenuTab';
 import IconButton from '@/components/IconButton';
@@ -15,19 +15,19 @@ import PostIcon from '@/assets/post.svg?react';
 import NotificationContext from '@/contexts/notificationContext';
 
 export const Likes = () => {
+  const didInit = useRef(false);
   const { userId } = useParams<{ userId: string }>();
   const [userData, setUserData] = useState<Profile | undefined>(undefined);
   const { showMessage } = useContext(NotificationContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!userId) return;
-
-    const getUserProfile = async () => {
+  const getProfileProcess = useCallback(async () => {
+      if (!userId) return;
       try {
         const profile = await getProfile(userId);
         setUserData(profile);
       } catch {
+        navigate('/not-found');
         showMessage(
           [
             'ユーザープロフィールの取得に失敗しました。',
@@ -36,10 +36,14 @@ export const Likes = () => {
           '--color-error'
         );
       }
-    };
-
-    getUserProfile();
-  }, [userId, showMessage]);
+    }, [userId, showMessage, navigate]);
+  
+    useEffect(() => {
+      if (!didInit.current) {
+        getProfileProcess();
+        didInit.current = true;
+      }
+    }, [getProfileProcess]);
 
   const handleHomeClick = () => {
     navigate(`/home/posts?date=${new Date().toISOString().split('T')[0]}`);
