@@ -77,6 +77,11 @@ const SettingItemGroup = ({
       return;
     }
 
+    if (userId.length < 3 || userId.length > 15) {
+      setUserIdError('ユーザーIDは3文字以上15文字以下で入力してください');
+      return;
+    }
+
     try {
       const response = await checkUserId(userId);
 

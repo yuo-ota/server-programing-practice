@@ -1,14 +1,18 @@
 import { useContext, useState } from 'react';
 import SettingItemGroup from '../setting/components/SettingItemGroup';
 import TopBanner from '@/components/TopBanner';
-import { setting } from '@/api/SettingApi';
 import NotificationContext from '@/contexts/notificationContext';
 import type { SNSInputValue } from '@/interfaces/app/snsInput';
 import TransitionButton from '@/components/TransitionButton';
 import { useNavigate } from 'react-router-dom';
 import { getUserId } from '@/utils/handleLocalStorage';
+import { createUser } from '@/api/UserApi';
 
-export const Setting = () => {
+interface SettingProps {
+  token: string;
+}
+
+export const Setting = ({ token }: SettingProps) => {
   const navigate = useNavigate();
   const { showMessage } = useContext(NotificationContext);
   const [displayName, setDisplayName] = useState('');
@@ -30,39 +34,6 @@ export const Setting = () => {
     return `${y}-${m}-${d}`;
   };
 
-  /**
-   * formData作成
-   */
-  const createFormData = () => {
-    const formData = new FormData();
-    if (userId && userId !== getUserId()) {
-      formData.append('display_id', userId);
-    }
-    if (displayName) {
-      formData.append('name', displayName);
-    }
-    if (birthday) {
-      formData.append('birthday', formatLocalDate(birthday));
-    }
-    formData.append(
-      'show_adult_content',
-      adultContentSetting === '表示する' ? 'true' : 'false'
-    );
-    SNSInputs.forEach((sns, index) => {
-      if (sns.snsId && sns.value) {
-        formData.append(`social_accounts[${index}][name]`, sns.snsId);
-        formData.append(`social_accounts[${index}][identifier]`, sns.value);
-        if (sns.platform_id !== undefined && sns.platform_id !== null) {
-          formData.append(
-            `social_accounts[${index}][platform_id]`,
-            String(sns.platform_id)
-          );
-        }
-      }
-    });
-    return formData;
-  };
-
   const isError = (): boolean => {
     let errorExists = false;
     if (displayNameError || userIdError) {
@@ -80,8 +51,14 @@ export const Setting = () => {
       return;
     }
     try {
-      const formData = createFormData();
-      await setting(formData);
+      await createUser(
+        token,
+        displayName,
+        userId,
+        birthday ? formatLocalDate(birthday) : '',
+        adultContentSetting === '表示する',
+        SNSInputs.map((s) => ({ name: s.snsId, identifier: s.value }))
+      );
       localStorage.setItem(
         'settingData',
         JSON.stringify({
@@ -107,6 +84,7 @@ export const Setting = () => {
           })),
         })
       );
+
       showMessage(['初期登録が完了しました'], '--color-success');
       navigate('/home/');
     } catch {
