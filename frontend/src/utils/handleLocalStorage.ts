@@ -1,3 +1,4 @@
+import { getUserSetting } from '@/api/UserApi';
 import { isSettingData } from '@/interfaces/api/userSetting';
 
 export const getUserId = () => {
@@ -54,4 +55,12 @@ export const getParsedData = () => {
     }
   }
   return null;
+};
+
+export const saveUserSettingToLocalStorage = async () => {
+  const userSetting = await getUserSetting();
+
+  if (isSettingData(userSetting.data)) {
+    localStorage.setItem('settingData', JSON.stringify(userSetting.data));
+  }
 };

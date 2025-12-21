@@ -4,8 +4,7 @@ import TransitionButton from '@/components/TransitionButton';
 import { useState } from 'react';
 import { login } from '@/api/AuthApi';
 import { checkEmailFormat, checkPasswordFormat } from '@/utils/validation';
-import { getUserSetting } from '@/api/UserApi';
-import { isSettingData } from '@/interfaces/api/userSetting';
+import { saveUserSettingToLocalStorage } from '@/utils/handleLocalStorage';
 
 const LoginInputGroup = () => {
   const navigate = useNavigate();
@@ -80,14 +79,6 @@ const LoginInputGroup = () => {
     await login(email, password);
     await saveUserSettingToLocalStorage();
     navigate('/home');
-  };
-
-  const saveUserSettingToLocalStorage = async () => {
-    const userSetting = await getUserSetting();
-
-    if (isSettingData(userSetting.data)) {
-      localStorage.setItem('settingData', JSON.stringify(userSetting.data));
-    }
   };
 
   /**
