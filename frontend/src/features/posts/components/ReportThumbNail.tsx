@@ -25,7 +25,7 @@ const ReportThumbNail = ( reportData?: ReportProps ) => {
         <img
           src={`${API_URL}${reportData.postImagePath}`}
           alt={reportData.postImageAlt}
-          className="object-cover flex-1 min-w-0"
+          className="object-cover flex-1 min-w-0 mr-4"
         />
       </div>
     </>
