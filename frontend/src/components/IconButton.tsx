@@ -21,7 +21,10 @@ const IconButton = ({
   return (
     <>
       <button
-        onClick={handleClick}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleClick();
+        }}
         className={`${className} bg-background transition-brightness flex items-center justify-center rounded-full duration-150 ${disabled ? 'cursor-not-allowed opacity-50' : 'hover:brightness-(--hover-nega-brightness) active:brightness-(--active-nega-brightness)'}`}
         type="button"
       >

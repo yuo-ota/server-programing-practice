@@ -6,7 +6,10 @@ type T = typeof TabElementGroup;
 export default {
   component: TabElementGroup,
   args: {
-    tabs: ['テキストA', 'テキストB'],
+    tabs: [
+      { label: 'テキストA', onClick: () => {} },
+      { label: 'テキストB', onClick: () => {} },
+    ],
     className: '',
   },
 } satisfies Meta<T>;

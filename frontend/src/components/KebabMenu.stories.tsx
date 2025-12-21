@@ -11,7 +11,7 @@ export default {
       { label: 'テキスト2', onClick: () => {} },
       { label: 'テキスト3', onClick: () => {} },
     ],
-    className: 'w-12 h-12 ml-12',
+    className: 'w-12 h-12 ml-22',
   },
 } satisfies Meta<T>;
 

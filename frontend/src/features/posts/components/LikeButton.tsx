@@ -11,7 +11,10 @@ const LikeButton = ({ isLiked, onClick, className = '' }: LikeButtonProps) => {
   return (
     <>
       <button
-        onClick={onClick}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick();
+        }}
         className={`${className} hover:bg-theme/(--hover-opacity) active:bg-theme/(--active-opacity) flex items-center justify-center rounded-full transition-colors duration-150`}
         type="button"
       >

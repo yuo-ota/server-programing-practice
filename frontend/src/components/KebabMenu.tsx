@@ -5,6 +5,7 @@ import IconButton from './IconButton';
 interface MenuItem {
   label: string;
   onClick: () => void;
+  itemsClassName?: string;
 }
 
 interface KebabMenuProps {
@@ -15,44 +16,35 @@ interface KebabMenuProps {
 const KebabMenu = ({ className = '', items }: KebabMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = () => setIsOpen((prev) => !prev);
-
-  const handleSelect = (item: MenuItem) => {
-    item.onClick();
-    setIsOpen(false);
-  };
-
   return (
-    <>
-      <div className={`${className}`}>
-        {/* IconButtonの部分 */}
-        <IconButton
-          onClick={toggleMenu}
-          className={`h-full w-full`}
-          ButtonIcon={<DotsIcon className={'w-5/6, h-5/6'} />}
-        />
-        {/* ドロップダウン */}
-        {isOpen && (
-          <div className="ml-[100%]">
-            <ul
-              className={`bg-background absolute max-h-[calc(2.5rem*7)] -translate-x-full overflow-y-auto rounded-lg shadow-lg`}
-            >
-              {items.map((item) => (
-                <li key={item.label}>
-                  <button
-                    onClick={() => handleSelect(item)}
-                    className="bg-background transition-brightness block w-full px-3 py-2 text-left duration-150 hover:brightness-(--hover-nega-brightness) active:brightness-(--active-nega-brightness)"
-                    type="button"
-                  >
-                    {item.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-    </>
+    <div className={`relative ${className}`}>
+      {/* トリガー */}
+      <IconButton
+        onClick={() => setIsOpen((v) => !v)}
+        className="h-12 w-12"
+        ButtonIcon={<DotsIcon className="h-1/2 w-1/2" />}
+      />
+
+      {/* メニュー */}
+      {isOpen && (
+        <ul className="bg-background absolute right-0 mt-2 min-w-[160px] rounded-lg shadow-lg">
+          {items.map((item) => (
+            <li key={item.label}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  item.onClick();
+                  setIsOpen(false);
+                }}
+                className={`${item.itemsClassName} hover:bg-muted block w-full px-4 py-2 text-left`}
+              >
+                {item.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 };
 
