@@ -30,7 +30,7 @@ export const Root = () => {
         <div className="flex w-full flex-col gap-4">
           <CheckBox
             id={'skipRootPage'}
-            name={''}
+            name={'skipRootPage'}
             label={'次回からログイン画面を起動する'}
             checked={skipRootPage}
             onChange={handleSkipRootPageChange}
