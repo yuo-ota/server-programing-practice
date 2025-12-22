@@ -12,6 +12,8 @@ import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const isDev = process.env.NODE_ENV === 'development';
+
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   resolve: {
@@ -24,13 +26,14 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  server: {
+  server: isDev
+    ? {
     https: {
       key: fs.readFileSync('localhost-key.pem'),
       cert: fs.readFileSync('localhost.pem'),
     },
     port: 5173,
-  },
+  } : undefined,
   envDir: path.resolve(__dirname, '..'),
   test: {
     projects: [{
