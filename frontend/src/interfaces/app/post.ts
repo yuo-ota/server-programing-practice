@@ -13,4 +13,15 @@ interface post {
   liked: boolean;
 }
 
+export interface PostProps {
+  userIconPath: string;
+  userName: string;
+  userId: string;
+  postId: string;
+  postText: string;
+  postImagePath: string;
+  postImageAlt: string;
+  isLiked: boolean;
+}
+
 export type Post = post;

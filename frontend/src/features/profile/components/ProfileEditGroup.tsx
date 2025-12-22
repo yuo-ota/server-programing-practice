@@ -138,7 +138,7 @@ const ProfileEditGroup = ({
             isUnroundedLeft={false}
           />
           <TextInput
-            label="ユーザーID"
+            label="ユーザーID(3文字以上15文字以下)"
             placeholder="example"
             error={userIdError}
             id="userId-input"

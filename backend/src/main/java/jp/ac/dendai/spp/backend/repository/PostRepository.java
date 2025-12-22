@@ -43,6 +43,7 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
             ) AS l
             ON p.id = l.post_id
             WHERE p.creator_id = :creatorId
+            AND p.is_published = true
             """,
       nativeQuery = true)
   List<OwnPostEntity> findByOwnPost(@Param("creatorId") UUID creatorId);

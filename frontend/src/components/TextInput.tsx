@@ -37,8 +37,8 @@ const TextInput = ({
       <div
         className={`relative flex w-full flex-1 cursor-pointer items-center justify-start border bg-transparent transition duration-150 focus:shadow focus:outline-none ${
           error
-            ? 'border-error focus:border-error'
-            : 'border-foreground focus:border-theme hover:border-foreground/(--hover-nega-opacity)'
+            ? 'border-error focus-within:border-error'
+            : 'border-foreground [&:not(:focus-within)]:hover:border-foreground/(--hover-nega-opacity) focus-within:border-theme'
         } ${isUnroundedLeft ? 'rounded-r-lg' : 'rounded-lg'}`}
       >
         <label
