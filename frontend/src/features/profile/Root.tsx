@@ -128,7 +128,7 @@ export const Root = () => {
                     <img
                       src={`${API_URL}${userData.iconPath}`}
                       alt="User Icon"
-                      className="h-full w-full"
+                      className="h-full w-full rounded-full"
                     />
                   }
                   userName={userData.name}

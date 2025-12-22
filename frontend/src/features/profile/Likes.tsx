@@ -1,5 +1,5 @@
 import type { Profile } from '@/interfaces/api/user';
-import { getUserId } from '@/utils/handleLocalStorage';
+import { getIconPath, getUserId } from '@/utils/handleLocalStorage';
 import { useNavigate, useParams } from 'react-router-dom';
 import TabElementGroup from '@/components/TabElementGroup';
 import UserProfile from './components/UserProfile';
@@ -13,7 +13,6 @@ import IconButton from '@/components/IconButton';
 import MenuTab from '@/components/MenuTab';
 import HomeIcon from '@/assets/home.svg?react';
 import NotificationIcon from '@/assets/notification.svg?react';
-import UserIcon from '@/assets/userIconDefault.svg?react';
 import SettingIcon from '@/assets/setting.svg?react';
 import PostIcon from '@/assets/post.svg?react';
 
@@ -165,7 +164,13 @@ export const Likes = () => {
               <IconButton
                 onClick={handleProfileClick}
                 className="h-12 w-12"
-                ButtonIcon={<UserIcon className="h-[80%] w-[80%]" />}
+                ButtonIcon={
+                  <img
+                    src={`${API_URL}${getIconPath()}`}
+                    alt="icon"
+                    className="h-[80%] w-[80%] rounded-full object-cover"
+                  />
+                }
               />,
             ]}
             className="h-17 w-full"

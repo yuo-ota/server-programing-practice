@@ -2,7 +2,7 @@ import { deleteAccount, logout } from '@/api/AuthApi';
 import TransitionButton from '@/components/TransitionButton';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DeleteAccountDialog from './DeleteAccountDialog';
+import AttentionDialog from './AttentionDialog';
 
 const AccontManageGroup = () => {
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ const AccontManageGroup = () => {
     <div className="flex w-full flex-col">
       {isOpenLogout && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center">
-          <DeleteAccountDialog
+          <AttentionDialog
             isOpen={isOpenLogout}
             onButtonClick={() => handleLogoutDialogClick()}
             onClose={closeLogoutDialog}
@@ -69,7 +69,7 @@ const AccontManageGroup = () => {
       )}
       {isOpenDelete1 && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center">
-          <DeleteAccountDialog
+          <AttentionDialog
             isOpen={isOpenDelete1}
             onButtonClick={() => handleDeleteDialogClick1()}
             onClose={closeDeleteDialog1}
@@ -81,7 +81,7 @@ const AccontManageGroup = () => {
       )}
       {isOpenDelete2 && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center">
-          <DeleteAccountDialog
+          <AttentionDialog
             isOpen={isOpenDelete2}
             onButtonClick={() => handleDeleteDialogClick2()}
             onClose={closeDeleteDialog2}

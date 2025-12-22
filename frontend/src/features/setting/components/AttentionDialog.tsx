@@ -11,7 +11,7 @@ interface DialogProps {
   className?: string;
 }
 
-const DeleteAccountDialog = ({
+const AttentionDialog = ({
   isOpen,
   onButtonClick,
   onClose,
@@ -55,7 +55,10 @@ const DeleteAccountDialog = ({
       <dialog
         ref={dialogRef}
         className={`m-auto w-full max-w-md rounded-lg bg-white p-6 shadow-lg ${className}`}
-        onClick={onCloseDialog}
+        onClick={(e) => {
+          e.stopPropagation();
+          onCloseDialog();
+        }}
       >
         <div onClick={handleClickContent}>{questionText}</div>
         <div className="flex justify-between">
@@ -77,4 +80,4 @@ const DeleteAccountDialog = ({
   );
 };
 
-export default DeleteAccountDialog;
+export default AttentionDialog;

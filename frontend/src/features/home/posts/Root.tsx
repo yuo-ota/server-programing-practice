@@ -3,7 +3,6 @@ import TopBanner from '@/components/TopBanner';
 import MenuTab from '@/components/MenuTab';
 import HomeIcon from '@/assets/home.svg?react';
 import NotificationIcon from '@/assets/notification.svg?react';
-import UserIcon from '@/assets/userIconDefault.svg?react';
 import SettingIcon from '@/assets/setting.svg?react';
 import PostIcon from '@/assets/post.svg?react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -15,7 +14,7 @@ import NotificationContext from '@/contexts/notificationContext';
 import PostComponent from '@/components/Post';
 import { API_URL } from '@/config';
 import TabElementGroup from '@/components/TabElementGroup';
-import { getUserId } from '@/utils/handleLocalStorage';
+import { getIconPath, getUserId } from '@/utils/handleLocalStorage';
 
 const Root = () => {
   const navigate = useNavigate();
@@ -193,7 +192,13 @@ const Root = () => {
                 key="Profile"
                 onClick={handleProfileClick}
                 className="h-12 w-12"
-                ButtonIcon={<UserIcon className="h-[80%] w-[80%]" />}
+                ButtonIcon={
+                  <img
+                    src={`${API_URL}${getIconPath()}`}
+                    alt="icon"
+                    className="h-[80%] w-[80%] rounded-full object-cover"
+                  />
+                }
               />,
             ]}
             className="sticky h-17 w-full"
