@@ -1,3 +1,4 @@
+import { getUserSetting } from '@/api/UserApi';
 import { isSettingData } from '@/interfaces/api/userSetting';
 
 export const getUserId = () => {
@@ -32,10 +33,10 @@ export const getIconPath = () => {
       }
       throw new Error('Invalid setting data format');
     } catch {
-      return '';
+      return '/images/icons/default.png';
     }
   }
-  return '';
+  return '/images/icons/default.png';
 };
 
 export const getParsedData = () => {
@@ -54,4 +55,12 @@ export const getParsedData = () => {
     }
   }
   return null;
+};
+
+export const saveUserSettingToLocalStorage = async () => {
+  const userSetting = await getUserSetting();
+
+  if (isSettingData(userSetting.data)) {
+    localStorage.setItem('settingData', JSON.stringify(userSetting.data));
+  }
 };

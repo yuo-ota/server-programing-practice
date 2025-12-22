@@ -10,7 +10,11 @@ import NotificationContext from '@/contexts/notificationContext';
 import type { SNSInputValue } from '@/interfaces/app/snsInput';
 import type { SocialAccount } from '@/interfaces/app/socialAccount';
 import AccontManageGroup from './components/AccontManageGroup';
-import { getParsedData, getUserId } from '@/utils/handleLocalStorage';
+import {
+  getParsedData,
+  getUserId,
+  saveUserSettingToLocalStorage,
+} from '@/utils/handleLocalStorage';
 
 const Root = () => {
   const navigate = useNavigate();
@@ -98,11 +102,11 @@ const Root = () => {
     );
     SNSInputs.forEach((sns, index) => {
       if (sns.snsId && sns.value) {
-        formData.append(`socialAccounts[${index}][name]`, sns.snsId);
-        formData.append(`socialAccounts[${index}][identifier]`, sns.value);
+        formData.append(`socialAccounts[${index}].name`, sns.snsId);
+        formData.append(`socialAccounts[${index}].identifier`, sns.value);
         if (sns.platform_id !== undefined && sns.platform_id !== null) {
           formData.append(
-            `socialAccounts[${index}][platform_id]`,
+            `socialAccounts[${index}].platform_id`,
             String(sns.platform_id)
           );
         }
@@ -122,36 +126,7 @@ const Root = () => {
     try {
       const formData = createFormData();
       await setting(formData);
-      const prevSettingData = localStorage.getItem('settingData');
-      const prevSettingJson = prevSettingData
-        ? JSON.parse(prevSettingData)
-        : {};
-      localStorage.setItem(
-        'settingData',
-        JSON.stringify({
-          ...prevSettingJson,
-          ...(userId
-            ? {
-                display_id: userId,
-              }
-            : {}),
-          ...(displayName
-            ? {
-                name: displayName,
-              }
-            : {}),
-          ...(birthday
-            ? {
-                birthday: formatLocalDate(birthday),
-              }
-            : {}),
-          show_adult_contents: adultContentSetting === '表示する',
-          social_accounts: SNSInputs.map((s) => ({
-            name: s.snsId,
-            identifier: s.value,
-          })),
-        })
-      );
+      await saveUserSettingToLocalStorage();
       showMessage(['設定を保存しました'], '--color-success');
     } catch {
       showMessage(['設定の保存に失敗しました'], '--color-error');

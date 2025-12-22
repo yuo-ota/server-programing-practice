@@ -6,6 +6,7 @@ import type { SNSInputValue } from '@/interfaces/app/snsInput';
 import TransitionButton from '@/components/TransitionButton';
 import { useNavigate } from 'react-router-dom';
 import { createUser } from '@/api/UserApi';
+import { saveUserSettingToLocalStorage } from '@/utils/handleLocalStorage';
 
 interface SettingProps {
   token: string;
@@ -58,31 +59,7 @@ export const Setting = ({ token }: SettingProps) => {
         adultContentSetting === '表示する',
         SNSInputs.map((s) => ({ name: s.snsId, identifier: s.value }))
       );
-      localStorage.setItem(
-        'settingData',
-        JSON.stringify({
-          ...(userId
-            ? {
-                display_id: userId,
-              }
-            : {}),
-          ...(displayName
-            ? {
-                name: displayName,
-              }
-            : {}),
-          ...(birthday
-            ? {
-                birthday: formatLocalDate(birthday),
-              }
-            : {}),
-          show_adult_content: adultContentSetting === '表示する',
-          social_accounts: SNSInputs.map((s) => ({
-            name: s.snsId,
-            identifier: s.value,
-          })),
-        })
-      );
+      await saveUserSettingToLocalStorage();
 
       showMessage(['初期登録が完了しました'], '--color-success');
       navigate('/home/');
