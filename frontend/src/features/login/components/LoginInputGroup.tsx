@@ -132,7 +132,7 @@ const LoginInputGroup = () => {
           value={password}
           onChange={handlePasswordChange}
           onBlur={handlePasswordBlur}
-          className="mt-15 h-[88.5px]"
+          className="h-[88.5px]"
           displayStatus={'normal'}
           prefix={''}
           isUnroundedLeft={false}
@@ -142,7 +142,7 @@ const LoginInputGroup = () => {
             displayStatus={getLoginButtonStatus()}
             label={'ログイン'}
             onClick={handleLoginButtonClick}
-            className="mt-15 h-11 w-full"
+            className="mt-3.5 h-11 w-full"
           />
           <Link
             className="text-annotation text-subparagraph"
