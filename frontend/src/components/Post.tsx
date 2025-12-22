@@ -36,6 +36,7 @@ const Post = ({
   liked,
   className = '',
 }: PostProps) => {
+  console.log(images.imagePath)
   const [isLiked, setIsLiked] = useState(liked);
   const { showMessage } = useContext(NotificationContext);
 
