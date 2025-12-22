@@ -4,10 +4,9 @@ import SettingIcon from '@/assets/setting.svg?react';
 import MenuTab from '@/components/MenuTab';
 import HomeIcon from '@/assets/home.svg?react';
 import NotificationIcon from '@/assets/notification.svg?react';
-import UserIcon from '@/assets/UserIconDefault.svg?react';
 import NewPostIcon from '@/assets/newPost.svg?react';
 import { useNavigate } from 'react-router-dom';
-import { getUserId } from '@/utils/handleLocalStorage';
+import { getIconPath, getUserId } from '@/utils/handleLocalStorage';
 import type { Notification } from '@/interfaces/app/notification';
 import NotificationGroup from './components/NotificationGroup';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
@@ -17,6 +16,7 @@ import {
   mapApiNotificationToNotification,
 } from '@/interfaces/api/notification';
 import NotificationContext from '@/contexts/notificationContext';
+import { API_URL } from '@/config';
 
 const Root = () => {
   const didInit = useRef(false);
@@ -105,7 +105,7 @@ const Root = () => {
             <IconButton
               onClick={handleProfileClick}
               className="h-12 w-12"
-              ButtonIcon={<UserIcon className="h-[80%] w-[80%]" />}
+              ButtonIcon={<img src={`${API_URL}${getIconPath()}`} alt="icon" className="h-[80%] w-[80%] rounded-full object-cover" />}
             />,
           ]}
           className="z-20 h-17 w-full"

@@ -6,11 +6,11 @@ import { useContext, useEffect, useState } from 'react';
 import NotificationContext from '@/contexts/notificationContext';
 import { createPost } from '@/api/PostApi';
 import { getIconPath } from '@/utils/handleLocalStorage';
+import { API_URL } from '@/config';
 
 export const New = () => {
   const navigate = useNavigate();
   const { showMessage } = useContext(NotificationContext);
-  const [iconUrl, setIconUrl] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const TITLE_MAX_LENGTH = 32;
   const [titleError, setTitleError] =
@@ -44,10 +44,6 @@ export const New = () => {
     setTitle(value);
     setTitleError('');
   };
-
-  useEffect(() => {
-    setIconUrl(getIconPath());
-  }, []);
 
   const MAX_FILE_SIZE = 10 * 1024 * 1024;
   const allowedExts = ['png', 'jpg', 'jpeg', 'jpe', 'gif', 'webp', 'svg'];
@@ -177,7 +173,7 @@ export const New = () => {
           className="h-16 w-full"
         />
         <div className="flex items-start gap-4 px-2 pt-6">
-          <img src={iconUrl} className="h-14 w-14 rounded-full object-cover" />
+          <img src={`${API_URL}${getIconPath()}`} alt="icon" className="h-14 w-14 rounded-full object-cover" />
           <PostInputGroup
             className="min-w-0 flex-1"
             title={title}

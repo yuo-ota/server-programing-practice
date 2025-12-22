@@ -33,10 +33,10 @@ export const getIconPath = () => {
       }
       throw new Error('Invalid setting data format');
     } catch {
-      return '';
+      return '/images/icons/default.png';
     }
   }
-  return '';
+  return '/images/icons/default.png';
 };
 
 export const getParsedData = () => {

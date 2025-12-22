@@ -211,8 +211,8 @@ export const Edit = () => {
           label="プロフィール編集"
           className="absolute top-0 h-16 w-full"
         />
-        <div className="flex w-full flex-col gap-6 pb-48">
-          <div className="mt-16 flex w-full">
+        <div className="flex w-full flex-col gap-6 pb-48 items-center">
+          <div className="mt-16 flex flex-col w-full gap-6">
             <input
               ref={headerInputRef}
               type="file"
@@ -220,14 +220,6 @@ export const Edit = () => {
               className="hidden"
               style={{ display: 'none' }}
               onChange={(e) => handleFileChange(e, 'header')}
-            />
-            <input
-              ref={iconInputRef}
-              type="file"
-              accept=".png,.jpg,.jpeg,.jpe,.gif,.webp,.svg"
-              className="hidden"
-              style={{ display: 'none' }}
-              onChange={(e) => handleFileChange(e, 'icon')}
             />
             <IconButton
               ButtonIcon={
@@ -241,7 +233,15 @@ export const Edit = () => {
               className="h-[110px] w-full"
             ></IconButton>
           </div>
-          <div className="flex w-full">
+          <div className="flex w-full max-w-[500px] flex-col items-center px-8 gap-6">
+            <input
+              ref={iconInputRef}
+              type="file"
+              accept=".png,.jpg,.jpeg,.jpe,.gif,.webp,.svg"
+              className="hidden"
+              style={{ display: 'none' }}
+              onChange={(e) => handleFileChange(e, 'icon')}
+            />
             <IconButton
               ButtonIcon={
                 <img
@@ -251,10 +251,8 @@ export const Edit = () => {
                 />
               }
               onClick={() => iconInputRef.current?.click()}
-              className="ml-4 h-18 w-18 rounded-full"
+              className="h-18 w-18 rounded-full self-start"
             />
-          </div>
-          <div className="flex w-full max-w-[500px] flex-col items-center px-8">
             <ProfileEditGroup
               displayName={displayName}
               setDisplayName={setDisplayName}
