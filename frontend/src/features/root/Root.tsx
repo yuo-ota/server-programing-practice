@@ -24,7 +24,7 @@ export const Root = () => {
   return (
     <>
       <div className="flex h-full w-full max-w-[500px] flex-col items-center justify-between px-8 py-14">
-        <div className="flex w-full flex-col items-center gap-8">
+        <div className="flex-1 w-full flex flex-col items-center justify-center gap-8">
           <Introduction />
         </div>
         <div className="w-full flex flex-col gap-4">
@@ -35,6 +35,7 @@ export const Root = () => {
             checked={skipRootPage}
             onChange={handleSkipRootPageChange}
             helperText={""}
+            className="self-center"
           />
           <TransitionButton
             displayStatus={'solid'}
