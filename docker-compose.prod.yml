@@ -1,13 +1,13 @@
 services:
   app:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
     container_name: spp-backend
     depends_on:
       - postgres
       - init-images
     volumes:
-      - ./backend:/app
-      - maven-repo:/root/.m2
       - images:/usr/share/nginx/images
     working_dir: /app
     env_file:
@@ -17,7 +17,7 @@ services:
       - "8080"
     networks:
       - project-network
-    command: ["true"]
+    restart: always
 
   frontend:
     build:
@@ -25,6 +25,7 @@ services:
       dockerfile: Dockerfile.prod
     volumes:
       - frontend-build:/app/dist
+    command: ["true"]
 
   postgres:
     image: postgres:16
@@ -76,7 +77,6 @@ services:
 
 volumes:
   frontend-build:
-  maven-repo:
   postgres_data:
   images:
 
