@@ -60,18 +60,18 @@ const DeleteAccountDialog = ({
         <div onClick={handleClickContent}>{questionText}</div>
         <div className="flex justify-between">
           <TransitionButton
-            displayStatus='attention'
+            displayStatus="attention"
             label={leftText}
             onClick={onButtonClick}
-            className="mt-4 w-20 h-8"
+            className="mt-4 h-8 w-20"
           />
           <TransitionButton
-            displayStatus='outline'
+            displayStatus="outline"
             label={rightText}
             onClick={onCloseDialog}
-            className="mt-4 w-20 h-8"
+            className="mt-4 h-8 w-20"
           />
-          </div>
+        </div>
       </dialog>
     </>
   );

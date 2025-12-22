@@ -56,41 +56,41 @@ const AccontManageGroup = () => {
   return (
     <div className="flex w-full flex-col">
       {isOpenLogout && (
-          <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center">
-            <DeleteAccountDialog
-              isOpen={isOpenLogout}
-              onButtonClick={() => handleLogoutDialogClick()}
-              onClose={closeLogoutDialog}
-              questionText="本当にログアウトしますか？"
-              leftText="はい"
-              rightText="いいえ"
-            />
-          </div>
-        )}
+        <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center">
+          <DeleteAccountDialog
+            isOpen={isOpenLogout}
+            onButtonClick={() => handleLogoutDialogClick()}
+            onClose={closeLogoutDialog}
+            questionText="本当にログアウトしますか？"
+            leftText="はい"
+            rightText="いいえ"
+          />
+        </div>
+      )}
       {isOpenDelete1 && (
-          <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center">
-            <DeleteAccountDialog
-              isOpen={isOpenDelete1}
-              onButtonClick={() => handleDeleteDialogClick1()}
-              onClose={closeDeleteDialog1}
-              questionText="本当にアカウントを削除しますか？"
-              leftText="はい"
-              rightText="いいえ"
-            />
-          </div>
-        )}
+        <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center">
+          <DeleteAccountDialog
+            isOpen={isOpenDelete1}
+            onButtonClick={() => handleDeleteDialogClick1()}
+            onClose={closeDeleteDialog1}
+            questionText="本当にアカウントを削除しますか？"
+            leftText="はい"
+            rightText="いいえ"
+          />
+        </div>
+      )}
       {isOpenDelete2 && (
-          <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center">
-            <DeleteAccountDialog
-              isOpen={isOpenDelete2}
-              onButtonClick={() => handleDeleteDialogClick2()}
-              onClose={closeDeleteDialog2}
-              questionText="こうかいしませんね？"
-              leftText="はい"
-              rightText="いいえ"
-            />
-          </div>
-        )}
+        <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center">
+          <DeleteAccountDialog
+            isOpen={isOpenDelete2}
+            onButtonClick={() => handleDeleteDialogClick2()}
+            onClose={closeDeleteDialog2}
+            questionText="こうかいしませんね？"
+            leftText="はい"
+            rightText="いいえ"
+          />
+        </div>
+      )}
       <label className="text-foreground text-subtitle self-start">
         アカウント管理
       </label>
