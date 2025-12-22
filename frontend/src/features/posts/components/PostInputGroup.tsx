@@ -66,9 +66,8 @@ const PostInputGroup = ({
       <div className={`${className} relative flex flex-col gap-6`}>
         <div className="flex flex-col">
           <div className="flex">
-            <button
+            <div
               id="dropZone"
-              type="button"
               onClick={openFileDialog}
               onDrop={onDrop}
               onDragOver={onDragOver}
@@ -105,7 +104,7 @@ const PostInputGroup = ({
               ) : (
                 <AddIcon className="fill-placeholder h-1/4 w-1/4" />
               )}
-            </button>
+            </div>
           </div>
           <div className="mt-2 min-h-5">
             {error && <p className="text-error text-subparagraph">{error}</p>}
