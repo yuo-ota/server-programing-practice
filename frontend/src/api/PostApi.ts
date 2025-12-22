@@ -13,3 +13,12 @@ export const getPost = async (postId: string): Promise<AxiosResponse<void>> => {
   });
   return response;
 };
+
+export const getTodayPost = async (
+  date: string
+): Promise<AxiosResponse<void>> => {
+  const response = await axios.get<void>(`${API_URL}/api/post?date=${date}`, {
+    withCredentials: true,
+  });
+  return response;
+};
