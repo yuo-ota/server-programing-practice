@@ -1,6 +1,5 @@
 import { API_URL } from '@/config';
-import type { AxiosResponse } from 'axios';
-import axios from 'axios';
+import axios, { type AxiosResponse } from 'axios';
 
 
 
@@ -10,9 +9,9 @@ export const createPost = async (formData: FormData): Promise<void> => {
   });
 };
 
-export const getPosts = async (date: string): Promise<AxiosResponse<void>> => {
-  const response = await axios.get<void>(`${API_URL}/api/post?date=${date}`, {
+export const getPost = async (postId: string): Promise<AxiosResponse<void>> => {
+  const response = await axios.get<void>(`${API_URL}/api/post/${postId}`, {
     withCredentials: true,
   });
   return response;
-}
+};
