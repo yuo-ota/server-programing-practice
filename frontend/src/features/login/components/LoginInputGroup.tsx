@@ -84,7 +84,13 @@ const LoginInputGroup = () => {
       await saveUserSettingToLocalStorage();
       navigate('/home');
     } catch {
-      showMessage(['ログインに失敗しました。', 'メールアドレスとパスワードを確認してください。'], '--color-error');
+      showMessage(
+        [
+          'ログインに失敗しました。',
+          'メールアドレスとパスワードを確認してください。',
+        ],
+        '--color-error'
+      );
     }
   };
 
