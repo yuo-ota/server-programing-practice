@@ -1,5 +1,5 @@
 import type { Profile } from '@/interfaces/api/user';
-import { getUserId } from '@/utils/handleLocalStorage';
+import { getIconPath, getUserId } from '@/utils/handleLocalStorage';
 import { useNavigate, useParams } from 'react-router-dom';
 import TabElementGroup from '@/components/TabElementGroup';
 import UserProfile from './components/UserProfile';
@@ -151,9 +151,7 @@ export const Root = () => {
         <div className="fixed bottom-0 left-0 z-30 w-full">
           <IconButton
             onClick={handlePostClick}
-            ButtonIcon={
-              <PostIcon className="flex h-full w-full items-center" />
-            }
+            ButtonIcon={<PostIcon className="flex h-full w-full items-center" />}
             className="absolute right-4 bottom-20 z-40 h-12 w-12 rounded-full"
           />
           <MenuTab
@@ -171,7 +169,13 @@ export const Root = () => {
               <IconButton
                 onClick={handleProfileClick}
                 className="h-12 w-12"
-                ButtonIcon={<UserIcon className="h-[80%] w-[80%]" />}
+                ButtonIcon={
+                  <img
+                    src={`${API_URL}${getIconPath()}`}
+                    alt="icon"
+                    className="h-[80%] w-[80%] rounded-full object-cover"
+                  />
+                }
               />,
             ]}
             className="h-17 w-full"
