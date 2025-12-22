@@ -46,6 +46,7 @@ services:
     image: nginx:stable
     volumes:
       - ./nginx:/etc/nginx
+      - /etc/letsencrypt:/etc/letsencrypt:ro
       - images:/usr/share/nginx/images
       - frontend-build:/usr/share/nginx/html
     ports:
