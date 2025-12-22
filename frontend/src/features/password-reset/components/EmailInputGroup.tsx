@@ -177,7 +177,7 @@ const EmailInputGroup = () => {
           displayStatus={getPasswordResetButtonStatus()}
           label={passwordResetButtonLabel}
           onClick={handlePasswordResetButtonClick}
-          className="mt-15 h-11 w-full"
+          className="h-11 w-full"
         />
       </div>
     </>
