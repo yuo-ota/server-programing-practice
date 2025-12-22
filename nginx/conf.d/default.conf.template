@@ -21,4 +21,13 @@ server {
 
         expires 2d;
     }
+
+    # Front end
+    location / {
+        root /usr/share/nginx/html;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+
+        expires 2d;
+    }
 }
