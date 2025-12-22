@@ -26,7 +26,7 @@ const NotificationGroup = ({ notifications }: NotificationGroupProps) => {
           {notifications.map((notification) => (
             <div
               key={notification.notificationId}
-              className="bg-background flex w-full flex-col border-b-2 p-5 first:border-t-2"
+              className="bg-background border-annotation flex w-full flex-col border-b-2 p-5 first:border-t-2"
             >
               {notification.notificationType === LIKE_NOTIFICATION && (
                 <div className="flex w-full flex-col gap-4">

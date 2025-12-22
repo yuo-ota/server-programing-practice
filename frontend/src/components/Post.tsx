@@ -69,7 +69,7 @@ const Post = ({
 
   return (
     <div
-      className={`${className} flex w-full px-2`}
+      className={`${className} bg-background border-annotation flex w-full border-b-2 px-2 py-2`}
       tabIndex={0}
       onClick={() => {
         handlePostClick();
@@ -82,9 +82,9 @@ const Post = ({
         ButtonIcon={icon}
         className="h-12 w-12 flex-none"
       />
-      <div className="mx-2 min-w-0 flex-1">
-        <div className="flex items-center justify-between">
-          <p className="truncate">{userName}</p>
+      <div className="min-w-0 flex-1 px-2">
+        <div className="flex w-full items-center justify-between">
+          <p className="text-title truncate">{userName}</p>
           <div className="flex items-center">
             <LikeButton
               isLiked={like}
@@ -107,13 +107,13 @@ const Post = ({
             />
           </div>
         </div>
-        <div>
+        <div className="w-full">
           <p className="break-word">{text}</p>
           <div>
             <img
               src={`${API_URL}${images.imagePath}`}
               alt={images.alt}
-              className="border-foreground/80 mt-2 max-h-100 w-full rounded-lg border object-cover"
+              className="mt-2 max-h-96 w-full rounded-lg object-contain"
             />
           </div>
         </div>
