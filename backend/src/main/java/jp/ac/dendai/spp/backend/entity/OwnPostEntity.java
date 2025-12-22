@@ -6,9 +6,9 @@ public class OwnPostEntity extends BasePostEntity {
   public OwnPostEntity() {}
 
   public OwnPostEntity(
-      java.util.UUID postId, String imagePath, String description, String alt, long likeCount) {
+      java.util.UUID postId, String imagePath, String description, String alt, Long likeCount) {
     super(postId, description, alt, imagePath);
-    this.likeCount = (int) likeCount;
+    this.likeCount = (likeCount != null) ? likeCount.intValue() : 0;
   }
 
   // Getters and Setters
