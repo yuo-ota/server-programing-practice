@@ -4,7 +4,7 @@ import TransitionButton from '@/components/TransitionButton';
 import { useContext, useState } from 'react';
 import { adminLogin } from '@/api/AuthApi';
 import { checkEmailFormat, checkPasswordFormat } from '@/utils/validation';
-import NotificationContext from '@/contexts/NotificationContext';
+import NotificationContext from '@/contexts/notificationContext';
 
 const AdminLoginInputGroup = () => {
   const navigate = useNavigate();

@@ -8,7 +8,6 @@ export default {
   args: {
     groupName: 'テキスト',
     options: ['テキストA', 'テキストB'],
-    initialValue: 'テキストA',
     className: 'gap-10',
   },
 } satisfies Meta<T>;
