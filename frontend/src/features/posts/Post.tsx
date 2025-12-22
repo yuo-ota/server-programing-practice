@@ -146,11 +146,13 @@ export const Post = (postData: PostProps) => {
           <p className="text-foreground text-title self-start">
             {postData.postText}
           </p>
-          {postData.postImagePath && <img
-            src={`${API_URL}${postData.postImagePath}`}
-            alt={postData.postImageAlt}
-            className="object-cover"
-          />}
+          {postData.postImagePath && (
+            <img
+              src={`${API_URL}${postData.postImagePath}`}
+              alt={postData.postImageAlt}
+              className="object-cover"
+            />
+          )}
           <div className="flex w-full items-start justify-between py-4">
             <div className="items-between flex gap-1.5">
               <IconButton
