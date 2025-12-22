@@ -1,42 +1,8 @@
 import { API_URL } from '@/config';
 import axios from 'axios';
+import type { Profile } from '@/interfaces/app/profile';
 
-interface Content {
-  description: string;
-  path: string;
-  alt: string;
-}
 
-interface UserProfile {
-  name: string;
-  iconPath: string;
-  headerPath: string;
-  introduction: string;
-  socialAccounts: SocialAccounts[];
-  posts: UserPosts[];
-  likedPosts: UserLikedPosts[];
-}
-
-interface SocialAccounts {
-  name: string;
-  identifier: string;
-}
-
-interface UserPosts {
-  postId: string;
-  iconPath: string;
-  likeCount: number;
-  liked: boolean;
-  content: Content;
-}
-
-interface UserLikedPosts {
-  userId: string;
-  name: string;
-  postId: string;
-  iconPath: string;
-  content: Content;
-}
 
 interface ContentResponse {
   description: string;
@@ -75,7 +41,7 @@ interface UserProfileResponse {
   liked_posts: LikedPostResponse[];
 }
 
-export const getProfile = async (userId: string): Promise<UserProfile> => {
+export const getProfile = async (userId: string): Promise<Profile> => {
   const response = await axios.get<UserProfileResponse>(
     `${API_URL}/api/user/${userId}`,
     {
@@ -85,38 +51,39 @@ export const getProfile = async (userId: string): Promise<UserProfile> => {
 
   const data = response.data;
 
-  const mapped: UserProfile = {
+  const profile: Profile = {
     name: data.name,
     iconPath: data.icon_path,
     headerPath: data.header_path,
-    introduction: data.introduction,
-    socialAccounts: (data.social_accounts ?? []).map((sa) => ({
-      name: sa.name,
-      identifier: sa.identifier,
+    introduction: data.introduction ?? '',
+    socialAccounts: (data.social_accounts || []).map((s) => ({
+      name: s.name,
+      identifier: s.identifier,
     })),
-    posts: (data.posts ?? []).map((p) => ({
+    posts: (data.posts || []).map((p) => ({
       postId: p.post_id,
       iconPath: p.icon_path,
       likeCount: p.like_count,
-      liked: p.liked,
+      isLiked: p.liked,
       content: {
         description: p.content.description,
         path: p.content.path,
         alt: p.content.alt,
       },
     })),
-    likedPosts: (data.liked_posts ?? []).map((l) => ({
-      userId: l.user_id,
-      name: l.name,
-      postId: l.post_id,
-      iconPath: l.icon_path,
+
+    likedPosts: (data.liked_posts || []).map((lp) => ({
+      userId: lp.user_id,
+      name: lp.name,
+      postId: lp.post_id,
+      iconPath: lp.icon_path,
       content: {
-        description: l.content.description,
-        path: l.content.path,
-        alt: l.content.alt,
+        description: lp.content.description,
+        path: lp.content.path,
+        alt: lp.content.alt,
       },
     })),
   };
 
-  return mapped;
+  return profile;
 };

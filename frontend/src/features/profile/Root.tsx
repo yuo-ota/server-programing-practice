@@ -1,4 +1,4 @@
-import type { Profile } from '@/interfaces/api/user';
+import type { Profile } from '@/interfaces/app/profile';
 import { getIconPath, getUserId } from '@/utils/handleLocalStorage';
 import { useNavigate, useParams } from 'react-router-dom';
 import TabElementGroup from '@/components/TabElementGroup';
@@ -128,13 +128,13 @@ export const Root = () => {
                     <img
                       src={`${API_URL}${userData.iconPath}`}
                       alt="User Icon"
-                      className="h-full w-full"
+                      className="h-full w-full rounded-full"
                     />
                   }
                   userName={userData.name}
                   userId={userId!}
                   postId={post.postId}
-                  liked={post.liked}
+                  liked={post.isLiked}
                   text={post.content.description}
                   images={{
                     imagePath: post.content.path,

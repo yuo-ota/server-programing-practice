@@ -1,4 +1,4 @@
-import type { Profile } from '@/interfaces/api/user';
+import type { Profile } from '@/interfaces/app/profile';
 import { getUserId } from '@/utils/handleLocalStorage';
 import { useNavigate, useParams } from 'react-router-dom';
 import TabElementGroup from '@/components/TabElementGroup';
@@ -16,6 +16,7 @@ import NotificationIcon from '@/assets/notification.svg?react';
 import UserIcon from '@/assets/userIconDefault.svg?react';
 import SettingIcon from '@/assets/setting.svg?react';
 import PostIcon from '@/assets/post.svg?react';
+
 
 export const Likes = () => {
   const didInit = useRef(false);

@@ -80,7 +80,7 @@ const Post = ({
           handleProfileClick();
         }}
         ButtonIcon={icon}
-        className="h-12 w-12 flex-none"
+        className="h-12 w-12 rounded-full"
       />
       <div className="min-w-0 flex-1 px-2">
         <div className="flex w-full items-center justify-between">
