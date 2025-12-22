@@ -111,7 +111,7 @@ const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
               />
             )}
           </div>
-          <p className="text-foreground text-subtitle my-2.5">
+          <p className="text-foreground text-subtitle my-2.5 break-all">
             {userData?.introduction}
           </p>
           <div>
