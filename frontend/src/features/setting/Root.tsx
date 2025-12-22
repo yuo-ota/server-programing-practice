@@ -10,7 +10,11 @@ import NotificationContext from '@/contexts/notificationContext';
 import type { SNSInputValue } from '@/interfaces/app/snsInput';
 import type { SocialAccount } from '@/interfaces/app/socialAccount';
 import AccontManageGroup from './components/AccontManageGroup';
-import { getParsedData, getUserId, saveUserSettingToLocalStorage } from '@/utils/handleLocalStorage';
+import {
+  getParsedData,
+  getUserId,
+  saveUserSettingToLocalStorage,
+} from '@/utils/handleLocalStorage';
 
 const Root = () => {
   const navigate = useNavigate();

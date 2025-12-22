@@ -1,10 +1,10 @@
-import { checkUserId } from "@/api/SettingApi";
-import SNSInputGroup from "@/components/SNSInputGroup";
-import TextArea from "@/components/TextArea";
-import TextInput from "@/components/TextInput";
-import { isCheckUserIdResponse } from "@/interfaces/api/setting";
-import type { SNSInputValue } from "@/interfaces/app/snsInput";
-import { getUserId } from "@/utils/handleLocalStorage";
+import { checkUserId } from '@/api/SettingApi';
+import SNSInputGroup from '@/components/SNSInputGroup';
+import TextArea from '@/components/TextArea';
+import TextInput from '@/components/TextInput';
+import { isCheckUserIdResponse } from '@/interfaces/api/setting';
+import type { SNSInputValue } from '@/interfaces/app/snsInput';
+import { getUserId } from '@/utils/handleLocalStorage';
 
 interface SettingItemGroupProps {
   displayName: string;
@@ -38,7 +38,6 @@ const ProfileEditGroup = ({
   SNSInputs,
   setSNSInputs,
 }: SettingItemGroupProps) => {
-  
   /**
    * 表示名入力時の処理
    * @param e
@@ -59,7 +58,9 @@ const ProfileEditGroup = ({
    * 自己紹介入力時の処理
    * @param e
    */
-  const handleIntroductionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleIntroductionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setIntroduction(e.target.value);
   };
 
@@ -162,7 +163,7 @@ const ProfileEditGroup = ({
             className=""
           />
         </div>
-        <div className="flex flex-col mt-3">
+        <div className="mt-3 flex flex-col">
           <label className="text-foreground text-subtitle">SNS ID</label>
           <label className="text-annotation text-body">
             他SNSのリンクをプロフィールに添付できます

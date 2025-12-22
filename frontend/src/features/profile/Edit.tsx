@@ -1,12 +1,16 @@
 import SettingIcon from '@/assets/allowLeft.svg?react';
-import IconButton from "@/components/IconButton";
-import TopBanner from "@/components/TopBanner";
-import NotificationContext from "@/contexts/notificationContext";
-import type { SNSInputValue } from "@/interfaces/app/snsInput";
+import IconButton from '@/components/IconButton';
+import TopBanner from '@/components/TopBanner';
+import NotificationContext from '@/contexts/notificationContext';
+import type { SNSInputValue } from '@/interfaces/app/snsInput';
 import type { SocialAccount } from '@/interfaces/app/socialAccount';
-import { getParsedData, getUserId, saveUserSettingToLocalStorage } from "@/utils/handleLocalStorage";
-import { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {
+  getParsedData,
+  getUserId,
+  saveUserSettingToLocalStorage,
+} from '@/utils/handleLocalStorage';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import BottomTab from '../setting/components/BottomTab';
 import ProfileEditGroup from './components/ProfileEditGroup';
 import { API_URL } from '@/config';
@@ -89,7 +93,10 @@ export const Edit = () => {
   /**
    * 共通のファイル変更ハンドラー
    */
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'icon' | 'header') => {
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: 'icon' | 'header'
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -119,12 +126,12 @@ export const Edit = () => {
    */
   const getImageUrl = (path: string) => {
     // if (!path) return '';
-    
+
     // パスが 'blob:' (ローカルのプレビュー) または 'http' (外部URL) で始まるなら、そのまま返す
     if (path.startsWith('blob:') || path.startsWith('http')) {
       return path;
     }
-    
+
     // それ以外（サーバー上のパス）なら API_URL をつける
     return `${API_URL}${path}`;
   };
@@ -204,23 +211,23 @@ export const Edit = () => {
           label="プロフィール編集"
           className="absolute top-0 h-16 w-full"
         />
-        <div className="flex flex-col w-full gap-6 pb-48">
-          <div className="flex w-full mt-16">
+        <div className="flex w-full flex-col gap-6 pb-48">
+          <div className="mt-16 flex w-full">
             <input
-                ref={headerInputRef}
-                type="file"
-                accept=".png,.jpg,.jpeg,.jpe,.gif,.webp,.svg"
-                className="hidden"
-                style={{ display: 'none' }}
-                onChange={(e) => handleFileChange(e, 'header')}
+              ref={headerInputRef}
+              type="file"
+              accept=".png,.jpg,.jpeg,.jpe,.gif,.webp,.svg"
+              className="hidden"
+              style={{ display: 'none' }}
+              onChange={(e) => handleFileChange(e, 'header')}
             />
             <input
-                ref={iconInputRef}
-                type="file"
-                accept=".png,.jpg,.jpeg,.jpe,.gif,.webp,.svg"
-                className="hidden"
-                style={{ display: 'none' }}
-                onChange={(e) => handleFileChange(e, 'icon')}
+              ref={iconInputRef}
+              type="file"
+              accept=".png,.jpg,.jpeg,.jpe,.gif,.webp,.svg"
+              className="hidden"
+              style={{ display: 'none' }}
+              onChange={(e) => handleFileChange(e, 'icon')}
             />
             <IconButton
               ButtonIcon={
@@ -232,20 +239,19 @@ export const Edit = () => {
               }
               onClick={() => headerInputRef.current?.click()}
               className="h-[110px] w-full"
-            >
-            </IconButton>
+            ></IconButton>
           </div>
           <div className="flex w-full">
             <IconButton
               ButtonIcon={
                 <img
                   src={getImageUrl(iconPath)}
-                  className="h-full w-full object-cover rounded-full"
+                  className="h-full w-full rounded-full object-cover"
                   alt="Icon Image"
                 />
               }
               onClick={() => iconInputRef.current?.click()}
-              className="h-18 w-18 rounded-full ml-4"
+              className="ml-4 h-18 w-18 rounded-full"
             />
           </div>
           <div className="flex w-full max-w-[500px] flex-col items-center px-8">
