@@ -9,8 +9,7 @@ import java.util.List;
 import jp.ac.dendai.spp.backend.dto.SocialAccount;
 
 public class CreateUserRequest {
-  @NotBlank
-  private String token;
+  @NotBlank private String token;
 
   @Pattern(regexp = "^(?=.*\\S).+$")
   @NotBlank
