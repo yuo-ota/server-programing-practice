@@ -484,8 +484,8 @@ paths:
                     items:
                       type: object
                       properties:
-                        platform_id:
-                          type: integer
+                        name:
+                          type: string
                         identifier:
                           type: string
                   posts:
