@@ -1,9 +1,6 @@
 server {
-    listen 443 ssl;
+    listen 80;
     server_name ${NGINX_HOST};
-
-    ssl_certificate ${CERT_PATH}.pem;
-    ssl_certificate_key ${KEY_PATH}.pem;
 
     # Springboot API
     location /api/ {
