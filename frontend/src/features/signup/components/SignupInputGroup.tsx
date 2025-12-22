@@ -242,7 +242,7 @@ const SignupInputGroup = () => {
           value={password}
           onChange={handlePasswordChange}
           onBlur={handlePasswordBlur}
-          className="mt-15 h-[88.5px]"
+          className="h-[88.5px]"
           displayStatus={'normal'}
           prefix={''}
           isUnroundedLeft={false}
@@ -259,14 +259,14 @@ const SignupInputGroup = () => {
           displayStatus={'normal'}
           prefix={''}
           isUnroundedLeft={false}
-          className="mt-15 h-[88.5px]"
+          className="h-[88.5px]"
         />
         <div className="mt-3.5 flex flex-col items-center gap-2.5">
           <TransitionButton
             displayStatus={getSignupButtonStatus()}
             label={signupButtonLabel}
             onClick={handleSignupButtonClick}
-            className="mt-15 h-11 w-full"
+            className="h-11 w-full"
           />
         </div>
       </div>
