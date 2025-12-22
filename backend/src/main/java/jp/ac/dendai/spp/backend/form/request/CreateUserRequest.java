@@ -11,7 +11,9 @@ import jp.ac.dendai.spp.backend.dto.SocialAccount;
 public class CreateUserRequest {
   @NotBlank private String token;
 
-  @NotBlank private String name;
+  @Pattern(regexp = "^(?=.*\\S).+$")
+  @NotBlank
+  private String name;
 
   @Past(message = "誕生日は過去の日付で設定してください。")
   private LocalDate birthday;

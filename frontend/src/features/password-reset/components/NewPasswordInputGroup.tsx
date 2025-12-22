@@ -139,7 +139,7 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
       />
       <TextInput
         type="password"
-        label="新規パスワード確認(英数字・記号を含む8文字以上)"
+        label="パスワード確認"
         placeholder="********"
         error={passwordCheckError}
         id="password-input-check"
@@ -149,14 +149,14 @@ const NewPasswordInputGroup = ({ token }: NewPasswordInputGroupProps) => {
         displayStatus={'normal'}
         prefix={''}
         isUnroundedLeft={false}
-        className="mt-15 h-[88.5px]"
+        className="h-[88.5px]"
       />
       <div className="mt-3.5 flex flex-col items-center gap-2.5">
         <TransitionButton
           displayStatus={getPasswordResetButtonStatus()}
           label="パスワードリセット"
           onClick={handlePasswordResetButtonClick}
-          className="mt-15 h-11 w-full"
+          className="h-11 w-full"
         />
       </div>
     </div>

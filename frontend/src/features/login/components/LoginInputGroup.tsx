@@ -1,13 +1,15 @@
 import { Link, useNavigate } from 'react-router';
 import TextInput from '@/components/TextInput';
 import TransitionButton from '@/components/TransitionButton';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { login } from '@/api/AuthApi';
 import { checkEmailFormat, checkPasswordFormat } from '@/utils/validation';
 import { saveUserSettingToLocalStorage } from '@/utils/handleLocalStorage';
+import NotificationContext from '@/contexts/notificationContext';
 
 const LoginInputGroup = () => {
   const navigate = useNavigate();
+  const { showMessage } = useContext(NotificationContext);
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
@@ -76,9 +78,19 @@ const LoginInputGroup = () => {
       return;
     }
 
-    await login(email, password);
-    await saveUserSettingToLocalStorage();
-    navigate('/home');
+    try {
+      await login(email, password);
+      await saveUserSettingToLocalStorage();
+      navigate('/home');
+    } catch {
+      showMessage(
+        [
+          'ログインに失敗しました。',
+          'メールアドレスとパスワードを確認してください。',
+        ],
+        '--color-error'
+      );
+    }
   };
 
   /**
@@ -123,7 +135,7 @@ const LoginInputGroup = () => {
           value={password}
           onChange={handlePasswordChange}
           onBlur={handlePasswordBlur}
-          className="mt-15 h-[88.5px]"
+          className="h-[88.5px]"
           displayStatus={'normal'}
           prefix={''}
           isUnroundedLeft={false}
@@ -133,7 +145,7 @@ const LoginInputGroup = () => {
             displayStatus={getLoginButtonStatus()}
             label={'ログイン'}
             onClick={handleLoginButtonClick}
-            className="mt-15 h-11 w-full"
+            className="mt-3.5 h-11 w-full"
           />
           <Link
             className="text-annotation text-subparagraph"
