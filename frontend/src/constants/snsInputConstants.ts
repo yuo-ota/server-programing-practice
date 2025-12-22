@@ -11,25 +11,25 @@ export const snsInputOptions: SNSInputOption[] = [
     label: 'Instagram',
     placeholder: 'example',
     prefix: 'https://www.instagram.com/',
-    id: 'instagram',
+    id: 'Instagram',
   },
   {
-    label: 'pixiv',
+    label: 'Pixiv',
     placeholder: 'https://www.pixiv.net/users/example',
     prefix: '',
-    id: 'pixiv',
+    id: 'Pixiv',
   },
   {
-    label: 'skeb',
+    label: 'Skeb',
     placeholder: 'example',
     prefix: 'https://skeb.jp/@',
-    id: 'skeb',
+    id: 'Skeb',
   },
   {
     label: 'Bluesky',
     placeholder: 'example',
     prefix: 'https://bsky.app/profile/',
-    id: 'bluesky',
+    id: 'Bluesky',
   },
 ];
 
