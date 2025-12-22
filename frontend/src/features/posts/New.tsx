@@ -173,7 +173,11 @@ export const New = () => {
           className="h-16 w-full"
         />
         <div className="flex items-start gap-4 px-2 pt-6">
-          <img src={`${API_URL}${getIconPath()}`} alt="icon" className="h-14 w-14 rounded-full object-cover" />
+          <img
+            src={`${API_URL}${getIconPath()}`}
+            alt="icon"
+            className="h-14 w-14 rounded-full object-cover"
+          />
           <PostInputGroup
             className="min-w-0 flex-1"
             title={title}

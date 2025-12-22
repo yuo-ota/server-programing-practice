@@ -211,8 +211,8 @@ export const Edit = () => {
           label="プロフィール編集"
           className="absolute top-0 h-16 w-full"
         />
-        <div className="flex w-full flex-col gap-6 pb-48 items-center">
-          <div className="mt-16 flex flex-col w-full gap-6">
+        <div className="flex w-full flex-col items-center gap-6 pb-48">
+          <div className="mt-16 flex w-full flex-col gap-6">
             <input
               ref={headerInputRef}
               type="file"
@@ -233,7 +233,7 @@ export const Edit = () => {
               className="h-[110px] w-full"
             ></IconButton>
           </div>
-          <div className="flex w-full max-w-[500px] flex-col items-center px-8 gap-6">
+          <div className="flex w-full max-w-[500px] flex-col items-center gap-6 px-8">
             <input
               ref={iconInputRef}
               type="file"
@@ -251,7 +251,7 @@ export const Edit = () => {
                 />
               }
               onClick={() => iconInputRef.current?.click()}
-              className="h-18 w-18 rounded-full self-start"
+              className="h-18 w-18 self-start rounded-full"
             />
             <ProfileEditGroup
               displayName={displayName}

@@ -105,7 +105,13 @@ const Root = () => {
             <IconButton
               onClick={handleProfileClick}
               className="h-12 w-12"
-              ButtonIcon={<img src={`${API_URL}${getIconPath()}`} alt="icon" className="h-[80%] w-[80%] rounded-full object-cover" />}
+              ButtonIcon={
+                <img
+                  src={`${API_URL}${getIconPath()}`}
+                  alt="icon"
+                  className="h-[80%] w-[80%] rounded-full object-cover"
+                />
+              }
             />,
           ]}
           className="z-20 h-17 w-full"
