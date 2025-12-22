@@ -151,7 +151,9 @@ export const Root = () => {
         <div className="fixed bottom-0 left-0 z-30 w-full">
           <IconButton
             onClick={handlePostClick}
-            ButtonIcon={<PostIcon className="flex h-full w-full items-center" />}
+            ButtonIcon={
+              <PostIcon className="flex h-full w-full items-center" />
+            }
             className="absolute right-4 bottom-20 z-40 h-12 w-12 rounded-full"
           />
           <MenuTab
