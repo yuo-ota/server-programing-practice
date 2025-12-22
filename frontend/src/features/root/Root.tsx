@@ -6,7 +6,9 @@ import { useState } from 'react';
 
 export const Root = () => {
   const navigate = useNavigate();
-  const [skipRootPage, setSkipRootPage] = useState(localStorage.getItem('skipRootPage') === 'true');
+  const [skipRootPage, setSkipRootPage] = useState(
+    localStorage.getItem('skipRootPage') === 'true'
+  );
 
   const handleSkipRootPageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     localStorage.setItem('skipRootPage', e.target.checked ? 'true' : 'false');
