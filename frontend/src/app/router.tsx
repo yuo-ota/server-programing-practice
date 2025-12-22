@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router';
+import { Navigate, Route, Routes } from 'react-router';
 import RequireAuth from './auth/RequireAuth';
 import RequireAdminAuth from './auth/RequireAdminAuth';
 import { Root } from './routes/Root';
@@ -53,6 +53,7 @@ export const AppRoutes = () => {
         {/* Auth Required */}
         <Route element={<RequireAuth />}>
           <Route path="/home">
+            <Route index element={<Navigate to="/home/posts" replace />} />
             <Route path="notifications" element={<HomeNotifications />} />
             <Route path="posts">
               <Route element={<HomePostsRoot />} />
