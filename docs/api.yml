@@ -499,7 +499,7 @@ paths:
                           type: string
                         like_count:
                           type: integer
-                        is_liked:
+                        liked:
                           type: boolean
                         content:
                           type: object
@@ -674,7 +674,7 @@ paths:
                       type: string
                     icon_path:
                       type: string
-                    is_liked:
+                    liked:
                       type: boolean
                     post_id:
                       type: string
@@ -819,7 +819,7 @@ paths:
                     type: string
                   icon_path:
                     type: string
-                  is_liked:
+                  liked:
                     type: boolean
                   post_id:
                     type: string
