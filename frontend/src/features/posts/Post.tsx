@@ -1,9 +1,9 @@
 import SettingIcon from '@/assets/allowLeft.svg?react';
-import IconButton from "@/components/IconButton";
-import TopBanner from "@/components/TopBanner";
+import IconButton from '@/components/IconButton';
+import TopBanner from '@/components/TopBanner';
 import { API_URL } from '@/config';
 import type { PostProps } from '@/interfaces/app/post';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import LikeButton from './components/LikeButton';
 import KebabMenu from '@/components/KebabMenu';
 import MenuTab from '@/components/MenuTab';
@@ -26,7 +26,7 @@ export const Post = (postData: PostProps) => {
   const openDialog = () => setIsOpenDialog(true);
   const closeDialog = () => setIsOpenDialog(false);
 
-    /**
+  /**
    * 戻るボタンがクリックされたときの処理
    */
   const handleCloseButtonClick = () => {
@@ -67,21 +67,21 @@ export const Post = (postData: PostProps) => {
     navigate(`/home/posts/${postData.postId}/report`);
   };
 
-    /**
+  /**
    * 削除ボタンがクリックされたときの処理
    */
   const handleDeleteClick = () => {
     openDialog();
   };
 
-    /**
+  /**
    * ダイアログのボタンがクリックされたときの処理
    */
   const handleDialogClick = async () => {
     try {
       await deletePost(postData.postId);
       navigate(-1);
-    } catch (error) {
+    } catch {
       showMessage(
         ['投稿の削除に失敗しました。', '再度時間を空けてお試しください。'],
         '--color-error'
@@ -89,28 +89,28 @@ export const Post = (postData: PostProps) => {
     }
   };
 
-    /**
+  /**
    * ホームボタンがクリックされたときの処理
    */
   const handleHomeClick = () => {
     navigate(`/home/posts`);
   };
-  
-    /**
+
+  /**
    * 自身のプロフィールボタンがクリックされたときの処理
    */
   const handleMyProfileClick = () => {
     navigate(`/home/profile/${getUserId()}`);
   };
-  
-    /**
+
+  /**
    * 通知ボタンがクリックされたときの処理
    */
   const handleNotificationClick = () => {
     navigate('/home/notifications');
   };
-  
-    /**
+
+  /**
    * 投稿ボタンがクリックされたときの処理
    */
   const handlePostClick = () => {
@@ -140,27 +140,38 @@ export const Post = (postData: PostProps) => {
               className="h-10 w-10"
             />
           }
-          className="h-16 w-full sticky top-0"
+          className="sticky top-0 h-16 w-full"
         />
-        <div className="flex flex-col w-full items-center max-w-[500px] gap-6 px-2 pt-20 pb-44">
-          <p className="text-foreground text-title self-start">{postData.postText}</p>
+        <div className="flex w-full max-w-[500px] flex-col items-center gap-6 px-2 pt-20 pb-44">
+          <p className="text-foreground text-title self-start">
+            {postData.postText}
+          </p>
           <img
             src={`${API_URL}${postData.postImagePath}`}
             alt={postData.postImageAlt}
             className="object-cover"
           />
           <div className="flex w-full items-start justify-between py-4">
-            <div className="flex items-bewtween gap-1.5">
+            <div className="items-bewtween flex gap-1.5">
               <IconButton
                 onClick={() => {
                   handleProfileClick();
                 }}
-                ButtonIcon={<img src={`${API_URL}${postData.userIconPath}`} className="w-12 h-12 rounded-full"/>}
-                className="w-12 h-12 flex-none rounded-full"
+                ButtonIcon={
+                  <img
+                    src={`${API_URL}${postData.userIconPath}`}
+                    className="h-12 w-12 rounded-full"
+                  />
+                }
+                className="h-12 w-12 flex-none rounded-full"
               />
               <div className="flex flex-col">
-                <p className="text-title text-foreground">{postData.userName}</p>
-                <p className="text-body text-placeholder truncate">@{postData.userId}</p>
+                <p className="text-title text-foreground">
+                  {postData.userName}
+                </p>
+                <p className="text-body text-placeholder truncate">
+                  @{postData.userId}
+                </p>
               </div>
             </div>
             <div className="ml-auto flex items-center">
@@ -172,21 +183,27 @@ export const Post = (postData: PostProps) => {
                 className="h-12 w-12"
               />
               <KebabMenu
-                items={postData.userId !== getUserId() ? [
-                  {
-                    label: '通報する',
-                    onClick: () => {
-                      handleReportClick();
-                    },
-                    itemsClassName: 'text-error',
-                  },
-                ] : [{
-                    label: '削除する',
-                    onClick: () => {
-                      handleDeleteClick();
-                    },
-                    itemsClassName: 'text-error',
-                  },]}
+                items={
+                  postData.userId !== getUserId()
+                    ? [
+                        {
+                          label: '通報する',
+                          onClick: () => {
+                            handleReportClick();
+                          },
+                          itemsClassName: 'text-error',
+                        },
+                      ]
+                    : [
+                        {
+                          label: '削除する',
+                          onClick: () => {
+                            handleDeleteClick();
+                          },
+                          itemsClassName: 'text-error',
+                        },
+                      ]
+                }
                 className="ml-2 h-12 w-12"
               />
             </div>
@@ -208,7 +225,7 @@ export const Post = (postData: PostProps) => {
                 ButtonIcon={<HomeIcon className="h-[80%] w-[80%]" />}
               />,
               <IconButton
-                    onClick={handleNotificationClick}
+                onClick={handleNotificationClick}
                 className="h-12 w-12"
                 ButtonIcon={<NotificationIcon className="h-[80%] w-[80%]" />}
               />,
@@ -220,7 +237,8 @@ export const Post = (postData: PostProps) => {
                     src={`${API_URL}${getIconPath()}`}
                     alt="icon"
                     className="h-[80%] w-[80%] rounded-full object-cover"
-                  />}
+                  />
+                }
               />,
             ]}
             className="h-17 w-full"

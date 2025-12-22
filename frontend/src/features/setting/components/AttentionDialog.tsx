@@ -56,8 +56,9 @@ const AttentionDialog = ({
         ref={dialogRef}
         className={`m-auto w-full max-w-md rounded-lg bg-white p-6 shadow-lg ${className}`}
         onClick={(e) => {
-                e.stopPropagation();
-                onCloseDialog}}
+          e.stopPropagation();
+          onCloseDialog();
+        }}
       >
         <div onClick={handleClickContent}>{questionText}</div>
         <div className="flex justify-between">

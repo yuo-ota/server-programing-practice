@@ -63,7 +63,7 @@ export const Post = () => {
   return (
     <>
       <div className="flex h-dvh w-dvw items-center justify-center">
-        <PostRoot {...postData}/>
+        <PostRoot {...postData} />
       </div>
     </>
   );

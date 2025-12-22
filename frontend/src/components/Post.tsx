@@ -53,21 +53,21 @@ const Post = ({
     navigate(`/home/posts/${postId}/report`);
   };
 
-    /**
+  /**
    * 削除ボタンがクリックされたときの処理
    */
   const handleDeleteClick = () => {
     openDialog();
   };
 
-    /**
+  /**
    * ダイアログのボタンがクリックされたときの処理
    */
   const handleDialogClick = async () => {
     try {
       await deletePost(postId);
       window.location.reload();
-    } catch (error) {
+    } catch {
       showMessage(
         ['投稿の削除に失敗しました。', '再度時間を空けてお試しください。'],
         '--color-error'
@@ -105,17 +105,17 @@ const Post = ({
       }}
     >
       {isOpenDialog && (
-          <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center">
-            <AttentionDialog
-              isOpen={isOpenDialog}
-              onButtonClick={handleDialogClick}
-              onClose={closeDialog}
-              questionText="この投稿を削除しますか？"
-              leftText="はい"
-              rightText="いいえ"
-            />
-          </div>
-        )}
+        <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center">
+          <AttentionDialog
+            isOpen={isOpenDialog}
+            onButtonClick={handleDialogClick}
+            onClose={closeDialog}
+            questionText="この投稿を削除しますか？"
+            leftText="はい"
+            rightText="いいえ"
+          />
+        </div>
+      )}
       <IconButton
         onClick={() => {
           handleProfileClick();
@@ -135,21 +135,27 @@ const Post = ({
               className="h-12 w-12"
             />
             <KebabMenu
-              items={userId !== getUserId() ? [
-                {
-                  label: '通報する',
-                  onClick: () => {
-                    handleReportClick();
-                  },
-                  itemsClassName: 'text-error',
-                },
-              ] : [{
-                  label: '削除する',
-                  onClick: () => {
-                    handleDeleteClick();
-                  },
-                  itemsClassName: 'text-error',
-                },]}
+              items={
+                userId !== getUserId()
+                  ? [
+                      {
+                        label: '通報する',
+                        onClick: () => {
+                          handleReportClick();
+                        },
+                        itemsClassName: 'text-error',
+                      },
+                    ]
+                  : [
+                      {
+                        label: '削除する',
+                        onClick: () => {
+                          handleDeleteClick();
+                        },
+                        itemsClassName: 'text-error',
+                      },
+                    ]
+              }
               className="ml-2 h-12 w-12"
             />
           </div>

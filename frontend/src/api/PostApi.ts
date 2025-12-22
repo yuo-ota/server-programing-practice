@@ -8,7 +8,7 @@ export const createPost = async (formData: FormData): Promise<void> => {
 };
 
 export const deletePost = async (postId: string): Promise<void> => {
-  await axios.delete<void>(`${API_URL}/api/post/${postId}` , {
+  await axios.delete<void>(`${API_URL}/api/post/${postId}`, {
     withCredentials: true,
   });
 };

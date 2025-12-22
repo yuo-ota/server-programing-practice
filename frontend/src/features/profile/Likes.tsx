@@ -13,7 +13,6 @@ import IconButton from '@/components/IconButton';
 import MenuTab from '@/components/MenuTab';
 import HomeIcon from '@/assets/home.svg?react';
 import NotificationIcon from '@/assets/notification.svg?react';
-import UserIcon from '@/assets/userIconDefault.svg?react';
 import SettingIcon from '@/assets/setting.svg?react';
 import PostIcon from '@/assets/post.svg?react';
 
