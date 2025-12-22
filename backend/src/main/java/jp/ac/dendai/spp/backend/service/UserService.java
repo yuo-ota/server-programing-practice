@@ -324,7 +324,7 @@ public class UserService {
    */
   public List<OwnPost> getOwnPosts(UUID userId, String iconPath, UUID viewerId) {
     List<OwnPost> ownPosts = new ArrayList<>();
-    List<OwnPostEntity> ownPostEntities = postRepository.findByOwnPost(userId);
+    List<OwnPostEntity> ownPostEntities = postRepository.findByOwnPost(userId, viewerId);
 
     for (OwnPostEntity ownPostEntity : ownPostEntities) {
       Content content =
