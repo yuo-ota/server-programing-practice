@@ -108,7 +108,7 @@ export const Likes = () => {
                 },
                 { label: 'いいね', onClick: () => {} },
               ]}
-              className="mx-5 mt-2.5"
+              className="my-2.5 shadow-md"
               defaultIndex={1}
             />
           </div>
