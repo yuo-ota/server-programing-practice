@@ -1,4 +1,4 @@
-import  { Root as PageRoot } from '@/features/root/Root';
+import { Root as PageRoot } from '@/features/root/Root';
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,10 +10,10 @@ export const Root = () => {
     if (didInit.current) return;
     didInit.current = true;
 
-    if (localStorage.getItem("skipRootPage") === "true") {
-      navigate("/login");
+    if (localStorage.getItem('skipRootPage') === 'true') {
+      navigate('/login');
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <>
