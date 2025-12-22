@@ -1,6 +1,6 @@
 import { Likes as ProfileLikes } from '@/features/profile/Likes';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export const Likes = () => {
   const didInit = useRef(false);
@@ -10,12 +10,12 @@ export const Likes = () => {
   useEffect(() => {
     if (!didInit.current) {
       didInit.current = true;
-      
+
       if (!userId) {
-        navigate("/not-found");
+        navigate('/not-found');
       }
     }
-  }, [userId]);
+  }, [userId, navigate]);
 
   return (
     <>

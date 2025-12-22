@@ -17,9 +17,6 @@ import UserIcon from '@/assets/userIconDefault.svg?react';
 import SettingIcon from '@/assets/setting.svg?react';
 import PostIcon from '@/assets/post.svg?react';
 
-interface RootProps {
-}
-
 export const Root = () => {
   const didInit = useRef(false);
   const { userId } = useParams<{ userId: string }>();
@@ -140,7 +137,10 @@ export const Root = () => {
                   postId={post.postId}
                   liked={post.liked}
                   text={post.content.description}
-                  images={{ imagePath: post.content.path, alt: post.content.alt }}
+                  images={{
+                    imagePath: post.content.path,
+                    alt: post.content.alt,
+                  }}
                 />
               </div>
             ))}
@@ -151,7 +151,9 @@ export const Root = () => {
         <div className="fixed bottom-0 left-0 z-30 w-full">
           <IconButton
             onClick={handlePostClick}
-            ButtonIcon={<PostIcon className="flex h-full w-full items-center" />}
+            ButtonIcon={
+              <PostIcon className="flex h-full w-full items-center" />
+            }
             className="absolute right-4 bottom-20 z-40 h-12 w-12 rounded-full"
           />
           <MenuTab

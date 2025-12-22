@@ -10,14 +10,12 @@ export const Root = () => {
   useEffect(() => {
     if (!didInit.current) {
       didInit.current = true;
-      
+
       if (!userId) {
-        navigate("/not-found");
+        navigate('/not-found');
       }
     }
-  }, [userId]);
+  }, [userId, navigate]);
 
-  return (
-    <ProfileRoot key={`profile-root-${userId}`} />
-  );
+  return <ProfileRoot key={`profile-root-${userId}`} />;
 };
