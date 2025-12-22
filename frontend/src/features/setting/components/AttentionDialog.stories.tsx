@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import DeleteAccountDialog from './DeleteAccountDialog';
+import AttentionDialog from './AttentionDialog';
 
-type T = typeof DeleteAccountDialog;
+type T = typeof AttentionDialog;
 
 export default {
-  component: DeleteAccountDialog,
+  component: AttentionDialog,
   args: {
     isOpen: false,
     onClose: undefined,
