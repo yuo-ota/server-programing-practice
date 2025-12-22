@@ -3,16 +3,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getProfile } from '@/api/ProfileApi';
 import { type Profile } from '@/interfaces/api/user';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { getUserId } from '@/utils/handleLocalStorage';
+import { getIconPath, getUserId } from '@/utils/handleLocalStorage';
 import MenuTab from '@/components/MenuTab';
 import IconButton from '@/components/IconButton';
 import HomeIcon from '@/assets/home.svg?react';
 import NotificationIcon from '@/assets/notification.svg?react';
-import UserIcon from '@/assets/userIconDefault.svg?react';
 import SettingIcon from '@/assets/setting.svg?react';
 import TopBanner from '@/components/TopBanner';
 import PostIcon from '@/assets/post.svg?react';
 import NotificationContext from '@/contexts/notificationContext';
+import { API_URL } from '@/config';
 
 export const Root = () => {
   const didInit = useRef(false);
@@ -107,7 +107,13 @@ export const Root = () => {
             <IconButton
               onClick={handleProfileClick}
               className="h-12 w-12"
-              ButtonIcon={<UserIcon className="h-[80%] w-[80%]" />}
+              ButtonIcon={
+                <img
+                  src={`${API_URL}${getIconPath()}`}
+                  alt="icon"
+                  className="h-[80%] w-[80%] rounded-full object-cover"
+                />
+              }
             />,
           ]}
           className="h-17 w-full"

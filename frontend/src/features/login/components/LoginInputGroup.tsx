@@ -4,8 +4,7 @@ import TransitionButton from '@/components/TransitionButton';
 import { useContext, useState } from 'react';
 import { login } from '@/api/AuthApi';
 import { checkEmailFormat, checkPasswordFormat } from '@/utils/validation';
-import { getUserSetting } from '@/api/UserApi';
-import { isSettingData } from '@/interfaces/api/userSetting';
+import { saveUserSettingToLocalStorage } from '@/utils/handleLocalStorage';
 import NotificationContext from '@/contexts/notificationContext';
 
 const LoginInputGroup = () => {
@@ -91,14 +90,6 @@ const LoginInputGroup = () => {
         ],
         '--color-error'
       );
-    }
-  };
-
-  const saveUserSettingToLocalStorage = async () => {
-    const userSetting = await getUserSetting();
-
-    if (isSettingData(userSetting.data)) {
-      localStorage.setItem('settingData', JSON.stringify(userSetting.data));
     }
   };
 

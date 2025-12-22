@@ -81,7 +81,7 @@ const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
               icon={
                 <img
                   src={`${API_URL}${userData?.iconPath}`}
-                  className="h-full w-full"
+                  className="h-full w-full rounded-full"
                   alt="User Icon"
                 />
               }
