@@ -21,7 +21,7 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
             LIMIT 1
             """,
       nativeQuery = true)
-  Post findByCreatorIdInToday(@Param("creatorId") UUID creatorId, @Param("hour") int hour);
+  Post findByCreatorIdInToday(@Param("creatorId") UUID creatorId);
 
   @Query("SELECT p FROM Post p WHERE p.creatorId = :creatorId")
   List<Post> findByCreatorId(@Param("creatorId") UUID creatorId);
@@ -44,7 +44,7 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
             ) AS l
             ON p.id = l.post_id
             WHERE p.creator_id = :creatorId
-            AND (p.is_published = true OR :userId = :creatorId)
+            AND (p.is_published = true OR (:userId IS NOT NULL AND :userId = :creatorId))
             ORDER BY p.created_at DESC
             """,
       nativeQuery = true)
