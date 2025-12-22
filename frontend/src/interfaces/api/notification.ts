@@ -9,7 +9,7 @@ interface ApiBaseNotification {
 interface ApiLikeNotification {
   liked_post_id: string;
   liked_by_user_id: string;
-  liked_by_user_name: string;
+  liked_by_username: string;
 }
 
 interface ApiPenaltyNotification {
@@ -44,7 +44,7 @@ export const mapApiNotificationToNotification = (
       content: {
         likedPostId: apiNotification.content.liked_post_id,
         likedByUserId: apiNotification.content.liked_by_user_id,
-        likedByUserName: apiNotification.content.liked_by_user_name,
+        likedByUserName: apiNotification.content.liked_by_username,
       },
     };
   } else {
@@ -103,8 +103,8 @@ const isLikeNotification = (content: unknown) => {
     'liked_by_user_id' in content &&
     typeof (content as { liked_by_user_id: unknown }).liked_by_user_id ===
       'string' &&
-    'liked_by_user_name' in content &&
-    typeof (content as { liked_by_user_name: unknown }).liked_by_user_name ===
+    'liked_by_username' in content &&
+    typeof (content as { liked_by_username: unknown }).liked_by_username ===
       'string'
   );
 };
