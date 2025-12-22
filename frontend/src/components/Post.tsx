@@ -36,7 +36,7 @@ const Post = ({
   liked,
   className = '',
 }: PostProps) => {
-  const [like, setIsLike] = useState(liked);
+  const [isLiked, setIsLiked] = useState(liked);
   const { showMessage } = useContext(NotificationContext);
 
   const [isOpenDialog, setIsOpenDialog] = useState(false);
@@ -81,12 +81,12 @@ const Post = ({
 
   const handleLikeClick = async () => {
     try {
-      if (!like) {
+      if (!isLiked) {
         await setLike(postId);
-        setIsLike(true);
+        setIsLiked(true);
       } else {
         await removeLike(postId);
-        setIsLike(false);
+        setIsLiked(false);
       }
     } catch {
       showMessage(
@@ -128,7 +128,7 @@ const Post = ({
           <p className="text-title truncate">{userName}</p>
           <div className="flex items-center">
             <LikeButton
-              isLiked={like}
+              isLiked={isLiked}
               onClick={() => {
                 handleLikeClick();
               }}

@@ -14,7 +14,7 @@ export const Post = () => {
   const [postData, setPostData] = useState<PostProps | null>(null);
 
   useEffect(() => {
-    const fetchReportData = async () => {
+    const fetchPostData = async () => {
       if (didInit.current) {
         return;
       }
@@ -49,7 +49,7 @@ export const Post = () => {
       }
     };
 
-    fetchReportData();
+    fetchPostData();
   }, [postId]);
 
   if (postData === null && !checking) {

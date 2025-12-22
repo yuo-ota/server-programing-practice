@@ -19,7 +19,7 @@ import { deletePost } from '@/api/PostApi';
 
 export const Post = (postData: PostProps) => {
   const navigate = useNavigate();
-  const [isLiked, setIsLike] = useState(postData.isLiked);
+  const [isLiked, setIsLiked] = useState(postData.isLiked);
   const { showMessage } = useContext(NotificationContext);
 
   const [isOpenDialog, setIsOpenDialog] = useState(false);
@@ -41,16 +41,16 @@ export const Post = (postData: PostProps) => {
   };
 
   /**
-   * 投稿者のプロフィールボタンがクリックされたときの処理
+   * いいねボタンがクリックされたときの処理
    */
   const handleLikeClick = async () => {
     try {
       if (!isLiked) {
         await setLike(postData.postId);
-        setIsLike(true);
+        setIsLiked(true);
       } else {
         await removeLike(postData.postId);
-        setIsLike(false);
+        setIsLiked(false);
       }
     } catch {
       showMessage(
@@ -146,13 +146,13 @@ export const Post = (postData: PostProps) => {
           <p className="text-foreground text-title self-start">
             {postData.postText}
           </p>
-          <img
+          {postData.postImagePath && <img
             src={`${API_URL}${postData.postImagePath}`}
             alt={postData.postImageAlt}
             className="object-cover"
-          />
+          />}
           <div className="flex w-full items-start justify-between py-4">
-            <div className="items-bewtween flex gap-1.5">
+            <div className="items-between flex gap-1.5">
               <IconButton
                 onClick={() => {
                   handleProfileClick();
@@ -160,6 +160,7 @@ export const Post = (postData: PostProps) => {
                 ButtonIcon={
                   <img
                     src={`${API_URL}${postData.userIconPath}`}
+                    alt={`${postData.userName} icon`}
                     className="h-12 w-12 rounded-full"
                   />
                 }
