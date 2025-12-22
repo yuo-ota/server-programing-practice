@@ -3,6 +3,7 @@ import Root from '@/features/login/Root';
 import { useEffect, useRef, useState } from 'react';
 import LoadingAuth from '../auth/LoadingAuth';
 import { Navigate } from 'react-router-dom';
+import { saveUserSettingToLocalStorage } from '@/utils/handleLocalStorage';
 
 export const Login = () => {
   const didInit = useRef(false);
@@ -12,7 +13,7 @@ export const Login = () => {
   useEffect(() => {
     if (!didInit.current) {
       verifyToken();
-
+      saveUserSettingToLocalStorage();
       didInit.current = true;
     }
   }, []);
