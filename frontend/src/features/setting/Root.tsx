@@ -63,16 +63,56 @@ const Root = () => {
         parsedData.social_accounts &&
         Array.isArray(parsedData.social_accounts)
       ) {
-        const mapped = parsedData.social_accounts.map((acc: SocialAccount) => ({
-          snsId: acc.name ?? (acc.platform_id ? String(acc.platform_id) : ''),
-          value: acc.identifier ?? acc.link ?? '',
-          platform_id: acc.platform_id ?? undefined,
-          identifier: acc.identifier ?? acc.link ?? '',
-        }));
+        const mapped = parsedData.social_accounts.map((acc: SocialAccount) => {
+          const rawValue = acc.identifier ?? acc.link ?? '';
+          const extractedValue = extractValue(acc.name ?? '', rawValue);
+          return {
+            snsId: acc.name ?? (acc.platform_id ? String(acc.platform_id) : ''),
+            value: extractedValue,
+            platform_id: acc.platform_id ?? undefined,
+            identifier: extractedValue,
+          };
+        });
         setSNSInputs(mapped);
       }
     }
   }, []);
+
+  /**
+   * リンクからidentifierを抽出する
+   */
+  const extractValue = (name: string, link: string): string => {
+    if (!link) return '';
+
+    // nameがない場合やURLでない場合はそのまま返す
+    if (!name || !link.includes('://')) {
+      return link;
+    }
+
+    let result = link;
+
+    try {
+      switch (name.toLowerCase()) {
+        case 'x':
+          result = result.replace(/https?:\/\/x\.com\/?/, '');
+          break;
+        case 'instagram':
+          result = result.replace(/https?:\/\/(www\.)?instagram\.com\/?/, '');
+          break;
+        case 'skeb':
+          result = result.replace(/https?:\/\/skeb\.jp\/@?/, '');
+          break;
+        case 'bluesky':
+          result = result.replace(/https?:\/\/bsky\.app\/profile\/?/, '');
+          break;
+        default:
+          break;
+      }
+      return result.replace(/^\//, '');
+    } catch {
+      return result;
+    }
+  };
 
   const isError = (): boolean => {
     let errorExists = false;

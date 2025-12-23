@@ -154,7 +154,7 @@ export const Post = (postData: PostProps) => {
             />
           )}
           <div className="flex w-full items-start justify-between py-4">
-            <div className="items-between flex gap-1.5">
+            <div className="items-between flex min-w-0 flex-1 gap-1.5">
               <IconButton
                 onClick={() => {
                   handleProfileClick();
@@ -168,8 +168,8 @@ export const Post = (postData: PostProps) => {
                 }
                 className="h-12 w-12 flex-none rounded-full"
               />
-              <div className="flex flex-col">
-                <p className="text-title text-foreground">
+              <div className="flex min-w-0 flex-col">
+                <p className="text-title text-foreground truncate">
                   {postData.userName}
                 </p>
                 <p className="text-body text-placeholder truncate">
