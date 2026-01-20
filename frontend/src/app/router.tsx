@@ -56,7 +56,7 @@ export const AppRoutes = () => {
             <Route index element={<Navigate to="/home/posts" replace />} />
             <Route path="notifications" element={<HomeNotifications />} />
             <Route path="posts">
-              <Route element={<HomePostsRoot />} />
+              <Route index element={<HomePostsRoot />} />
               <Route path=":postId" element={<HomePostsPost />} />
               <Route path=":postId/report" element={<HomePostsPostReport />} />
             </Route>

@@ -24,20 +24,24 @@ const TabElementGroup = ({
 
   return (
     <div
-      className={`grid w-full auto-cols-fr grid-flow-col place-items-center gap-x-4 ${className}`}
+      className={`bg-background grid w-full auto-cols-fr grid-flow-col place-items-center gap-x-4 ${className}`}
     >
-      {tabs.map((tab, index) => (
-        <TabElement
-          key={tab.label}
-          label={tab.label}
-          selected={selectedIndex === index}
-          onClick={() => {
-            handleSelect(index);
-            tab.onClick();
-          }}
-          className="w-24 flex-1"
-        />
-      ))}
+      {tabs.map((tab, index) => {
+        const isSelected = selectedIndex === index;
+        return (
+          <TabElement
+            key={tab.label}
+            label={tab.label}
+            selected={isSelected}
+            onClick={() => {
+              if (isSelected) return;
+              handleSelect(index);
+              tab.onClick();
+            }}
+            className="w-24 flex-1"
+          />
+        );
+      })}
     </div>
   );
 };

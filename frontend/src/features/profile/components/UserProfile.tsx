@@ -122,6 +122,7 @@ const UserProfile = ({ userData, loginUserId }: UserProfileProps) => {
                 onClick={() => {
                   handleLinkClick(item?.identifier);
                 }}
+                className={'mb-2'}
               />
             ))}
           </div>

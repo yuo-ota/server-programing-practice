@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { removeLike, setLike } from '@/utils/likes';
 import { API_URL } from '@/config';
 import NotificationContext from '@/contexts/notificationContext';
+import { getUserId } from '@/utils/handleLocalStorage';
+import AttentionDialog from '@/features/setting/components/AttentionDialog';
+import { deletePost } from '@/api/PostApi';
 
 interface Images {
   imagePath: string;
@@ -33,8 +36,12 @@ const Post = ({
   liked,
   className = '',
 }: PostProps) => {
-  const [like, setIsLike] = useState(liked);
+  const [isLiked, setIsLiked] = useState(liked);
   const { showMessage } = useContext(NotificationContext);
+
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
+  const openDialog = () => setIsOpenDialog(true);
+  const closeDialog = () => setIsOpenDialog(false);
 
   const navigate = useNavigate();
 
@@ -46,18 +53,40 @@ const Post = ({
     navigate(`/home/posts/${postId}/report`);
   };
 
+  /**
+   * 削除ボタンがクリックされたときの処理
+   */
+  const handleDeleteClick = () => {
+    openDialog();
+  };
+
+  /**
+   * ダイアログのボタンがクリックされたときの処理
+   */
+  const handleDialogClick = async () => {
+    try {
+      await deletePost(postId);
+      window.location.reload();
+    } catch {
+      showMessage(
+        ['投稿の削除に失敗しました。', '再度時間を空けてお試しください。'],
+        '--color-error'
+      );
+    }
+  };
+
   const handleProfileClick = () => {
     navigate(`/home/profile/${userId}`);
   };
 
   const handleLikeClick = async () => {
     try {
-      if (!like) {
+      if (!isLiked) {
         await setLike(postId);
-        setIsLike(true);
+        setIsLiked(true);
       } else {
         await removeLike(postId);
-        setIsLike(false);
+        setIsLiked(false);
       }
     } catch {
       showMessage(
@@ -69,12 +98,24 @@ const Post = ({
 
   return (
     <div
-      className={`${className} flex w-full px-2`}
+      className={`${className} bg-background border-annotation flex w-full border-b-2 px-2 py-2`}
       tabIndex={0}
       onClick={() => {
         handlePostClick();
       }}
     >
+      {isOpenDialog && (
+        <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center">
+          <AttentionDialog
+            isOpen={isOpenDialog}
+            onButtonClick={handleDialogClick}
+            onClose={closeDialog}
+            questionText="この投稿を削除しますか？"
+            leftText="はい"
+            rightText="いいえ"
+          />
+        </div>
+      )}
       <IconButton
         onClick={() => {
           handleProfileClick();
@@ -82,38 +123,50 @@ const Post = ({
         ButtonIcon={icon}
         className="h-12 w-12 flex-none"
       />
-      <div className="mx-2 min-w-0 flex-1">
-        <div className="flex items-center justify-between">
-          <p className="truncate">{userName}</p>
+      <div className="min-w-0 flex-1 px-2">
+        <div className="flex w-full items-center justify-between">
+          <p className="text-title truncate">{userName}</p>
           <div className="flex items-center">
             <LikeButton
-              isLiked={like}
+              isLiked={isLiked}
               onClick={() => {
                 handleLikeClick();
               }}
               className="h-12 w-12"
             />
             <KebabMenu
-              items={[
-                {
-                  label: '通報する',
-                  onClick: () => {
-                    handleReportClick();
-                  },
-                  itemsClassName: 'text-error',
-                },
-              ]}
+              items={
+                userId !== getUserId()
+                  ? [
+                      {
+                        label: '通報する',
+                        onClick: () => {
+                          handleReportClick();
+                        },
+                        itemsClassName: 'text-error',
+                      },
+                    ]
+                  : [
+                      {
+                        label: '削除する',
+                        onClick: () => {
+                          handleDeleteClick();
+                        },
+                        itemsClassName: 'text-error',
+                      },
+                    ]
+              }
               className="ml-2 h-12 w-12"
             />
           </div>
         </div>
-        <div>
+        <div className="w-full">
           <p className="break-word">{text}</p>
           <div>
             <img
               src={`${API_URL}${images.imagePath}`}
               alt={images.alt}
-              className="border-foreground/80 mt-2 max-h-100 w-full rounded-lg border object-cover"
+              className="mt-2 max-h-96 w-full rounded-lg object-contain"
             />
           </div>
         </div>
