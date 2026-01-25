@@ -1,7 +1,8 @@
 # ====================
 # Project-wide Common
 # ====================
-*.env
+*.env*
+!*.env*.sample
 
 # ====================
 # Frontend (React/Vite)
@@ -23,6 +24,11 @@ dist-ssr
 *.vite/
 *storybook.log
 storybook-static
+
+override_api/
+
+*.pem
+*.p12
 
 # ====================
 # Backend (Spring Boot)
@@ -51,6 +57,12 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+# ====================
+# Nginx
+# ====================
+nginx/conf.d/default.conf
+nginx/on
 
 # ====================
 # Editor & OS Files

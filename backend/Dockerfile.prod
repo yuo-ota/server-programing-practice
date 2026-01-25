@@ -1,0 +1,30 @@
+# ----------------------------------------
+# Build stage
+# ----------------------------------------
+FROM maven:3.9.9 AS build
+WORKDIR /app
+
+# 依存キャッシュ用に pom.xml だけ先にコピー
+COPY pom.xml .
+RUN mvn dependency:resolve
+
+# ソースコードコピー
+COPY . .
+
+# 本番用 jar をビルド（テストはスキップ）
+RUN mvn package -DskipTests
+
+# ----------------------------------------
+# Run stage
+# ----------------------------------------
+FROM eclipse-temurin:21-jdk-jammy
+WORKDIR /app
+
+# Build stage から jar をコピー
+COPY --from=build /app/target/*.jar app.jar
+
+# 内部ネットワーク用ポートを EXPOSE
+EXPOSE 8080
+
+# Spring Boot アプリを常駐起動
+ENTRYPOINT ["java","-jar","app.jar"]

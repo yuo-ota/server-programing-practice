@@ -1,0 +1,75 @@
+services:
+  app:
+    build: ./backend
+    image: spp-backend
+    container_name: spp-backend
+    depends_on:
+      - postgres
+      - init-images
+    volumes:
+      - ./backend:/app
+      - maven-repo:/root/.m2
+      - images:/usr/share/nginx/images
+    working_dir: /app
+    env_file:
+      - .env
+      - .env.${SPRING_PROFILES_ACTIVE:-dev}
+    ports:
+      - "${SPRING_APP_PORT}:8080"
+    networks:
+      - project-network
+
+  postgres:
+    image: postgres:16
+    container_name: spp-postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+      - .env.${SPRING_PROFILES_ACTIVE:-dev}
+    environment:
+      - TZ=${TIMEZONE}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    networks:
+      - project-network
+
+  nginx:
+    image: nginx:stable
+    volumes:
+      - ./nginx:/etc/nginx
+      - images:/usr/share/nginx/images
+    ports:
+      - "${NGINX_PORT}:443"
+    env_file:
+      - .env
+      - .env.${SPRING_PROFILES_ACTIVE:-dev}
+    environment:
+      DOLLAR: $
+    depends_on:
+      - app
+    command: /bin/sh -c 'envsubst < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g "daemon off;"'
+    networks:
+      - project-network
+
+  init-images:
+    image: alpine
+    command: >
+      sh -c "if [ -z \"$(ls -A /usr/share/nginx/images)\" ]; then
+              cp -R /seed/* /usr/share/nginx/images/;
+              echo 'Images seeded.';
+            else
+              echo 'Images directory already populated, skipping seed copy.';
+            fi"
+    volumes:
+      - images:/usr/share/nginx/images
+      - ./seed-images:/seed
+
+volumes:
+  maven-repo:
+  postgres_data:
+  images:
+
+networks:
+  project-network:
+    driver: bridge

@@ -1,0 +1,47 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-theme: #fdc022;
+  --color-background: #ffffff;
+  --color-foreground: #000000;
+  --color-inactive: #4d4d4d;
+  --color-link: #707070;
+  --color-annotation: #8e8e8e;
+  --color-disabled: #a4a4a4;
+  --color-placeholder: #b9b9b9;
+  --color-error: #ff5858;
+  --color-success: #00ba4d;
+  --color-hover: #f0f0f0;
+  --text-title: 20px;
+  --text-subtitle: 15px;
+  --text-paragraph: 14px;
+  --text-subparagraph: 12px;
+  --text-body: 10px;
+
+  --animate-fade-in-out: fade 3s ease-in-out infinite;
+  @keyframes fade {
+    0%,
+    100% {
+      margin-top: 0px;
+      opacity: 0;
+    }
+    10%,
+    90% {
+      margin-top: 2px;
+      opacity: 1;
+    }
+  }
+  --shadow-up: 0 -4px 6px rgba(0, 0, 0, 0.1);
+}
+
+:root {
+  --hover-brightness: 105%;
+  --hover-nega-brightness: 95%;
+  --active-brightness: 110%;
+  --active-nega-brightness: 90%;
+  --hover-opacity: 5%;
+  --hover-nega-opacity: 30%;
+  --active-opacity: 20%;
+  --active-nega-opacity: 80%;
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+}
