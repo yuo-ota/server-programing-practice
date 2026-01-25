@@ -34,7 +34,9 @@ export default defineConfig({
     },
     port: 5173,
   } : undefined,
-  envDir: path.resolve(__dirname, '..'),
+  envDir: isDev
+    ? path.resolve(__dirname, '..')
+    : path.resolve(__dirname),
   test: {
     projects: [{
       extends: true,

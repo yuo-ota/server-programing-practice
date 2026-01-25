@@ -20,12 +20,14 @@ services:
     restart: always
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.prod
+    image: node:20-alpine
+    working_dir: /app
     volumes:
+      - ./.env:/tmp/env
+      - ./.env.prod:/tmp/env.prod
+      - ./frontend:/app
       - frontend-build:/app/dist
-    command: ["true"]
+    command: sh -c "cp /tmp/env /app/.env && cp /tmp/env.prod /app/.env.production && npm install && npm run build"
 
   postgres:
     image: postgres:16
@@ -45,7 +47,8 @@ services:
   nginx:
     image: nginx:stable
     volumes:
-      - ./nginx:/etc/nginx
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d/default.conf.template:/etc/nginx/conf.d/default.conf.template:ro
       - images:/usr/share/nginx/images
       - frontend-build:/usr/share/nginx/html
     ports:
