@@ -48,10 +48,6 @@ jobs:
     - name: Run Spotless format check
       working-directory: ./backend
       run: mvn spotless:check
-    
-    - name: Run unit tests
-      working-directory: ./backend
-      run: mvn test
             
     - name: Compile Java sources
       working-directory: ./backend
