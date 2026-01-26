@@ -15,10 +15,14 @@ public class ManageSchedule {
     this.electedPostService = electedPostService;
   }
 
-  @Scheduled(cron = "0 50 2 * * *", zone = "${TIMEZONE}")
+  @Scheduled(cron = "0 40 6 * * *", zone = "${TIMEZONE}")
   @Transactional
   public void runElectedPostsAllocation() {
     try {
+      DiscordWebhookSender.notify(
+          new String[] {DiscordConstant.BACKEND_ROLE_ID},
+          "画像割り振り作業を開始します。",
+          "");
       electedPostService.allocateDeliverPostsEnduring();
     } catch (Throwable t) {
       DiscordWebhookSender.notify(
