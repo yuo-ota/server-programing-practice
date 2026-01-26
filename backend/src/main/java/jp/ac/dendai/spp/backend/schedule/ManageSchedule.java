@@ -15,7 +15,7 @@ public class ManageSchedule {
     this.electedPostService = electedPostService;
   }
 
-  @Scheduled(cron = "0 40 2 * * *", zone = "${TIMEZONE}")
+  @Scheduled(cron = "0 50 2 * * *", zone = "${TIMEZONE}")
   @Transactional
   public void runElectedPostsAllocation() {
     try {
