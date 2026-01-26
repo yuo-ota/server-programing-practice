@@ -15,17 +15,17 @@ public class ManageSchedule {
     this.electedPostService = electedPostService;
   }
 
-  @Scheduled(cron = "0 40 6 * * *", zone = "${TIMEZONE}")
+  @Scheduled(cron = "0 40 2 * * *", zone = "${TIMEZONE}")
   @Transactional
   public void runElectedPostsAllocation() {
     try {
       electedPostService.allocateDeliverPostsEnduring();
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Throwable t) {
       DiscordWebhookSender.notify(
           new String[] {DiscordConstant.BACKEND_ROLE_ID},
           "画像割り振り作業でエラーが発生しました。",
-          DiscordWebhookSender.expandException(e));
+          DiscordWebhookSender.expandException(t));
+      throw t;
     }
   }
 }

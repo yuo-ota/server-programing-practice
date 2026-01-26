@@ -103,10 +103,14 @@ public class DiscordWebhookSender {
   }
 
   public static String expandException(Exception e) {
+    return expandException((Throwable) e);
+  }
+
+  public static String expandException(Throwable t) {
     StringBuilder sb = new StringBuilder();
 
-    sb.append(e.toString()).append("\n");
-    for (StackTraceElement element : e.getStackTrace()) {
+    sb.append(t.toString()).append("\n");
+    for (StackTraceElement element : t.getStackTrace()) {
       sb.append("\t").append(element.toString()).append("\n");
     }
     return sb.toString();
