@@ -11,6 +11,8 @@ import jp.ac.dendai.spp.backend.entity.UserSetting;
 import jp.ac.dendai.spp.backend.repository.ElectedPostRepository;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
 import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
+import jp.ac.dendai.spp.backend.util.DiscordWebhookSender;
+
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -36,27 +38,46 @@ public class ElectedPostService {
    */
   public void allocateDeliverPostsEnduring() {
     ZonedDateTime deliverDateTime = getTodayDeliverDateTime();
+    ZonedDateTime startDateTime = deliverDateTime.minusDays(1);
     List<UUID> allPostIds =
-        postRepository.findPostIdsByCreatedAtBetween(deliverDateTime.minusDays(1), deliverDateTime);
+      postRepository.findPostIdsByCreatedAtBetween(startDateTime, deliverDateTime);
     List<UUID> allPostIdsByNotSensitive =
-        postRepository.findPostIdsByCreatedAtBetweenAndNotSensitive(
-            deliverDateTime.minusDays(1), deliverDateTime);
+      postRepository.findPostIdsByCreatedAtBetweenAndNotSensitive(startDateTime, deliverDateTime);
 
     int pageSize = PostConstant.REGISTER_POSTS_BATCH_SIZE;
     int page = 0;
     List<UserSetting> usersBatch = userSettingRepository.findUsersByPage(page, pageSize);
+    int savedCount = 0;
+    int processedUserCount = 0;
     while (!usersBatch.isEmpty()) {
+      processedUserCount += usersBatch.size();
       List<ElectedPost> electedPostsBatch = new ArrayList<>();
       for (UserSetting user : usersBatch) {
+        // 既に配信済みのポストを取得して除外する
+        List<UUID> alreadyAllocatedPostIds =
+            electedPostsRepository.findAlreadyAllocatedPostIdsByUserId(user.getUserId());
+        List<UUID> filteredAllPostIds = new ArrayList<>(allPostIds);
+        List<UUID> filteredAllPostIdsByNotSensitive = new ArrayList<>(allPostIdsByNotSensitive);
+        filteredAllPostIds.removeAll(alreadyAllocatedPostIds);
+        filteredAllPostIdsByNotSensitive.removeAll(alreadyAllocatedPostIds);
         electedPostsBatch.addAll(
-            allocateDeliverPosts(user, allPostIds, allPostIdsByNotSensitive, deliverDateTime));
+            allocateDeliverPosts(
+                user, filteredAllPostIds, filteredAllPostIdsByNotSensitive, deliverDateTime));
       }
       if (!electedPostsBatch.isEmpty()) {
         electedPostsRepository.saveAll(electedPostsBatch);
+        savedCount += electedPostsBatch.size();
       }
       page++;
       usersBatch = userSettingRepository.findUsersByPage(page, pageSize);
     }
+
+    DiscordWebhookSender.notify(new String[] {}, """
+      新規に割り当てられた投稿数: %d
+      割り当て対象投稿数: %d
+      割り当て対象投稿数(成人向け除外): %d
+      ユーザー数: %d
+       """.formatted(savedCount, allPostIds.size(), allPostIdsByNotSensitive.size(), processedUserCount), null);
   }
 
   /**
@@ -71,6 +92,7 @@ public class ElectedPostService {
       todayDeliverDateTime.minusDays(1), todayDeliverDateTime.minusDays(2)
     };
     List<ElectedPost> electedPosts = new ArrayList<>();
+      List<UUID> alreadyAllocatedPostIds = electedPostsRepository.findAlreadyAllocatedPostIdsByUserId(user.getUserId());
 
     for (ZonedDateTime deliverDateTime : deliverDateTimes) {
       List<UUID> allPostIds =
@@ -79,6 +101,8 @@ public class ElectedPostService {
       List<UUID> allPostIdsByNotSensitive =
           postRepository.findPostIdsByCreatedAtBetweenAndNotSensitive(
               deliverDateTime.minusDays(1), deliverDateTime);
+        allPostIds.removeAll(alreadyAllocatedPostIds);
+        allPostIdsByNotSensitive.removeAll(alreadyAllocatedPostIds);
       electedPosts.addAll(
           allocateDeliverPosts(user, allPostIds, allPostIdsByNotSensitive, deliverDateTime));
     }
@@ -141,11 +165,11 @@ public class ElectedPostService {
     ZonedDateTime todayDeliverTime =
         now.toLocalDate().atTime(PostConstant.DATE_CHANGE_TIME).atZone(now.getZone());
 
-    // もし現在時刻が 6:00 を過ぎていれば翌日の6:00を返す
-    if (now.isAfter(todayDeliverTime)) {
-      return todayDeliverTime.plusDays(1);
-    } else {
-      return todayDeliverTime;
+    // 直近で確定した配信境界(6:00)を返す
+    // 例: 6:40実行なら「当日6:00」、5:00実行なら「前日6:00」
+    if (now.isBefore(todayDeliverTime)) {
+      return todayDeliverTime.minusDays(1);
     }
+    return todayDeliverTime;
   }
 }
