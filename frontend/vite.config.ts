@@ -26,14 +26,14 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  server: isDev
-    ? {
-    https: {
-      key: fs.readFileSync('localhost-key.pem'),
-      cert: fs.readFileSync('localhost.pem'),
-    },
-    port: 5173,
-  } : undefined,
+  // server: isDev
+  //   ? {
+  //   https: {
+  //     key: fs.readFileSync('localhost-key.pem'),
+  //     cert: fs.readFileSync('localhost.pem'),
+  //   },
+  //   port: 5173,
+  // } : undefined,
   envDir: isDev
     ? path.resolve(__dirname, '..')
     : path.resolve(__dirname),
