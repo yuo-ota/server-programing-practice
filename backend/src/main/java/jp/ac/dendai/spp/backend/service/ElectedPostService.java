@@ -12,7 +12,6 @@ import jp.ac.dendai.spp.backend.repository.ElectedPostRepository;
 import jp.ac.dendai.spp.backend.repository.PostRepository;
 import jp.ac.dendai.spp.backend.repository.UserSettingRepository;
 import jp.ac.dendai.spp.backend.util.DiscordWebhookSender;
-
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -40,9 +39,9 @@ public class ElectedPostService {
     ZonedDateTime deliverDateTime = getTodayDeliverDateTime();
     ZonedDateTime startDateTime = deliverDateTime.minusDays(1);
     List<UUID> allPostIds =
-      postRepository.findPostIdsByCreatedAtBetween(startDateTime, deliverDateTime);
+        postRepository.findPostIdsByCreatedAtBetween(startDateTime, deliverDateTime);
     List<UUID> allPostIdsByNotSensitive =
-      postRepository.findPostIdsByCreatedAtBetweenAndNotSensitive(startDateTime, deliverDateTime);
+        postRepository.findPostIdsByCreatedAtBetweenAndNotSensitive(startDateTime, deliverDateTime);
 
     int pageSize = PostConstant.REGISTER_POSTS_BATCH_SIZE;
     int page = 0;
@@ -72,12 +71,17 @@ public class ElectedPostService {
       usersBatch = userSettingRepository.findUsersByPage(page, pageSize);
     }
 
-    DiscordWebhookSender.notify(new String[] {}, """
+    DiscordWebhookSender.notify(
+        new String[] {},
+        """
       新規に割り当てられた投稿数: %d
       割り当て対象投稿数: %d
       割り当て対象投稿数(成人向け除外): %d
       ユーザー数: %d
-       """.formatted(savedCount, allPostIds.size(), allPostIdsByNotSensitive.size(), processedUserCount), null);
+       """
+            .formatted(
+                savedCount, allPostIds.size(), allPostIdsByNotSensitive.size(), processedUserCount),
+        null);
   }
 
   /**
@@ -92,7 +96,8 @@ public class ElectedPostService {
       todayDeliverDateTime.minusDays(1), todayDeliverDateTime.minusDays(2)
     };
     List<ElectedPost> electedPosts = new ArrayList<>();
-      List<UUID> alreadyAllocatedPostIds = electedPostsRepository.findAlreadyAllocatedPostIdsByUserId(user.getUserId());
+    List<UUID> alreadyAllocatedPostIds =
+        electedPostsRepository.findAlreadyAllocatedPostIdsByUserId(user.getUserId());
 
     for (ZonedDateTime deliverDateTime : deliverDateTimes) {
       List<UUID> allPostIds =
@@ -101,8 +106,8 @@ public class ElectedPostService {
       List<UUID> allPostIdsByNotSensitive =
           postRepository.findPostIdsByCreatedAtBetweenAndNotSensitive(
               deliverDateTime.minusDays(1), deliverDateTime);
-        allPostIds.removeAll(alreadyAllocatedPostIds);
-        allPostIdsByNotSensitive.removeAll(alreadyAllocatedPostIds);
+      allPostIds.removeAll(alreadyAllocatedPostIds);
+      allPostIdsByNotSensitive.removeAll(alreadyAllocatedPostIds);
       electedPosts.addAll(
           allocateDeliverPosts(user, allPostIds, allPostIdsByNotSensitive, deliverDateTime));
     }
