@@ -64,18 +64,20 @@ public class DiscordWebhookSender {
       os.write(payloadPart.getBytes(StandardCharsets.UTF_8));
 
       // --- file ---
-      String fileHeader =
-          "--"
-              + boundary
-              + "\r\n"
-              + "Content-Disposition: form-data; name=\"file\"; filename=\""
-              + filename
-              + "\"\r\n"
-              + "Content-Type: text/plain\r\n\r\n";
-      os.write(fileHeader.getBytes(StandardCharsets.UTF_8));
+      if (log != null && !log.isEmpty()) {
+        String fileHeader =
+            "--"
+                + boundary
+                + "\r\n"
+                + "Content-Disposition: form-data; name=\"file\"; filename=\""
+                + filename
+                + "\"\r\n"
+                + "Content-Type: text/plain\r\n\r\n";
+        os.write(fileHeader.getBytes(StandardCharsets.UTF_8));
 
-      os.write(log.getBytes(StandardCharsets.UTF_8));
-      os.write("\r\n".getBytes(StandardCharsets.UTF_8));
+        os.write(log.getBytes(StandardCharsets.UTF_8));
+        os.write("\r\n".getBytes(StandardCharsets.UTF_8));
+      }
 
       // --- end boundary ---
       os.write(("--" + boundary + "--").getBytes(StandardCharsets.UTF_8));

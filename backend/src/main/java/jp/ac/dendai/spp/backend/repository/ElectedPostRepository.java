@@ -15,4 +15,7 @@ public interface ElectedPostRepository extends JpaRepository<ElectedPost, UUID> 
       "SELECT e FROM ElectedPost e WHERE e.userId = :userId AND DATE(e.deliveredAt) = :date ORDER BY e.index ASC")
   List<ElectedPost> findByUserIdAndDate(
       @Param("userId") UUID userId, @Param("date") LocalDate date);
+
+  @Query("SELECT e.postId FROM ElectedPost e WHERE e.userId = :userId")
+  List<UUID> findAlreadyAllocatedPostIdsByUserId(@Param("userId") UUID userId);
 }
