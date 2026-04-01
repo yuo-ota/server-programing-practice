@@ -52,13 +52,8 @@ public class ElectedPostService {
       processedUserCount += usersBatch.size();
       List<ElectedPost> electedPostsBatch = new ArrayList<>();
       for (UserSetting user : usersBatch) {
-        // 既に配信済みのポストを取得して除外する
-        List<UUID> alreadyAllocatedPostIds =
-            electedPostsRepository.findAlreadyAllocatedPostIdsByUserId(user.getUserId());
         List<UUID> filteredAllPostIds = new ArrayList<>(allPostIds);
         List<UUID> filteredAllPostIdsByNotSensitive = new ArrayList<>(allPostIdsByNotSensitive);
-        filteredAllPostIds.removeAll(alreadyAllocatedPostIds);
-        filteredAllPostIdsByNotSensitive.removeAll(alreadyAllocatedPostIds);
         electedPostsBatch.addAll(
             allocateDeliverPosts(
                 user, filteredAllPostIds, filteredAllPostIdsByNotSensitive, deliverDateTime));
@@ -78,7 +73,7 @@ public class ElectedPostService {
       割り当て対象投稿数: %d
       割り当て対象投稿数(成人向け除外): %d
       ユーザー数: %d
-       """
+      """
             .formatted(
                 savedCount, allPostIds.size(), allPostIdsByNotSensitive.size(), processedUserCount),
         null);
